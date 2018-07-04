@@ -7,8 +7,8 @@
 
 const P = require('bluebird')
 
-module.exports = (client, toSign) => {
-  const { config, web3 } = client
+module.exports = (efx, toSign) => {
+  const { config, web3 } = efx
 
   const sign = P.promisify(web3.eth.sign)
 

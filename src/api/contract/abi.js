@@ -1,64 +1,458 @@
 /**
  * The ABI for the wrapper token contract
  *
+ * see:
+ * https://etherscan.io/address/0x991f0e5c5775ca9dd02e30e67f545c36cff3690e#code
+ *
  */
-module.exports = [
+module.epoxrts = [
   {
-    'constant': false,
-    'inputs': [
+    "constant":true,
+    "inputs":[
+
+    ],
+    "name":"name",
+    "outputs":[
       {
-        'name': '_value',
-        'type': 'uint256'
-      },
-      {
-        'name': '_forTime',
-        'type': 'uint256'
+        "name":"",
+        "type":"string"
       }
     ],
-    'name': 'deposit',
-    'outputs': [
-      {
-        'name': 'success',
-        'type': 'bool'
-      }
-    ],
-    'payable': true,
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
   },
   {
-    'constant': false,
-    'inputs': [
+    "constant":true,
+    "inputs":[
+
+    ],
+    "name":"originalToken",
+    "outputs":[
       {
-        'name': 'v',
-        'type': 'uint8'
-      },
-      {
-        'name': 'r',
-        'type': 'bytes32'
-      },
-      {
-        'name': 's',
-        'type': 'bytes32'
-      },
-      {
-        'name': '_value',
-        'type': 'uint256'
-      },
-      {
-        'name': 'signatureValidUntilBlock',
-        'type': 'uint256'
+        "name":"",
+        "type":"address"
       }
     ],
-    'name': 'withdraw',
-    'outputs': [
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+
+    ],
+    "name":"totalSupply",
+    "outputs":[
       {
-        'name': 'success',
-        'type': 'bool'
+        "name":"",
+        "type":"uint256"
       }
     ],
-    'payable': false,
-    'stateMutability': 'nonpayable',
-    'type': 'function'
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":false,
+    "inputs":[
+      {
+        "name":"_from",
+        "type":"address"
+      },
+      {
+        "name":"_to",
+        "type":"address"
+      },
+      {
+        "name":"_value",
+        "type":"uint256"
+      }
+    ],
+    "name":"transferFrom",
+    "outputs":[
+
+    ],
+    "payable":false,
+    "stateMutability":"nonpayable",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+      {
+        "name":"",
+        "type":"address"
+      }
+    ],
+    "name":"balances",
+    "outputs":[
+      {
+        "name":"",
+        "type":"uint256"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+
+    ],
+    "name":"decimals",
+    "outputs":[
+      {
+        "name":"",
+        "type":"uint256"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+      {
+        "name":"_owner",
+        "type":"address"
+      }
+    ],
+    "name":"balanceOf",
+    "outputs":[
+      {
+        "name":"",
+        "type":"uint256"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+      {
+        "name":"_sender",
+        "type":"address"
+      },
+      {
+        "name":"_wrapper",
+        "type":"address"
+      },
+      {
+        "name":"_validTill",
+        "type":"uint256"
+      }
+    ],
+    "name":"keccak",
+    "outputs":[
+      {
+        "name":"",
+        "type":"bytes32"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+      {
+        "name":"hash",
+        "type":"bytes32"
+      },
+      {
+        "name":"v",
+        "type":"uint8"
+      },
+      {
+        "name":"r",
+        "type":"bytes32"
+      },
+      {
+        "name":"s",
+        "type":"bytes32"
+      }
+    ],
+    "name":"isValidSignature",
+    "outputs":[
+      {
+        "name":"",
+        "type":"bool"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+
+    ],
+    "name":"owner",
+    "outputs":[
+      {
+        "name":"",
+        "type":"address"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+
+    ],
+    "name":"symbol",
+    "outputs":[
+      {
+        "name":"",
+        "type":"string"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+
+    ],
+    "name":"TRANSFER_PROXY",
+    "outputs":[
+      {
+        "name":"",
+        "type":"address"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":false,
+    "inputs":[
+      {
+        "name":"v",
+        "type":"uint8"
+      },
+      {
+        "name":"r",
+        "type":"bytes32"
+      },
+      {
+        "name":"s",
+        "type":"bytes32"
+      },
+      {
+        "name":"_value",
+        "type":"uint256"
+      },
+      {
+        "name":"signatureValidUntilBlock",
+        "type":"uint256"
+      }
+    ],
+    "name":"withdraw",
+    "outputs":[
+      {
+        "name":"",
+        "type":"bool"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"nonpayable",
+    "type":"function"
+  },
+  {
+    "constant":false,
+    "inputs":[
+      {
+        "name":"_to",
+        "type":"address"
+      },
+      {
+        "name":"_value",
+        "type":"uint256"
+      }
+    ],
+    "name":"transfer",
+    "outputs":[
+      {
+        "name":"",
+        "type":"bool"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"nonpayable",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+      {
+        "name":"",
+        "type":"address"
+      }
+    ],
+    "name":"depositLock",
+    "outputs":[
+      {
+        "name":"",
+        "type":"uint256"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":true,
+    "inputs":[
+      {
+        "name":"_owner",
+        "type":"address"
+      },
+      {
+        "name":"_spender",
+        "type":"address"
+      }
+    ],
+    "name":"allowance",
+    "outputs":[
+      {
+        "name":"",
+        "type":"uint256"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"view",
+    "type":"function"
+  },
+  {
+    "constant":false,
+    "inputs":[
+      {
+        "name":"_value",
+        "type":"uint256"
+      },
+      {
+        "name":"_forTime",
+        "type":"uint256"
+      }
+    ],
+    "name":"deposit",
+    "outputs":[
+      {
+        "name":"success",
+        "type":"bool"
+      }
+    ],
+    "payable":true,
+    "stateMutability":"payable",
+    "type":"function"
+  },
+  {
+    "constant":false,
+    "inputs":[
+      {
+        "name":"_newSigner",
+        "type":"address"
+      }
+    ],
+    "name":"addSigner",
+    "outputs":[
+
+    ],
+    "payable":false,
+    "stateMutability":"nonpayable",
+    "type":"function"
+  },
+  {
+    "constant":false,
+    "inputs":[
+      {
+        "name":"newOwner",
+        "type":"address"
+      }
+    ],
+    "name":"transferOwnership",
+    "outputs":[
+
+    ],
+    "payable":false,
+    "stateMutability":"nonpayable",
+    "type":"function"
+  },
+  {
+    "inputs":[
+      {
+        "name":"_name",
+        "type":"string"
+      },
+      {
+        "name":"_symbol",
+        "type":"string"
+      },
+      {
+        "name":"_decimals",
+        "type":"uint256"
+      },
+      {
+        "name":"_transferProxy",
+        "type":"address"
+      }
+    ],
+    "payable":false,
+    "stateMutability":"nonpayable",
+    "type":"constructor"
+  },
+  {
+    "anonymous":false,
+    "inputs":[
+      {
+        "indexed":true,
+        "name":"previousOwner",
+        "type":"address"
+      },
+      {
+        "indexed":true,
+        "name":"newOwner",
+        "type":"address"
+      }
+    ],
+    "name":"OwnershipTransferred",
+    "type":"event"
+  },
+  {
+    "anonymous":false,
+    "inputs":[
+      {
+        "indexed":true,
+        "name":"from",
+        "type":"address"
+      },
+      {
+        "indexed":true,
+        "name":"to",
+        "type":"address"
+      },
+      {
+        "indexed":false,
+        "name":"value",
+        "type":"uint256"
+      }
+    ],
+    "name":"Transfer",
+    "type":"event"
   }
 ]

@@ -3,9 +3,9 @@
  *
  * id - Can be an index of the array such as 0 or an address
  **/
-module.exports = async (client, id) => {
+module.exports = async (efx, id) => {
   // check for ethereum accounts and select a default one
-  const accounts = await client.web3.eth.getAccounts()
+  const accounts = await efx.web3.eth.getAccounts()
 
   if (!isNaN(id)) {
     if (!accounts[id]) {

@@ -1,7 +1,7 @@
 const { post } = require('request-promise')
 
-module.exports = (client, id) => {
-  const url = client.config.api + '/registerOrders'
+module.exports = (efx) => {
+  const url = efx.config.api + '/registerOrders'
 
   const data = {
     request: {

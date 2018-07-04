@@ -1,7 +1,7 @@
 const { post } = require('request-promise')
 
-module.exports = (client, id) => {
-  const url = client.config.api + '/releaseTokens'
+module.exports = (efx, tokein) => {
+  const url = efx.config.api + '/releaseTokens'
 
   const data = {
     address: '0x01...',
