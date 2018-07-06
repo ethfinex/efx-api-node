@@ -1,33 +1,15 @@
 /**
  * Interface to lock / unlock tokens
  */
-module.exports = async (efx, token, amount, duration, action = 'lock') => {
+module.exports = async (efx, token, amount, duration) => {
   const currency = efx.CURRENCIES[token]
 
-  // arguments for contract's lock/unlock methods
-  let args = [
-    amount * (10 ** currency.decimals),
-    duration
-  ]
+  // value we sending to the lockerContract
+  const value = amount * (10 ** currency.decimals)
 
-  if (action === 'lock') {
-    if (token === 'ETH') {
-      args.push({
-        value: amount * (10 ** currency.decimals)
-      })
-    }
-  } else {
-    const {
-      signature,
-      unlockTill
-    } = await efx.sign.lock(currency.address)
+  const args = [ value, duration ]
 
-    const r = signature.r || 0
-    const s = signature.s || 0
-    const v = signature.v || 0
+  const action = 'deposit'
 
-    args = [v, r, s, amount, unlockTill]
-  }
-
-  return efx.eth.call(efx, efx.contract.abi, currency.address, action, args)
+  return efx.eth.send(efx.contract.abi, currency.lockerAddress, action, args, value)
 }

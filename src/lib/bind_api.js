@@ -31,6 +31,7 @@ module.exports = () => {
   // eth api utils
   client.eth = {
     call: compose(require('../api/eth/call')),
+    send: compose(require('../api/eth/send')),
     getNetwork: compose(require('../api/eth/get_network'))
   }
 
