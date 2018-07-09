@@ -10,8 +10,6 @@ module.exports = {
 
   exchangeContractAddress: '0x0000000000000000000000000000000000000000',
 
-  zxAddress: '0x',
-
   defaultExpiry: 60,
   defaultProvider: 'http://localhost:8545',
   account: 0 // account to use, can be an index or an address

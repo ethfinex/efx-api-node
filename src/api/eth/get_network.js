@@ -4,12 +4,8 @@
  * https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#construction_worker-network-check
  *
  **/
-const P = require('bluebird')
-
 module.exports = async (efx) => {
-  const get = P.promisify(efx.web3.version.getNetwork)
-
-  const id = await get()
+  const id = await efx.web3.eth.net.getId()
 
   const labels = {
     '1': 'mainnet',

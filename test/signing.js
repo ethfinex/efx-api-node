@@ -14,6 +14,8 @@ before(async () => {
 })
 
 it('efx.sign(toSign) // sign arbitrary objects', async () => {
+  await efx.account.unlock('password')
+
   const message = utils.bufferToHex(efx.web3.utils.sha3('xyz'))
   const signed = await efx.sign(message)
 
@@ -40,6 +42,8 @@ it('efx.sign(toSign) // sign arbitrary objects', async () => {
 })
 
 it('efx.sign.order(ETHUSD, 1.5, 300) // sign a buy order', async () => {
+  await efx.account.unlock('password')
+
   const symbol = 'ETHUSD'
   const amount = 1.5
   const price = 300
@@ -49,16 +53,18 @@ it('efx.sign.order(ETHUSD, 1.5, 300) // sign a buy order', async () => {
   const sellAmount = amount * price
   const makerAmount = efx.web3.utils.toBN(10 ** CURRENCIES.USD.decimals * sellAmount).toString(10)
 
-  assert.equal(signed.makerTokenAddress, CURRENCIES.USD.address)
+  assert.equal(signed.makerTokenAddress, CURRENCIES.USD.tokenAddress)
   assert.equal(signed.makerTokenAmount, makerAmount)
 
   const buyAmount = amount
   const takerAmount = efx.web3.utils.toBN(10 ** CURRENCIES.ETH.decimals * buyAmount).toString(10)
-  assert.equal(signed.takerTokenAddress, CURRENCIES.ETH.address)
+  assert.equal(signed.takerTokenAddress, CURRENCIES.ETH.tokenAddress)
   assert.equal(signed.takerTokenAmount, takerAmount)
 })
 
 it('efx.sign.order(ETHUSD, -1.5, 300) // sign a sell order', async () => {
+  await efx.account.unlock('password')
+
   const symbol = 'ETHUSD'
   const amount = -1.5
   const price = 300
@@ -68,18 +74,26 @@ it('efx.sign.order(ETHUSD, -1.5, 300) // sign a sell order', async () => {
   const sellAmount = Math.abs(amount)
   const makerAmount = efx.web3.utils.toBN(10 ** CURRENCIES.ETH.decimals * sellAmount).toString(10)
 
-  assert.equal(signed.makerTokenAddress, CURRENCIES.ETH.address)
+  assert.equal(signed.makerTokenAddress, CURRENCIES.ETH.tokenAddress)
   assert.equal(signed.makerTokenAmount, makerAmount)
 
   const buyAmount = Math.abs(amount * price)
   const takerAmount = efx.web3.utils.toBN(10 ** CURRENCIES.USD.decimals * buyAmount).toString(10)
 
-  assert.equal(signed.takerTokenAddress, CURRENCIES.USD.address)
+  assert.equal(signed.takerTokenAddress, CURRENCIES.USD.tokenAddress)
   assert.equal(signed.takerTokenAmount, takerAmount)
+
+  // TODO:
+  // - Test feeRecipient field
+  // - Test maker field
 })
 
+/**
+ *
+ * No need to sign lock requests, as they happen directly between user
+ * and web3
 it('efx.sign.lock(address, duration) // sign a lock request', async () => {
-  const address = CURRENCIES.ETH.address
+  const token = 'ETH'
   const duration = 25
 
   // nock the call to send the signature
@@ -91,7 +105,6 @@ it('efx.sign.lock(address, duration) // sign a lock request', async () => {
       // REVIEW: do we really want it to be body.contents instead of body.?
       assert.ok(body.contents)
       assert.ok(body.contents.address)
-      assert.ok(body.contents.tokenAddress)
       assert.ok(body.contents.unlockUntil)
 
       return true
@@ -101,11 +114,11 @@ it('efx.sign.lock(address, duration) // sign a lock request', async () => {
       unlockUntil: 25
     })
 
-  const response = await efx.sign.lock(address, duration)
+  const response = await efx.sign.lock(token, duration)
 
   // TODO:
   // - record real response using nock.recorder.rec()
   // - validate the actual response
   assert.ok(response.signature)
   assert.ok(response.unlockUntil)
-})
+}) **/

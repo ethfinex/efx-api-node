@@ -1,12 +1,13 @@
 const { post } = require('request-promise')
 
-module.exports = (efx, tokein) => {
+module.exports = (efx, token) => {
   const url = efx.config.api + '/releaseTokens'
 
+  const currency = efx.CURRENCIES[token]
+
   const data = {
-    address: '0x01...',
-    tokenAddress: '0x02...',
-    unlockUntil: 123456
+    address: efx.config.account,
+    tokenAddress: currency.tokenAddress
   }
 
   return post(url, {json: data})

@@ -16,15 +16,22 @@ module.exports = () => {
 
   // web3 account related
   client.account = {
+    balance: compose(require('../api/account/balance')),
+    tokenBalance: compose(require('../api/account/token_balance')),
     select: compose(require('../api/account/select')),
     unlock: compose(require('../api/account/unlock'))
   }
 
   // blockchain api
   client.contract = {
+    approve: compose(require('../api/contract/approve')),
+    isApproved: compose(require('../api/contract/is_approved')),
     lock: compose(require('../api/contract/lock')),
     unlock: compose(require('../api/contract/unlock')),
-    abi: require('../api/contract/abi'),
+    abi: {
+      locker: require('../api/contract/abi/locker.abi.js'),
+      token: require('../api/contract/abi/token.abi.js')
+    },
     errors: require('../api/contract/errors')
   }
 

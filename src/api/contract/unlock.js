@@ -7,18 +7,26 @@ module.exports = async (efx, token, amount) => {
   // value we asking to unlock
   const value = amount * (10 ** currency.decimals)
 
-  const {
-    signature,
-    unlockTill
-  } = await efx.sign.lock(currency.address)
+  const response = await efx.releaseTokens(token)
 
-  const r = signature.r || 0
-  const s = signature.s || 0
-  const v = signature.v || 0
+  const sig = response.signature.toString(16)
 
-  const args = [v, r, s, value, unlockTill]
+  const r = sig.slice(2, 66)
+  const s = sig.slice(66, 130)
+  const v = parseInt(sig.slice(130, 132), 16).toString(10)
+
+  const args = [v, r, s, value, response.unlockTill]
 
   const action = 'withdraw'
 
-  return efx.eth.send(efx.contract.abi, currency.lockerAddress, action, args)
+  if (token === 'ETH') {
+
+  } else {
+    return efx.eth.send(
+      efx.contract.abi,
+      currency.lockerAddress,
+      action,
+      args
+    )
+  }
 }

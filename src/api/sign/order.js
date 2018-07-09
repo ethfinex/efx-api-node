@@ -1,6 +1,4 @@
-const CURRENCIES = require('../../currencies')
 const {ZeroEx} = require('0x.js')
-const sign = require('./sign')
 
 module.exports = async (efx, symbol, amount, price) => {
   const { web3, config } = efx
@@ -12,8 +10,8 @@ module.exports = async (efx, symbol, amount, price) => {
   const buySymbol = amount > 0 ? symbolOne : symbolTwo
   const sellSymbol = amount > 0 ? symbolTwo : symbolOne
 
-  const sellCurrency = CURRENCIES[sellSymbol]
-  const buyCurrency = CURRENCIES[buySymbol]
+  const sellCurrency = efx.CURRENCIES[sellSymbol]
+  const buyCurrency = efx.CURRENCIES[buySymbol]
 
   let buyAmount, sellAmount
 
@@ -45,22 +43,23 @@ module.exports = async (efx, symbol, amount, price) => {
 
     maker: config.account.toLowerCase(),
     makerFee: web3.utils.toBN('0'),
-    makerTokenAddress: sellCurrency.address,
+    makerTokenAddress: sellCurrency.tokenAddress,
     makerTokenAmount: web3.utils.toBN(10 ** sellCurrency.decimals * sellAmount).toString(10),
 
     salt: ZeroEx.generatePseudoRandomSalt(),
     taker: config.ethfinexAddress,
     takerFee: web3.utils.toBN('0'),
-    takerTokenAddress: buyCurrency.address,
+    takerTokenAddress: buyCurrency.tokenAddress,
     takerTokenAmount: web3.utils.toBN(10 ** buyCurrency.decimals * buyAmount).toString(10),
 
     exchangeContractAddress: config.exchangeContractAddress
   }
 
   let orderHash = ZeroEx.getOrderHashHex(order)
-  let signature = await sign(efx, orderHash)
 
-  const signedOrder = Object.assign({}, order, {signature})
+  let signature = await efx.sign(orderHash)
+
+  const signedOrder = Object.assign({}, order, {ecSignature: signature})
 
   return signedOrder
 }

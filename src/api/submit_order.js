@@ -10,10 +10,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid) => {
 
   const signed = await efx.sign.order(symbol, amount, price)
 
-  // REVIEW: shall we use signed.ecSignature ?
-  // or refactor it to just signed.signature ?
-  // or even just return the signature? ( this would be problematic for tests )
-  const meta = { protocol: '0x', object: signed.signature }
+  const meta = { protocol: '0x', object: signed }
 
   symbol = 't' + symbol
 

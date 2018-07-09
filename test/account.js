@@ -1,6 +1,7 @@
 /* eslint-env mocha */
 
 const instance = require('./instance')
+const { assert } = require('chai')
 
 let efx
 
@@ -9,7 +10,21 @@ before(async () => {
 })
 
 it('efx.account.select(0) // first account is selected by default', () => {
-  return efx.account.unlock('password')
+  return efx.account.select(0)
+})
+
+it('efx.account.balance() // return ETH balance', async () => {
+  const response = await efx.account.balance()
+
+  assert.notOk(isNaN(response))
+})
+
+it("efx.account.tokenBalance('ZRX')", async () => {
+  const token = 'ZRX'
+
+  const response = await efx.account.tokenBalance(token)
+
+  assert.notOk(isNaN(response))
 })
 
 // NOTE:
