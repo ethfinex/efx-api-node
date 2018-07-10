@@ -7,21 +7,30 @@ module.exports = async (efx, token, amount, duration) => {
   // value we sending to the lockerContract
   const value = (amount * (10 ** currency.decimals))
 
-  const args = [ value, duration ]
-
   const action = 'deposit'
 
-  // In order to lock ETH we simply deposit ETH onto an address
+  // In order to lock ETH we simply send ETH to the lockerAddress
   if (token === 'ETH') {
     return efx.eth.send(
-      efx.contract.abi.locker,
+      efx.contract.abi.weth,
       currency.lockerAddress,
       action,
-      args,
+      [],
       value
     )
   }
 
-  // Other tokens must be approved before
-  //
+  // In order to lock tokens we call deposit with value and forTime
+  const args = [
+    value, // uint256 value
+    duration // uint256 forTime
+  ]
+
+  return efx.eth.send(
+    efx.contract.abi.locker,
+    currency.lockerAddress,
+    action,
+    args
+  )
+
 }

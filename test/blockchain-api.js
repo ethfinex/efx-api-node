@@ -13,6 +13,9 @@ before(async () => {
 })
 
 it("efx.contract.isApproved('ZRX') // returns allowance", async () => {
+
+  return
+
   const token = 'ZRX'
 
   const response = await efx.contract.isApproved(token)
@@ -21,34 +24,49 @@ it("efx.contract.isApproved('ZRX') // returns allowance", async () => {
 })
 
 it("efx.contract.approve('ZRX') // should yield Approval event", async () => {
+
+  return
+
   const token = 'ZRX'
 
-  try {
-    // TODO:
-    // - record response using nock.recorder.rec()
-    const response = await efx.contract.approve(token)
+  const response = await efx.contract.approve(token)
 
-    assert.ok(response.events.Approval)
+  assert.ok(response.events.Approval)
+  // TODO: - validate receipt fields
 
-  } catch ( error ) {
-    console.log( 'Got error ->', error.message )
-  }
+})
 
+it("efx.contract.lock('ETH', 0.0001, duration) // lock 0.0001 ETH", async () => {
+
+  return
+
+  const token = 'ETH'
+  const amount = 0.0001
+  const duration = 25
+
+  //const response = await efx.contract.lock(token, amount, duration)
+  response = await efx.contract.lock(token, amount, duration)
+
+  assert.ok(response.events.Deposit)
+
+  // TODO: - validate receipt fields
+})
+
+it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => {
+
+  const token = 'ZRX'
+  const amount = 0.0001
+  const duration = 25
+
+  //const response = await efx.contract.lock(token, amount, duration)
+  response = await efx.contract.lock(token, amount, duration)
+
+  assert.ok(response.events.Transfer)
+
+  // TODO: - validate receipt fields
 })
 
 return
-
-it("efx.contract.lock('ETH', 0.0001, duration) // lock 0.0001 ETH", async () => {
-  const token = 'ETH'
-  const amount = '0.0001'
-  const duration = 25
-
-  const response = await efx.contract.lock(token, amount, duration)
-  // TODO:
-  // - record real response using nock.recorder.rec()
-  // - validate the actual response
-  assert.ok(response)
-})
 
 it('unlock', async () => {
   const token = 'ZRX'
