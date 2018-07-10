@@ -87,38 +87,3 @@ it('efx.sign.order(ETHUSD, -1.5, 300) // sign a sell order', async () => {
   // - Test feeRecipient field
   // - Test maker field
 })
-
-/**
- *
- * No need to sign lock requests, as they happen directly between user
- * and web3
-it('efx.sign.lock(address, duration) // sign a lock request', async () => {
-  const token = 'ETH'
-  const duration = 25
-
-  // nock the call to send the signature
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless', (body) => {
-      // REVIEW: get_lock_signature is Stringifying json before posting?
-      body = JSON.parse(body)
-
-      // REVIEW: do we really want it to be body.contents instead of body.?
-      assert.ok(body.contents)
-      assert.ok(body.contents.address)
-      assert.ok(body.contents.unlockUntil)
-
-      return true
-    })
-    .reply(200, {
-      signature: '0x...',
-      unlockUntil: 25
-    })
-
-  const response = await efx.sign.lock(token, duration)
-
-  // TODO:
-  // - record real response using nock.recorder.rec()
-  // - validate the actual response
-  assert.ok(response.signature)
-  assert.ok(response.unlockUntil)
-}) **/

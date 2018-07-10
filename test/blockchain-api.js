@@ -66,6 +66,37 @@ it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => 
   // TODO: - validate receipt fields
 })
 
+it("efx.contract.unlock('ETH', 0.0001) // unlock 0.0001 ETH", async () => {
+
+  const token = 'ETH'
+  const amount = 0.0001
+  const duration = 25
+
+  //const response = await efx.contract.lock(token, amount, duration)
+  response = await efx.contract.unlock(token, amount)
+
+  assert.ok(response.events.Withdrawal)
+
+  // TODO: - validate receipt fields
+})
+
+it("efx.contract.unlock('ETH', 100) // fail to unlock 100 ETH", async () => {
+
+  const token = 'ETH'
+  const amount = 100
+  const duration = 25
+
+  //const response = await efx.contract.lock(token, amount, duration)
+  try{
+    response = await efx.contract.unlock(token, amount)
+  } catch (error) {
+    const test = /Transaction ran out of gas/.test(error.message)
+
+    assert.ok(test)
+  }
+
+})
+
 return
 
 it('unlock', async () => {

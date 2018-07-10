@@ -32,5 +32,4 @@ module.exports = async (efx, token, amount, duration) => {
     action,
     args
   )
-
 }

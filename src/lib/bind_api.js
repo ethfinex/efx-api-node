@@ -50,7 +50,6 @@ module.exports = () => {
   client.sign.order = compose(require('../api/sign/order'))
   client.sign.cancel_order = compose(require('../api/sign/cancel_order'))
   client.sign.request = compose(require('../api/sign/request'))
-  client.sign.lock = compose(require('../api/sign/lock'))
 
   // http api
   client.cancelOrder = compose(require('../api/cancel_order'))

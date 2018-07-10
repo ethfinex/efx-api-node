@@ -3,7 +3,7 @@ module.exports = (efx, abi, address, action, args, value = 0, callback) => {
 
   const contract = new web3.eth.Contract(abi, address)
 
-  if( callback ) {
+  if (callback) {
     return contract.methods[action](...args).send({
       from: efx.config.account,
       value: value
