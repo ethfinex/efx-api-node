@@ -26,7 +26,7 @@ const EFX = require('efx-api-node')
 
 const web3 = new EFX.Web3(/*your web3 provider*/)
 
-const efx = await FX( web3 )
+const efx = await EFX( web3 )
 ```
 
  - running on browser context with window.web3 available
@@ -54,28 +54,22 @@ const efx = await EFX() // we will automatically use your web3.currentProvider
 
  - `git clone`
  - `npm install`
+ - `bash <(curl https://get.parity.io -L) # install parity`
 
-### Running a node
-
-#### 2. Simulating a node
-
-Thanks to [ganache-cli](https://github.com/trufflesuite/ganache-cli) we can
-easily run an eth rpc node emulator
-
-```bash
-npm test:rpc
-```
-
-#### Running a real test node
-
-Running parity on kovan testnet:
+### 2. Run a kovan node
 
 ```bash
 parity --chain kovan --jsonrpc-apis=all --geth
 ```
-
 * note the jsonrpc set to all
-* note the --geth in order to be compatible with geth unlock 'duration' parameter
+* note the `--geth` in order to be compatible with `geth`'s unlock 'duration' parameter
+
+Alternatively, thanks to [ganache-cli](https://github.com/trufflesuite/ganache-cli) we can
+easily run an eth rpc node emulator. (NOTE: currently tests will fail using ganache)
+
+```bash
+npm test:rpc
+```
 
 ### 3. Implementing a new feature
 
@@ -93,7 +87,7 @@ $ npm run test:watch
 
   - You can test on node.js context by running `npm run test`
   - You can test on a headless browser by running `npm run test:web`
-  - You can try it out on your browser console by running `npm run build:web:run` then going to [http://localhost:2222](http://localhost:2222)
+  - You can try it out on your browser ( for instance with MetaMask ) console by running `npm run build:web:run` then going to [http://localhost:2222](http://localhost:2222)
 
 ## 5. Building for browers
 
