@@ -107,8 +107,8 @@ it('efx.registerOrderList()', async () => {
       return true
     })
     .reply(200, {
-        status: 'success',
-        id: 1
+      status: 'success',
+      id: 1
     })
 
   const response = await efx.registerOrderList()

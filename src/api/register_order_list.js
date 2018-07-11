@@ -1,7 +1,6 @@
 const { post } = require('request-promise')
 
 module.exports = async (efx) => {
-
   const { config } = efx
 
   const url = config.api + '/registerOrderlist'

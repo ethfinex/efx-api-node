@@ -16,7 +16,7 @@ describe('~ efx-api-node', async () => {
   })
 
   describe('Signing', () => {
-    //require('./signing')
+     require('./signing')
   })
 
   describe('HTTP API', () => {
@@ -24,10 +24,10 @@ describe('~ efx-api-node', async () => {
   })
 
   describe('Blockchain API', () => {
-    //require('./blockchain-api')
+    // require('./blockchain-api')
   })
 
   describe('ETH calls', () => {
-    //require('./eth.js')
+     require('./eth.js')
   })
 })

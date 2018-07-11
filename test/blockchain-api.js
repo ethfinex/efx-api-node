@@ -13,9 +13,6 @@ before(async () => {
 })
 
 it("efx.contract.isApproved('ZRX') // returns allowance", async () => {
-
-  return
-
   const token = 'ZRX'
 
   const response = await efx.contract.isApproved(token)
@@ -24,9 +21,6 @@ it("efx.contract.isApproved('ZRX') // returns allowance", async () => {
 })
 
 it("efx.contract.approve('ZRX') // should yield Approval event", async () => {
-
-  return
-
   const token = 'ZRX'
 
   const response = await efx.contract.approve(token)
@@ -37,9 +31,6 @@ it("efx.contract.approve('ZRX') // should yield Approval event", async () => {
 })
 
 it("efx.contract.lock('ETH', 0.0001, duration) // lock 0.0001 ETH", async () => {
-
-  return
-
   const token = 'ETH'
   const amount = 0.0001
   const duration = 25
@@ -53,7 +44,6 @@ it("efx.contract.lock('ETH', 0.0001, duration) // lock 0.0001 ETH", async () => 
 })
 
 it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => {
-
   const token = 'ZRX'
   const amount = 0.0001
   const duration = 25
@@ -67,7 +57,6 @@ it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => 
 })
 
 it("efx.contract.unlock('ETH', 0.0001) // unlock 0.0001 ETH", async () => {
-
   const token = 'ETH'
   const amount = 0.0001
   const duration = 25
@@ -81,7 +70,6 @@ it("efx.contract.unlock('ETH', 0.0001) // unlock 0.0001 ETH", async () => {
 })
 
 it("efx.contract.unlock('ETH', 100) // fail to unlock 100 ETH", async () => {
-
   const token = 'ETH'
   const amount = 100
   const duration = 25
