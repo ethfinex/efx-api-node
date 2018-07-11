@@ -13,13 +13,11 @@ const CONTRACTS_PATH = path.join(__dirname, '../contracts/')
 const compile = async (filename) => {
   filename = filename.replace(".sol", '')
 
-  console.log( "Compiling: ", filename )
-
   const filePath = path.join(CONTRACTS_PATH, filename + '.sol')
   const source = fs.readFileSync(filePath, 'utf-8')
 
   // grabs the contract reference
-  const compiled = solc.compile(source, 1)
+  const compiled = solc.compile(source, 1 )
 
   const contract = compiled.contracts[':' + filename]
 

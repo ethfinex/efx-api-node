@@ -24,6 +24,7 @@ module.exports = async () => {
   if(Object.keys(deployed).length > 0) {
 
     console.log( " - Using deployed contracts")
+
     config = {
       CURRENCIES: {
         ETH: {

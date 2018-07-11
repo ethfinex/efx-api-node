@@ -9,9 +9,9 @@ const deployed = require('./contracts/deployed')
 it('Deploy WETH9_ contract', async() => {
   // you need to run the following command in order to generate this json:
   // npm run test:contracts:compile
-  const json = require ('./contracts/WETH9_.sol.json')
+  const json = require ('./contracts/WrapperLockEth.sol')
 
-  await deploy( json, 'WETH9_' )
+  await deploy( json, 'WrapperLockEth' )
 
   assert.ok(deployed.WETH9_)
   assert.ok(deployed.WETH9_.methods)
@@ -21,7 +21,7 @@ it('Deploy WETH9_ contract', async() => {
 it('Deploy WUSD9_ contract', async() => {
   // you need to run the following command in order to generate this json:
   // npm run test:contracts:compile
-  const json = require ('./contracts/WUSD9_.sol.json')
+  const json = require ('./contracts/WrapperLockUsd.sol')
 
   await deploy( json, 'WUSD9_' )
 
