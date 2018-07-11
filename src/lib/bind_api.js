@@ -48,7 +48,7 @@ module.exports = () => {
 
   // hack in order to have 'efx.sign' on the API instead of 'efx.sign.sign'
   client.sign.order = compose(require('../api/sign/order'))
-  client.sign.cancel_order = compose(require('../api/sign/cancel_order'))
+  client.sign.cancelOrder = compose(require('../api/sign/cancel_order'))
   client.sign.request = compose(require('../api/sign/request'))
 
   // http api

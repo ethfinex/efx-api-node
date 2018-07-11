@@ -5,6 +5,7 @@ const nock = require('nock')
 
 const instance = require('./instance')
 const {ZeroEx} = require('0x.js')
+const utils = require('ethereumjs-util')
 
 let efx
 
@@ -16,10 +17,24 @@ it('efx.cancelOrder(orderId)', async () => {
   const orderId = 1
 
   nock('https://api.ethfinex.com:443')
-    .post('/trustless/cancelOrder', (body) => {
-      assert.equal(body.orderId, orderId)
+    .post('/trustless/cancelOrder', async (body) => {
 
-      assert.ok(body.signature)
+      const {OrderId, ethOrderMethod, signature} = body
+
+      assert.equal(orderId, orderId)
+      assert.equal(ethOrderMethod, '0x')
+
+      assert.ok(signature)
+
+      const {ecRecover} = efx.web3.eth.personal
+
+      // sign the orderId from scratch
+      let toSign = utils.sha3(orderId.toString(16))
+      toSign = utils.bufferToHex(toSign).slice(2)
+
+      const recovered = await ecRecover(toSign, signature)
+
+      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
 
       return true
     })
