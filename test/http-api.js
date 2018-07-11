@@ -79,21 +79,43 @@ it('efx.getPendingOrders()', async () => {
   assert.ok(response)
 })
 
-it('efx.registerOrders()', async () => {
+it('efx.registerOrderList()', async () => {
   nock('https://api.ethfinex.com:443')
-    .post('/trustless/registerOrders', (body) => {
-      // TODO: validate payload
+    .post('/trustless/registerOrderlist', async (body) => {
+      const {
+        request,
+        signature
+      } = body
+
+      const {
+        address,
+        usage
+      } = request
+
+      assert.ok(address)
+      assert.ok(request)
+      assert.ok(signature)
+      assert.equal(usage, 'efx-portal-orders')
+
+      const {ecRecover} = efx.web3.eth.personal
+
+      const recovered = await ecRecover(request, signature)
+
+      assert.equal(address.toLowerCase(), recovered.toLowerCase())
 
       return true
     })
-    .reply(200, { all: 'good' })
+    .reply(200, {
+        status: 'success',
+        id: 1
+    })
 
-  const response = await efx.registerOrders()
-  // TODO:
-  // - record real response using nock.recorder.rec()
-  // - validate the actual response
-  assert.ok(response)
+  const response = await efx.registerOrderList()
+
+  assert.equal(response.status, 'success')
+  assert.ok(response.id)
 })
+
 
 it('efx.submitOrder()', async () => {
   const symbol = 'ETHUSD'
