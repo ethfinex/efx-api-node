@@ -38,13 +38,15 @@ it('efx.cancelOrder(orderId)', async () => {
 
       return true
     })
-    .reply(200, { all: 'good' })
+    .reply(200, {
+      status: 'success',
+      orderId: orderId
+    })
 
   const response = await efx.cancelOrder(orderId)
-  // TODO:
-  // - record real response using nock.recorder.rec()
-  // - validate the actual response
-  assert.ok(response)
+
+  assert.equal(response.status, 'success')
+  assert.equal(response.orderId, orderId)
 })
 
 it('efx.getOrder(orderId)', async () => {
