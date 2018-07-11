@@ -12,7 +12,9 @@ module.exports = async (efx) => {
     }
   }
 
-  data.signature = await efx.sign(data)
+  // REVIEW: Stringifying .request here so we can ecRecover on the other side
+  // without relying on eth.sign executing JSON.stringify
+  data.signature = await efx.sign(JSON.stringify(data.request))
 
   return post(url, {json: data})
 }

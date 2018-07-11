@@ -1,11 +1,10 @@
 /* eslint-env mocha */
 
 const { assert } = require('chai')
-const nock = require('nock')
-const utils = require('ethereumjs-util')
 
 const CURRENCIES = require('../src/currencies')
 const instance = require('./instance')
+const ecRecover = require('./helpers/ecRecover')
 
 let efx
 
@@ -16,29 +15,14 @@ before(async () => {
 it('efx.sign(toSign) // sign arbitrary objects', async () => {
   await efx.account.unlock('password')
 
-  const message = utils.bufferToHex(efx.web3.utils.sha3('xyz'))
-  const signed = await efx.sign(message)
+  // when signing hex values we should remove the 0x
+  const message = '0xa4d9a634348b09f23a5bbd3568f8b12b91ff499c'
 
-  assert.ok(signed)
+  const signature = await efx.sign(message.slice(2))
 
-  // TODO: make this recover routine work
-  // const r = signed.slice(2, 66)
-  // const s = signed.slice(66, 130)
-  // const v = parseInt(signed.slice(130, 132), 16).toString(10)
+  const recovered = ecRecover(message.slice(2), signature)
 
-  // const pub = utils.ecrecover(
-  // new Buffer(message, 'hex'),
-  // v,
-  // new Buffer(r, 'hex'),
-  // new Buffer(s, 'hex')
-  // )
-
-  // const recovered = utils.bufferToHex(utils.pubToAddress(pub))
-
-  // assert.equal( efx.config.account, recovered )
-
-  // console.log('  account ->', efx.config.account)
-  // console.log('recovered ->', recovered)
+  assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
 })
 
 it('efx.sign.order(ETHUSD, 1.5, 300) // sign a buy order', async () => {

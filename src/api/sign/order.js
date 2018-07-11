@@ -57,7 +57,8 @@ module.exports = async (efx, symbol, amount, price) => {
 
   let orderHash = ZeroEx.getOrderHashHex(order)
 
-  let signature = await efx.sign(orderHash)
+  // remove 0x from the hash
+  let signature = await efx.sign(orderHash.slice(2))
 
   const signedOrder = Object.assign({}, order, {ecSignature: signature})
 

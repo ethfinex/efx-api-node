@@ -13,26 +13,23 @@ before(async () => {
   efx = await instance()
 })
 
+const ecRecover = require('./helpers/ecRecover')
+
 it('efx.cancelOrder(orderId)', async () => {
   const orderId = 1
 
   nock('https://api.ethfinex.com:443')
     .post('/trustless/cancelOrder', async (body) => {
+      assert.equal(body.orderId, orderId)
+      assert.equal(body.ethOrderMethod, '0x')
 
-      const {OrderId, ethOrderMethod, signature} = body
-
-      assert.equal(orderId, orderId)
-      assert.equal(ethOrderMethod, '0x')
-
-      assert.ok(signature)
-
-      const {ecRecover} = efx.web3.eth.personal
+      assert.ok(body.signature)
 
       // sign the orderId from scratch
       let toSign = utils.sha3(orderId.toString(16))
       toSign = utils.bufferToHex(toSign).slice(2)
 
-      const recovered = await ecRecover(toSign, signature)
+      const recovered = ecRecover(toSign, body.signature)
 
       assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
 
@@ -115,9 +112,7 @@ it('efx.registerOrderList()', async () => {
       assert.ok(signature)
       assert.equal(usage, 'efx-portal-orders')
 
-      const {ecRecover} = efx.web3.eth.personal
-
-      const recovered = await ecRecover(request, signature)
+      const recovered = ecRecover(JSON.stringify(request), signature)
 
       assert.equal(address.toLowerCase(), recovered.toLowerCase())
 
@@ -140,7 +135,6 @@ it("efx.releaseTokens('ZRX', 10)", async () => {
 
   nock('https://api.ethfinex.com:443')
     .post('/trustless/releaseTokens', async (body) => {
-
       assert.ok(body.address)
       assert.equal(body.tokenAddress, efx.CURRENCIES[token].tokenAddress)
       assert.ok(body.unlockUntil)
@@ -171,9 +165,7 @@ it('efx.submitOrder()', async () => {
 
       const orderHash = ZeroEx.getOrderHashHex(orderObject)
 
-      const {ecRecover} = efx.web3.eth.personal
-
-      const recovered = await ecRecover(orderHash, orderObject.ecSignature)
+      const recovered = ecRecover(orderHash.slice(2), orderObject.ecSignature)
 
       assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
 
