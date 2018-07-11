@@ -24,7 +24,7 @@ module.exports = async (efx, token, amount) => {
 
   const response = await efx.releaseTokens(token)
 
-  const sig = response.signature.toString(16)
+  const sig = response.releaseSignature.toString(16)
 
   const r = sig.slice(2, 66)
   const s = sig.slice(66, 130)

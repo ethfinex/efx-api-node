@@ -117,6 +117,30 @@ it('efx.registerOrderList()', async () => {
   assert.ok(response.id)
 })
 
+it("efx.releaseTokens('ZRX', 10)", async () => {
+  const token = 'ZRX'
+  const unlockUntil = 10
+
+  nock('https://api.ethfinex.com:443')
+    .post('/trustless/releaseTokens', async (body) => {
+
+      assert.ok(body.address)
+      assert.equal(body.tokenAddress, efx.CURRENCIES[token].tokenAddress)
+      assert.ok(body.unlockUntil)
+
+      return true
+    })
+    .reply(200, {
+      status: 'success',
+      releaseSignature: '0x...'
+    })
+
+  const response = await efx.releaseTokens(token, unlockUntil)
+
+  assert.ok(response.releaseSignature)
+  assert.equal(response.status, 'success')
+})
+
 it('efx.submitOrder()', async () => {
   nock('https://api.ethfinex.com:443')
     .post('/trustless/submitOrder', async (body) => {
