@@ -8,19 +8,23 @@ module.exports = async (efx, symbol, amount, price, gid, cid) => {
   gid = gid || 1 // REVIEW: shall we make it unique as well?
   cid = cid || new Date().getTime()
 
-  const signed = await efx.sign.order(symbol, amount, price)
+  const orderObject = await efx.sign.order(symbol, amount, price)
 
-  const meta = { protocol: '0x', object: signed }
+  const type = 'EXCHANGE LIMIT'
+
+  const ethOrderMethod = '0x'
 
   symbol = 't' + symbol
 
   const data = {
     gid,
     cid,
+    type,
     symbol,
     amount,
     price,
-    meta
+    orderObject,
+    ethOrderMethod
   }
 
   const url = efx.config.api + '/submitOrder'

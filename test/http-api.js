@@ -4,6 +4,7 @@ const { assert } = require('chai')
 const nock = require('nock')
 
 const instance = require('./instance')
+const {ZeroEx} = require('0x.js')
 
 let efx
 
@@ -116,24 +117,32 @@ it('efx.registerOrderList()', async () => {
   assert.ok(response.id)
 })
 
-
 it('efx.submitOrder()', async () => {
-  const symbol = 'ETHUSD'
-  const amount = 1
-  const price = 100
-
   nock('https://api.ethfinex.com:443')
-    .post('/trustless/submitOrder', (body) => {
-      assert.equal(body.symbol, 't' + symbol)
-      assert.equal(body.amount, amount)
-      assert.equal(body.price, price)
-      assert.equal(body.meta.protocol, '0x')
+    .post('/trustless/submitOrder', async (body) => {
+      assert.ok(body.cid)
+      assert.equal(body.type, 'EXCHANGE LIMIT')
+      assert.equal(body.symbol, 'tETHUSD')
+      assert.equal(body.amount, 1)
+      assert.equal(body.price, 100)
 
-      assert.ok(body.meta.object)
+      const {orderObject} = body
+
+      const orderHash = ZeroEx.getOrderHashHex(orderObject)
+
+      const {ecRecover} = efx.web3.eth.personal
+
+      const recovered = await ecRecover(orderHash, orderObject.ecSignature)
+
+      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
 
       return true
     })
     .reply(200, { all: 'good' })
+
+  const symbol = 'ETHUSD'
+  const amount = 1
+  const price = 100
 
   const response = await efx.submitOrder(symbol, amount, price)
   // TODO:
