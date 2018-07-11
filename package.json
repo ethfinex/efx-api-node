@@ -15,11 +15,12 @@
   "scripts": {
     "lint": "standard",
     "lint:fix": "standard --fix",
-    "test:rpc": "ganache-cli",
+    "test:rpc": "ganache-cli --defaultBalanceEther 100000000",
+    "test:contracts:compile": "node ./test/helpers/compile.js",
     "test": "mocha ./test/index.js --timeout 20000",
     "test:watch": "mocha ./test/index.js --watch ./ --timeout 20000",
-    "test:web": "mochify --timeout 20000",
-    "test:web:watch": "mochify --watch --timeout 20000",
+    "test:web": "mochify ./test/index.js --timeout 20000",
+    "test:web:watch": "mochify ./test/index.js --watch --timeout 20000",
     "build": "npm run build:web:browserify; npm run build:web:hash",
     "build:web:browserify": "del ./dist/efx*.js; browserify ./src/efx.js --standalone EFX -o ./dist/efx.js",
     "build:web:minify": "node-minify --compressor all --input './dist/efx.js' --output './dist/efx.min.js'",
@@ -46,6 +47,7 @@
     "mochify": "^5.8.0",
     "nock": "^9.4.1",
     "node-minify": "^3.1.0",
+    "solc": "^0.4.24",
     "standard": "^11.0.1",
     "web3": "^1.0.0-beta.34"
   }

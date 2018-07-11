@@ -7,14 +7,15 @@ const CURRENCIES = require('./currencies')
  * web3 - web3 object
  * config - config to be merged with defaultConfig
  */
-module.exports = async (web3, config) => {
+module.exports = async (web3, config = {}) => {
   // create a client instance
   let efx = bind()
 
   // merge user config with default config
   efx.config = Object.assign({}, defaultConfig, config)
 
-  efx.CURRENCIES = CURRENCIES
+  // it's possible to overwrite contract map by providing CURRENCIES
+  efx.CURRENCIES = config.CURRENCIES || CURRENCIES
 
   // If no web3 is provided we will fallback to:
   // - window.web3.currentProvider object i.e. user is using MetaMask
