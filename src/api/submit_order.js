@@ -12,7 +12,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid) => {
 
   const type = 'EXCHANGE LIMIT'
 
-  const ethOrderMethod = '0x'
+  const protocol = '0x'
 
   symbol = 't' + symbol
 
@@ -24,7 +24,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid) => {
     amount,
     price,
     orderObject,
-    ethOrderMethod
+    protocol
   }
 
   const url = efx.config.api + '/submitOrder'

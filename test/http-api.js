@@ -158,6 +158,7 @@ it('efx.submitOrder()', async () => {
       assert.equal(body.symbol, 'tETHUSD')
       assert.equal(body.amount, 1)
       assert.equal(body.price, 100)
+      assert.equal(body.protocol, '0x')
 
       const {orderObject} = body
 
