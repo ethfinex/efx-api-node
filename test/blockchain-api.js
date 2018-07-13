@@ -106,7 +106,6 @@ it('unlock', async () => {
       assert.ok(body.contents)
       assert.ok(body.contents.address)
       assert.ok(body.contents.tokenAddress)
-      assert.ok(body.contents.unlockUntil)
 
       return true
     })

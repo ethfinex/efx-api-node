@@ -129,15 +129,13 @@ it('efx.registerOrderList()', async () => {
   assert.ok(response.id)
 })
 
-it("efx.releaseTokens('ZRX', 10)", async () => {
+it("efx.releaseTokens('ZRX')", async () => {
   const token = 'ZRX'
-  const unlockUntil = 10
 
   nock('https://api.ethfinex.com:443')
     .post('/trustless/releaseTokens', async (body) => {
       assert.ok(body.address)
       assert.equal(body.tokenAddress, efx.CURRENCIES[token].tokenAddress)
-      assert.ok(body.unlockUntil)
 
       return true
     })
