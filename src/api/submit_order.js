@@ -5,10 +5,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid) => {
     throw new Error('symbol, amount and price are required')
   }
 
-  gid = gid || 1 // REVIEW: shall we make it unique as well?
-  cid = cid || new Date().getTime()
-
-  const orderObject = await efx.sign.order(symbol, amount, price)
+  const meta = await efx.sign.order(symbol, amount, price)
 
   const type = 'EXCHANGE LIMIT'
 
@@ -23,7 +20,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid) => {
     symbol,
     amount,
     price,
-    orderObject,
+    meta,
     protocol
   }
 

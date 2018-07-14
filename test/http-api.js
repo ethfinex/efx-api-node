@@ -153,18 +153,18 @@ it("efx.releaseTokens('ZRX')", async () => {
 it('efx.submitOrder()', async () => {
   nock('https://api.ethfinex.com:443')
     .post('/trustless/submitOrder', async (body) => {
-      assert.ok(body.cid)
+
       assert.equal(body.type, 'EXCHANGE LIMIT')
       assert.equal(body.symbol, 'tETHUSD')
       assert.equal(body.amount, 1)
       assert.equal(body.price, 100)
       assert.equal(body.protocol, '0x')
 
-      const {orderObject} = body
+      const {meta} = body
 
-      const orderHash = ZeroEx.getOrderHashHex(orderObject)
+      const orderHash = ZeroEx.getOrderHashHex(meta)
 
-      const recovered = ecRecover(orderHash.slice(2), orderObject.ecSignature)
+      const recovered = ecRecover(orderHash.slice(2), meta.ecSignature)
 
       assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
 
