@@ -17,12 +17,22 @@ module.exports = async (web3, config = {}) => {
   // it's possible to overwrite contract map by providing CURRENCIES
   efx.CURRENCIES = config.CURRENCIES || CURRENCIES
 
+  // working towards being as compatible as possible
+  efx.isBrowser = typeof window !== 'undefined'
+
+  efx.isMetaMask = false
+
+  if( efx.isBrowser && window.web3 ){
+    efx.isMetaMask = window.web3.currentProvider.isMetaMask
+  }
+
   // If no web3 is provided we will fallback to:
   // - window.web3.currentProvider object i.e. user is using MetaMask
   // - http://localhost:8545
   if (!web3) {
+
     // sudo make-me browser friendly
-    if (window && window.web3) {
+    if (efx.isBrowser && window.web3) {
       web3 = new Web3(window.web3.currentProvider)
     } else {
       web3 = new Web3(efx.config.defaultProvider)
