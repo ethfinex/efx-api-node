@@ -17,3 +17,10 @@ it('efx.eth.getNetwork()', async () => {
 
   console.log(`Network: ${network.name} id: ${network.id}`)
 })
+
+it('efx.web3.eth.getBlockNumber()', async () => {
+
+  const block = await efx.web3.eth.getBlockNumber()
+
+  console.log( "Current block: ", block )
+})

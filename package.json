@@ -34,7 +34,8 @@
     "ethereumjs-util": "^5.2.0",
     "lodash": "^4.17.10",
     "request": "^2.87.0",
-    "request-promise": "^4.2.2"
+    "request-promise": "^5.2.2",
+    "web3": "^1.0.0-beta.34"
   },
   "devDependencies": {
     "browser-run": "^5.0.0",
@@ -48,7 +49,6 @@
     "nock": "^9.4.1",
     "node-minify": "^3.1.0",
     "solc": "^0.4.24",
-    "standard": "^11.0.1",
-    "web3": "^1.0.0-beta.34"
+    "standard": "^11.0.1"
   }
 }

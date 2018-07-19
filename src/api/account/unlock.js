@@ -6,7 +6,6 @@ module.exports = (efx, password, duration = 60) => {
 
   return web3.eth.personal.unlockAccount(
     config.account,
-    password,
-    '0x' + duration.toString(16)
+    password
   )
 }
