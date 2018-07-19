@@ -34,7 +34,7 @@
     "ethereumjs-util": "^5.2.0",
     "lodash": "^4.17.10",
     "request": "^2.87.0",
-    "request-promise": "^5.2.2",
+    "request-promise": "^4.2.2",
     "web3": "^1.0.0-beta.34"
   },
   "devDependencies": {

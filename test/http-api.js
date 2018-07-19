@@ -199,7 +199,7 @@ it('efx.submitSignedOrder(order)', async () => {
 
       const recovered = ecRecover(orderHash.slice(2), meta.ecSignature)
 
-      //assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
 
       return true
     })
