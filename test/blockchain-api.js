@@ -12,6 +12,14 @@ before(async () => {
   efx = await instance()
 })
 
+it("efx.contract.depositLock('ZRX') // returns depositLock value", async () => {
+  const token = 'ZRX'
+
+  const response = await efx.contract.depositLock(token)
+
+  assert.notOk(isNaN(response))
+})
+
 it("efx.contract.isApproved('ZRX') // returns allowance", async () => {
   const token = 'ZRX'
 

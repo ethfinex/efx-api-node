@@ -26,6 +26,7 @@ module.exports = () => {
   client.contract = {
     approve: compose(require('../api/contract/approve')),
     isApproved: compose(require('../api/contract/is_approved')),
+    depositLock: compose(require('../api/contract/deposit_lock')),
     lock: compose(require('../api/contract/lock')),
     unlock: compose(require('../api/contract/unlock')),
     createOrder: compose(require('../api/contract/createOrder')),
