@@ -28,6 +28,7 @@ module.exports = () => {
     isApproved: compose(require('../api/contract/is_approved')),
     lock: compose(require('../api/contract/lock')),
     unlock: compose(require('../api/contract/unlock')),
+    createOrder: compose(require('../api/contract/createOrder')),
     abi: {
       locker: require('../api/contract/abi/locker.abi.js'),
       weth: require('../api/contract/abi/weth.abi.js'),
@@ -59,6 +60,7 @@ module.exports = () => {
   client.registerOrderList = compose(require('../api/register_order_list'))
   client.releaseTokens = compose(require('../api/release_tokens'))
   client.submitOrder = compose(require('../api/submit_order'))
+  client.submitSignedOrder = compose(require('../api/submit_signed_order'))
 
   return client
 }

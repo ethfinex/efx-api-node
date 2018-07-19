@@ -144,13 +144,13 @@ it("efx.releaseTokens('ZRX')", async () => {
       releaseSignature: '0x...'
     })
 
-  const response = await efx.releaseTokens(token, unlockUntil)
+  const response = await efx.releaseTokens(token)
 
   assert.ok(response.releaseSignature)
   assert.equal(response.status, 'success')
 })
 
-it('efx.submitOrder()', async () => {
+it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
   nock('https://api.ethfinex.com:443')
     .post('/trustless/submitOrder', async (body) => {
 
@@ -177,6 +177,43 @@ it('efx.submitOrder()', async () => {
   const price = 100
 
   const response = await efx.submitOrder(symbol, amount, price)
+  // TODO:
+  // - record real response using nock.recorder.rec()
+  // - validate the actual response
+  assert.ok(response)
+})
+
+it('efx.submitSignedOrder(order)', async () => {
+  nock('https://api.ethfinex.com:443')
+    .post('/trustless/submitOrder', async (body) => {
+
+      assert.equal(body.type, 'EXCHANGE LIMIT')
+      assert.equal(body.symbol, 'tETHUSD')
+      assert.equal(body.amount, 1)
+      assert.equal(body.price, 100)
+      assert.equal(body.protocol, '0x')
+
+      const {meta} = body
+
+      const orderHash = ZeroEx.getOrderHashHex(meta)
+
+      const recovered = ecRecover(orderHash.slice(2), meta.ecSignature)
+
+      //assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+
+      return true
+    })
+    .reply(200, { all: 'good' })
+
+  const symbol = 'ETHUSD'
+  const amount = 1
+  const price = 100
+
+  const order = efx.contract.createOrder(symbol, amount, price)
+
+  const signedOrder = await efx.sign.order(order)
+
+  const response = await efx.submitSignedOrder(signedOrder, symbol, amount, price)
   // TODO:
   // - record real response using nock.recorder.rec()
   // - validate the actual response
