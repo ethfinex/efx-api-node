@@ -44,6 +44,7 @@
     "del-cli": "^1.1.0",
     "ganache-cli": "^6.1.4",
     "hash-filename": "^1.0.4",
+    "keccak": "^1.4.0",
     "mocha": "^5.1.1",
     "mochify": "^5.8.0",
     "nock": "^9.4.1",
