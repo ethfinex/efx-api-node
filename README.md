@@ -48,8 +48,8 @@ const efx = await EFX() // we will automatically use your web3.currentProvider
 
 ### Locking tokens
 
-Before locking tokens you must have locking approved once as in: next
-time you can simply call efx.contract.lock
+Before locking tokens you must have locking approve the LockerContract move
+tokens
 
 ```js
 
@@ -59,7 +59,8 @@ efx.contract.approve(token)
 
 ```
 
-Before locking tokens you must have locking approved once
+Once you have approved, you can simply call .lock for locking your tokens
+into the locker address.
 
 ```js
 
@@ -67,7 +68,7 @@ const token = 'ZRX'
 const amount = 0.001
 const forTime = 5
 
-efx.contract.lock(token, amount, forTime)
+const response = await efx.contract.lock(token, amount, forTime)
 
 ```
 
@@ -78,7 +79,7 @@ efx.contract.lock(token, amount, forTime)
 const token = 'ZRX'
 const amount = 0.001
 
-efx.contract.unlock(token, amount, forTime)
+const response = await efx.contract.unlock(token, amount, forTime)
 
 ```
 
@@ -102,7 +103,25 @@ const symbol = 'ETHUSD'
 const amount = -1
 const price = 100
 
-efx.submitOrder(symbol, amount, price)
+const orderId = await efx.submitOrder(symbol, amount, price)
+
+```
+
+### Getting all orders
+
+```js
+
+const orders = await efx.getOrderList()
+
+```
+
+### Getting an order
+
+```js
+
+const id = 1
+
+const order = await efx.getOrder(id)
 
 ```
 

@@ -17,8 +17,6 @@ it('efx.account.balance() // return ETH balance', async () => {
 
   const response = await efx.account.balance()
 
-  console.log( "eth balance ->", response )
-
   assert.notOk(isNaN(response))
 })
 

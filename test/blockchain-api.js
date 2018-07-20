@@ -46,9 +46,7 @@ it("efx.contract.lock('ETH', 0.0001, duration) // lock 0.0001 ETH", async () => 
   //const response = await efx.contract.lock(token, amount, duration)
   response = await efx.contract.lock(token, amount, duration)
 
-  assert.ok(response.events.Deposit)
-
-  // TODO: - validate receipt fields
+  assert.equal(response.status, true)
 })
 
 it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => {
@@ -86,7 +84,11 @@ it("efx.contract.unlock('ETH', 100) // fail to unlock 100 ETH", async () => {
   try{
     response = await efx.contract.unlock(token, amount)
   } catch (error) {
-    const test = /Transaction ran out of gas/.test(error.message)
+
+    // parity tests yielded this error
+    let test = /Transaction ran out of gas/.test(error.message)
+
+    test = test || /gas required exceeds allowance/.test(error.message)
 
     assert.ok(test)
   }
