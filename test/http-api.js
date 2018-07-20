@@ -96,14 +96,16 @@ it('efx.getOrder(orderId)', async () => {
   assert.ok(response)
 })
 
-it('efx.getOrders()', async () => {
+it('efx.getOrderList()', async () => {
   nock('https://api.ethfinex.com:443')
-    .post('/trustless/getOrders', (body) => {
+    .post('/trustless/getOrderList', (body) => {
+      assert.ok(body.token)
+      assert.equal(body.protocol, '0x')
       return true
     })
     .reply(200, { all: 'good' })
 
-  const response = await efx.getOrders()
+  const response = await efx.getOrderList()
   // TODO:
   // - record real response using nock.recorder.rec()
   // - validate the actual response
