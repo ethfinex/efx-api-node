@@ -46,5 +46,7 @@ module.exports = async () => {
     }
   }
 
+  config.api = 'https://staging.bitfinex.com:2998/trustless'
+
   return EFX(web3, config)
 }
