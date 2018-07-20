@@ -7,7 +7,7 @@ module.exports = async (efx, id, signedOrder) => {
 
   let data = {
     orderId: id,
-    ethOrderMethod,
+    ethOrderMethod
   }
 
   data.signature = signedOrder

@@ -6,13 +6,13 @@ module.exports = async (efx, order) => {
   const orderHash = ZeroEx.getOrderHashHex(order)
 
   // remove 0x from the hash
-  //let signature = await efx.sign(orderHash)
+  // let signature = await efx.sign(orderHash)
 
   const network = await efx.eth.getNetwork()
 
-  const zeroEx = new ZeroEx(web3.currentProvider, {networkId: network.id })
+  const zeroEx = new ZeroEx(web3.currentProvider, {networkId: network.id})
 
-  const signedOrder = await zeroEx.signOrderHashAsync(orderHash, config.account )
+  const signedOrder = await zeroEx.signOrderHashAsync(orderHash, config.account)
 
   order.ecSignature = signedOrder
 

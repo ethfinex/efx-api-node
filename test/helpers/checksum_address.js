@@ -9,7 +9,6 @@
 const createKeccakHash = require('keccak')
 
 module.exports = (address) => {
-
   address = address.toLowerCase().replace('0x', '')
 
   var hash = createKeccakHash('keccak256').update(address).digest('hex')

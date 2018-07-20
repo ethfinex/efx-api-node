@@ -31,17 +31,17 @@ module.exports = {
   ETH: {
     decimals: 18,
     tokenAddress: '0x0',
-    lockerAddress: '0x11f6a681f45d9d76ed037c9a00fd6c39295dc5ba',
+    lockerAddress: '0x11f6a681f45d9d76ed037c9a00fd6c39295dc5ba'
   },
   USD: {
     decimals: 6,
     tokenAddress: '0x0736d0c130b2ead47476cc262dbed90d7c4eeabd',
-    lockerAddress: '0xfc86648487f2612072ac0d53e77d5ae9286a8b86',
+    lockerAddress: '0xfc86648487f2612072ac0d53e77d5ae9286a8b86'
   },
   ZRX: {
     decimals: 18,
     tokenAddress: '0xa8e9fa8f91e5ae138c74648c9c304f1c75003a8d',
-    lockerAddress: '0x39d738870db939dce5184557ce286589e62c983e',
+    lockerAddress: '0x39d738870db939dce5184557ce286589e62c983e'
   }
 
 }

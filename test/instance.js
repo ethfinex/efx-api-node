@@ -21,9 +21,8 @@ module.exports = async () => {
   let config = {}
 
   // if we deployed contracts, then use the deployed ones
-  if(Object.keys(deployed).length > 0) {
-
-    console.log( " - Using deployed contracts")
+  if (Object.keys(deployed).length > 0) {
+    console.log(' - Using deployed contracts')
 
     config = {
       CURRENCIES: {
