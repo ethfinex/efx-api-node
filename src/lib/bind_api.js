@@ -55,6 +55,7 @@ module.exports = () => {
 
   // http api
   client.cancelOrder = compose(require('../api/cancel_order'))
+  client.cancelSignedOrder = compose(require('../api/cancel_signed_order'))
   client.getOrder = compose(require('../api/get_order'))
   client.getOrders = compose(require('../api/get_orders'))
   client.getPendingOrders = compose(require('../api/get_pending_orders'))

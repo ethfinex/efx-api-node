@@ -46,6 +46,38 @@ it('efx.cancelOrder(orderId)', async () => {
   assert.equal(response.orderId, orderId)
 })
 
+it('efx.cancelSignedOrder(orderId, signedOrder)', async () => {
+  const orderId = 1
+  const signedOrder = await efx.sign.cancelOrder(orderId)
+
+  nock('https://api.ethfinex.com:443')
+    .post('/trustless/cancelOrder', async (body) => {
+      assert.equal(body.orderId, orderId)
+      assert.equal(body.ethOrderMethod, '0x')
+
+      assert.ok(body.signature)
+
+      // sign the orderId from scratch
+      let toSign = utils.sha3(orderId.toString(16))
+      toSign = utils.bufferToHex(toSign).slice(2)
+
+      const recovered = ecRecover(toSign, body.signature)
+
+      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+
+      return true
+    })
+    .reply(200, {
+      status: 'success',
+      orderId: orderId
+    })
+
+  const response = await efx.cancelSignedOrder(orderId, signedOrder)
+
+  assert.equal(response.status, 'success')
+  assert.equal(response.orderId, orderId)
+})
+
 it('efx.getOrder(orderId)', async () => {
   const orderId = 1
 
