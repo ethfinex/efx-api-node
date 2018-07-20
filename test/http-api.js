@@ -15,6 +15,8 @@ before(async () => {
 
 const ecRecover = require('./helpers/ecRecover')
 
+/**
+
 it('efx.cancelOrder(orderId)', async () => {
   const orderId = 1
 
@@ -211,11 +213,16 @@ it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
   const price = 100
 
   const response = await efx.submitOrder(symbol, amount, price)
+
+  console.log( "response ->", response )
+
   // TODO:
   // - record real response using nock.recorder.rec()
   // - validate the actual response
   assert.ok(response)
 })
+
+**/
 
 it('efx.submitSignedOrder(order)', async () => {
   nock('https://api.ethfinex.com:443')
@@ -240,14 +247,19 @@ it('efx.submitSignedOrder(order)', async () => {
     .reply(200, { all: 'good' })
 
   const symbol = 'ETHUSD'
-  const amount = 1
+  const amount = 0.0000001
   const price = 100
 
   const order = efx.contract.createOrder(symbol, amount, price)
 
   const signedOrder = await efx.sign.order(order)
 
+  console.log( "order ->", order )
+
   const response = await efx.submitSignedOrder(signedOrder, symbol, amount, price)
+
+  console.log( "response ->", response )
+
   // TODO:
   // - record real response using nock.recorder.rec()
   // - validate the actual response
