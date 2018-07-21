@@ -1,5 +1,7 @@
 /**
  * Execute 'deposit' method on locker address
+ *
+ * duration - duration the tokens will be locked, in hours
  */
 module.exports = async (efx, token, amount, duration) => {
   const currency = efx.CURRENCIES[token]
