@@ -12,15 +12,15 @@ module.exports = async (efx, order) => {
 
   const zeroEx = new ZeroEx(web3.currentProvider, {networkId: network.id})
 
-  const signedOrder = await zeroEx.signOrderHashAsync(orderHash, config.account)
+  const signedOrder = await zeroEx.signOrderHashAsync(orderHash, config.account, efx.isMetaMask)
 
   order.ecSignature = signedOrder
 
   /**
   const isValid = ZeroEx.isValidSignature(orderHash, signedOrder, config.account.toLowerCase())
 
-  console.log( "is_valid ->", is_valid)
-  */
+  console.log( "is_valid ->", isValid)
+  **/
 
   return order
 }
