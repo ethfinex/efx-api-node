@@ -14,10 +14,7 @@ it('efx.account.select(0) // first account is selected by default', () => {
 })
 
 it('efx.account.balance() // return ETH balance', async () => {
-
   const response = await efx.account.balance()
-
-  console.log( "eth balance ->", response )
 
   assert.notOk(isNaN(response))
 })

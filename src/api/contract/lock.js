@@ -1,5 +1,5 @@
 /**
- * Interface to lock / unlock tokens
+ * Execute 'deposit' method on locker address
  */
 module.exports = async (efx, token, amount, duration) => {
   const currency = efx.CURRENCIES[token]

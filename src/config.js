@@ -9,7 +9,7 @@ module.exports = {
   ethfinexAddress: '0x9faf5515f177f3a8a845d48c19032b33cc54c09c',
 
   // kovan address
-  //exchangeContractAddress: '0x4d412AE6e3Ad6c4458dA0feed7eA8A5EdAFD6603',
+  // exchangeContractAddress: '0x4d412AE6e3Ad6c4458dA0feed7eA8A5EdAFD6603',
 
   // ropsten address
   exchangeContractAddress: '0x68ce3e415adcf280b5456ec82142030af54fda58',

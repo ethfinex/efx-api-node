@@ -22,7 +22,7 @@ module.exports = async (web3, config = {}) => {
 
   efx.isMetaMask = false
 
-  if( efx.isBrowser && window.web3 ){
+  if (efx.isBrowser && window.web3) {
     efx.isMetaMask = window.web3.currentProvider.isMetaMask
   }
 
@@ -30,7 +30,6 @@ module.exports = async (web3, config = {}) => {
   // - window.web3.currentProvider object i.e. user is using MetaMask
   // - http://localhost:8545
   if (!web3) {
-
     // sudo make-me browser friendly
     if (efx.isBrowser && window.web3) {
       web3 = new Web3(window.web3.currentProvider)

@@ -7,7 +7,7 @@ module.exports = async (efx, id) => {
 
   let data = {
     orderId: id,
-    ethOrderMethod,
+    ethOrderMethod
   }
 
   data.signature = await efx.sign.cancelOrder(id)

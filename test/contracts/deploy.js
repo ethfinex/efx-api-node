@@ -1,6 +1,3 @@
-const fs = require('fs')
-const path = require('path')
-
 // build artifacts and deploy
 const Web3 = require('web3')
 

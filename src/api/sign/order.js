@@ -6,9 +6,21 @@ module.exports = async (efx, order) => {
   const orderHash = ZeroEx.getOrderHashHex(order)
 
   // remove 0x from the hash
-  let signature = await efx.sign(orderHash.slice(2))
+  // let signature = await efx.sign(orderHash)
 
-  const signedOrder = Object.assign({}, order, {ecSignature: signature})
+  const network = await efx.eth.getNetwork()
 
-  return signedOrder
+  const zeroEx = new ZeroEx(web3.currentProvider, {networkId: network.id})
+
+  const signedOrder = await zeroEx.signOrderHashAsync(orderHash, config.account)
+
+  order.ecSignature = signedOrder
+
+  /**
+  const isValid = ZeroEx.isValidSignature(orderHash, signedOrder, config.account.toLowerCase())
+
+  console.log( "is_valid ->", is_valid)
+  */
+
+  return order
 }
