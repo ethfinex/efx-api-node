@@ -34,8 +34,7 @@ module.exports = () => {
       locker: require('../api/contract/abi/locker.abi.js'),
       weth: require('../api/contract/abi/weth.abi.js'),
       token: require('../api/contract/abi/token.abi.js')
-    },
-    errors: require('../api/contract/errors')
+    }
   }
 
   // eth api utils
