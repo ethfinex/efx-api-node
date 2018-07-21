@@ -1,16 +1,11 @@
 const { post } = require('request-promise')
 
-module.exports = async (efx, id, signedOrder) => {
+module.exports = async (efx, orderId, signature) => {
   const url = efx.config.api + '/cancelOrder'
 
-  const ethOrderMethod = '0x'
+  const protocol = '0x'
 
-  let data = {
-    orderId: id,
-    ethOrderMethod
-  }
-
-  data.signature = signedOrder
+  const data = {orderId, protocol, signature}
 
   return post(url, {json: data})
 }

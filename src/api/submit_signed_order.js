@@ -1,8 +1,8 @@
 const { post } = require('request-promise')
 
 module.exports = async (efx, order, symbol, amount, price, gid, cid) => {
-  if (!(order && symbol)) {
-    throw new Error('order and symbol are required')
+  if (!(order && symbol && amount && price)) {
+    throw new Error('order, symbol, amount and price are required')
   }
 
   const meta = order
@@ -26,5 +26,5 @@ module.exports = async (efx, order, symbol, amount, price, gid, cid) => {
 
   const url = efx.config.api + '/submitOrder'
 
-  return post(url, {json: data})
+  return await post(url, {json: data})
 }
