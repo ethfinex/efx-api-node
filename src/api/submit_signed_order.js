@@ -26,5 +26,5 @@ module.exports = async (efx, order, symbol, amount, price, gid, cid) => {
 
   const url = efx.config.api + '/submitOrder'
 
-  return post(url, {json: data})
+  return await post(url, {json: data})
 }
