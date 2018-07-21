@@ -3,7 +3,6 @@
 const instance = require('./instance')
 const nock = require('nock')
 
-
 let efx
 
 describe('~ efx-api-node', async () => {
@@ -13,27 +12,27 @@ describe('~ efx-api-node', async () => {
   it('efx = await EFX(web3) // create an instance without throwing', async () => {
     efx = await instance()
 
-    console.log( "You current account: ", efx.config.account )
+    console.log('You current account: ', efx.config.account)
   })
 
-  describe( 'Deploy contracts to test:rpc', () => {
-    //require('./deploy')
+  describe('Deploy contracts to test:rpc', () => {
+    // require('./deploy')
   })
 
   describe('Account', () => {
-     require('./account')
+    require('./account')
   })
 
   describe('Signing', () => {
-    require('./signing')
+     require('./signing')
+  })
+
+  describe('Blockchain API', () => {
+    require('./blockchain-api')
   })
 
   describe('HTTP API', () => {
     require('./http-api')
-  })
-
-  describe('Blockchain API', () => {
-     require('./blockchain-api')
   })
 
   describe('ETH calls', () => {
