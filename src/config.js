@@ -1,7 +1,3 @@
-// TODO: If the user has multiple accounts he must provide an account ID
-// to be used by this client
-//
-// or we can have a method to choose the current account??
 module.exports = {
 
   api: 'https://api.ethfinex.com/trustless',

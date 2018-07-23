@@ -11,10 +11,11 @@ describe('~ efx-api-node', async () => {
 
   it('efx = await EFX(web3) // create an instance without throwing', async () => {
     efx = await instance()
-
-    console.log('You current account: ', efx.config.account)
   })
 
+  // TODO: update mocked contracts, compile and deploy to ganache on every
+  // test, this way we don't need a ropsten node running to test the blockchain
+  // calls
   describe('Deploy contracts to test:rpc', () => {
     // require('./deploy')
   })
@@ -24,11 +25,14 @@ describe('~ efx-api-node', async () => {
   })
 
   describe('Signing', () => {
-     require('./signing')
+    require('./signing')
   })
 
   describe('Blockchain API', () => {
-    require('./blockchain-api')
+    // comment the line below if you want to skip blockchain tests
+    // you need a ropsten node with some ETH / ZRX in order to test
+    // those. FIXME: need contracts deployed during test
+    //require('./blockchain-api')
   })
 
   describe('HTTP API', () => {

@@ -15,7 +15,6 @@ before(async () => {
 
 const ecRecover = require('./helpers/ecRecover')
 
-/**
 it('efx.cancelOrder(orderId) invalid order should yield an error', async () => {
   const orderId = 1151079522
 
@@ -32,7 +31,7 @@ it('efx.cancelOrder(orderId) invalid order should yield an error', async () => {
 
       const recovered = ecRecover(toSign, body.signature)
 
-      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+      assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
 
       return true
     })
@@ -65,7 +64,7 @@ it('efx.cancelSignedOrder(orderId, signedOrder)', async () => {
 
       const recovered = ecRecover(toSign, body.signature)
 
-      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+      assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
 
       return true
     })
@@ -83,7 +82,6 @@ it('efx.cancelSignedOrder(orderId, signedOrder)', async () => {
   // REVIEW: it will not yield an error first time you run
   // with a valid order ( :
 })
- **/
 
 it('efx.getOrder(orderId)', async () => {
   const orderId = 1
@@ -147,7 +145,6 @@ it("efx.releaseTokens('ZRX')", async () => {
 it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
   nock('https://api.ethfinex.com:443')
     .post('/trustless/submitOrder', async (body) => {
-
       assert.equal(body.type, 'EXCHANGE LIMIT')
       assert.equal(body.symbol, 'tETHUSD')
       assert.equal(body.amount, 1)
@@ -160,7 +157,7 @@ it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
 
       const recovered = ecRecover(orderHash.slice(2), meta.ecSignature)
 
-      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+      assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
 
       return true
     })
@@ -172,7 +169,7 @@ it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
 
   const response = await efx.submitOrder(symbol, amount, price)
 
-  console.log( "response ->", response )
+  console.log('response ->', response)
 
   // TODO:
   // - record real response using nock.recorder.rec()
@@ -181,40 +178,41 @@ it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
 })
 
 it('efx.submitSignedOrder(order)', async () => {
-
   await efx.account.unlock('password')
 
+  // TODO: move tests with mocks to individual files, probably inside of
+  // test/http/ folder
   const httpResponse = [ [ 1151079508,
-       null,
-       58552546110,
-       'tETHUSD',
-       1532189752551,
-       1532189752568,
-       -0.1,
-       -0.1,
-       'EXCHANGE LIMIT',
-       null,
-       50491123200000,
-       null,
-       0,
-       'ACTIVE',
-       null,
-       null,
-       10000,
-       0,
-       null,
-       null,
-       null,
-       null,
-       null,
-       0,
-       0,
-       0,
-       null,
-       null,
-       'BFX',
-       null,
-       null,
+    null,
+    58552546110,
+    'tETHUSD',
+    1532189752551,
+    1532189752568,
+    -0.1,
+    -0.1,
+    'EXCHANGE LIMIT',
+    null,
+    50491123200000,
+    null,
+    0,
+    'ACTIVE',
+    null,
+    null,
+    10000,
+    0,
+    null,
+    null,
+    null,
+    null,
+    null,
+    0,
+    0,
+    0,
+    null,
+    null,
+    'BFX',
+    null,
+    null,
     [Object] ] ]
 
   nock('https://api.ethfinex.com:443')
@@ -231,7 +229,7 @@ it('efx.submitSignedOrder(order)', async () => {
 
       const recovered = ecRecover(orderHash.slice(2), meta.ecSignature)
 
-      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+      assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
 
       return true
     })

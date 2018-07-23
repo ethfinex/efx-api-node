@@ -1,8 +1,6 @@
 const {ZeroEx} = require('0x.js')
 
 module.exports = async (efx, order) => {
-  const { web3, config } = efx
-
   const orderHash = ZeroEx.getOrderHashHex(order)
 
   // remove 0x from the hash
@@ -10,14 +8,14 @@ module.exports = async (efx, order) => {
 
   const network = await efx.eth.getNetwork()
 
-  const zeroEx = new ZeroEx(web3.currentProvider, {networkId: network.id})
+  const zeroEx = new ZeroEx(efx.web3.currentProvider, {networkId: network.id})
 
-  const signedOrder = await zeroEx.signOrderHashAsync(orderHash, config.account, efx.isMetaMask)
+  const signedOrder = await zeroEx.signOrderHashAsync(orderHash, efx.get('account'), efx.isMetaMask)
 
   order.ecSignature = signedOrder
 
   /**
-  const isValid = ZeroEx.isValidSignature(orderHash, signedOrder, config.account.toLowerCase())
+  const isValid = ZeroEx.isValidSignature(orderHash, signedOrder, efx.get('account').toLowerCase())
 
   console.log( "is_valid ->", isValid)
   **/

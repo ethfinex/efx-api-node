@@ -1,11 +1,12 @@
 /**
  * Unlocks an account for given duration
- */
+ **/
 module.exports = (efx, password, duration = 60) => {
-  const { web3, config } = efx
+  const {web3} = efx
 
+  // TODO: can we improve this somehow?
   return web3.eth.personal.unlockAccount(
-    config.account,
+    efx.get('account'),
     password
   )
 }

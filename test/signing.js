@@ -22,7 +22,7 @@ it('efx.sign(toSign) // sign arbitrary objects', async () => {
 
   const recovered = ecRecover(message.slice(2), signature)
 
-  assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+  assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
 })
 
 it('create and sign a buy order', async () => {

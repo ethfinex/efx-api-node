@@ -41,7 +41,7 @@ module.exports = (efx, symbol, amount, price) => {
     expirationUnixTimestampSec: web3.utils.toBN(expiration).toString(10),
     feeRecipient: efx.config.ethfinexAddress.toLowerCase(),
 
-    maker: config.account.toLowerCase(),
+    maker: efx.get('account').toLowerCase(),
     makerFee: web3.utils.toBN('0'),
     makerTokenAddress: sellCurrency.lockerAddress.toLowerCase(),
     makerTokenAmount: web3.utils.toBN(10 ** sellCurrency.decimals * sellAmount).toString(10),

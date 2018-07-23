@@ -6,7 +6,7 @@ module.exports = (efx, token) => {
   const currency = efx.CURRENCIES[token]
 
   const data = {
-    address: efx.config.account,
+    address: efx.get('account'),
     tokenAddress: currency.tokenAddress
   }
 
