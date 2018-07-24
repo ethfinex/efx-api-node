@@ -121,6 +121,29 @@ it('efx.getOrderList()', async () => {
   assert.ok(response)
 })
 
+it('efx.getOrderList(token, signature)', async () => {
+  efx.account.unlock('password')
+
+  const token = ((Date.now() / 1000) + 60 * 60 * 24) + ''
+  const signature = await efx.sign(token.toString(16))
+
+  const httpResponse = []
+
+  nock('https://api.ethfinex.com:443')
+    .post('/trustless/getOrderList', (body) => {
+      assert.ok(body.token)
+      assert.equal(body.protocol, '0x')
+      return true
+    })
+    .reply(200, httpResponse)
+
+  const response = await efx.getOrderList(token, signature)
+  // TODO:
+  // - record real response using nock.recorder.rec()
+  // - validate the actual response
+  assert.ok(response)
+})
+
 it("efx.releaseTokens('ZRX')", async () => {
   const token = 'ZRX'
 
