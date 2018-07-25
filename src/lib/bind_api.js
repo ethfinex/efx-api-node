@@ -55,8 +55,8 @@ module.exports = () => {
   // efx main functions
   efx.cancelOrder = compose(require('../api/cancel_order'))
   efx.cancelSignedOrder = compose(require('../api/cancel_signed_order'))
-  efx.getOrder = compose(require('../api/get_order'))
-  efx.getOrderList = compose(require('../api/get_order_list'))
+  efx.getOrders = compose(require('../api/get_orders'))
+  efx.getOrderHist = compose(require('../api/get_order_hist'))
   efx.releaseTokens = compose(require('../api/release_tokens'))
   efx.submitOrder = compose(require('../api/submit_order'))
   efx.submitSignedOrder = compose(require('../api/submit_signed_order'))

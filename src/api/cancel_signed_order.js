@@ -1,7 +1,7 @@
 const { post } = require('request-promise')
 
 module.exports = async (efx, orderId, signature) => {
-  const url = efx.config.api + '/cancelOrder'
+  const url = efx.config.api + '/w/oc'
 
   const protocol = '0x'
 

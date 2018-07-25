@@ -1,7 +1,11 @@
 const { post } = require('request-promise')
 
-module.exports = async (efx, token, signature) => {
-  const url = efx.config.api + '/getOrderList'
+module.exports = async (efx, symbol, id, token, signature) => {
+  let url = efx.config.api + '/r/orders'
+
+  if(symbol){
+    url += '/t' + symbol
+  }
 
   const protocol = '0x'
 
@@ -11,7 +15,7 @@ module.exports = async (efx, token, signature) => {
     signature = await efx.sign(token.toString(16))
   }
 
-  const data = {token, protocol, signature}
+  const data = {token, protocol, signature, id}
 
   return post(url, {json: data})
 }
