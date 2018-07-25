@@ -49,7 +49,7 @@ module.exports = async (web3, config = {}) => {
   // see: https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#raising_hand-account-list-reflects-user-preference
   await efx.account.select(efx.config.account)
 
-  if(!efx.get('account')) {
+  if (!efx.get('account')) {
     console.warn('Please specify a valid account or account index')
   }
 

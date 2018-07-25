@@ -1,7 +1,7 @@
 /**
  * Creats a client instance for testing
  **/
-const deployed = require('./contracts/deployed')
+const deployed = require('./fixtures/contracts/deployed')
 const Web3 = require('web3')
 
 const EFX = require('..')

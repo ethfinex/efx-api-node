@@ -19,14 +19,14 @@ module.exports = (efx, symbol, amount, price) => {
     buyAmount = amount
     sellAmount = amount * price
 
-    //console.log( "Buying " + amount + ' ' + buySymbol + " for: " + price + ' ' + sellSymbol )
+    // console.log( "Buying " + amount + ' ' + buySymbol + " for: " + price + ' ' + sellSymbol )
   }
 
   if (amount < 0) {
     buyAmount = Math.abs(amount * price)
     sellAmount = Math.abs(amount)
 
-    //console.log( "Selling " + Math.abs(amount) + ' ' + sellSymbol + " for: " + price + ' ' + buySymbol )
+    // console.log( "Selling " + Math.abs(amount) + ' ' + sellSymbol + " for: " + price + ' ' + buySymbol )
   }
 
   // console.log( "   buy amount: " + buyAmount + " " + buySymbol )

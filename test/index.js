@@ -3,14 +3,19 @@
 const instance = require('./instance')
 const nock = require('nock')
 
-let efx
+// soon we will be recording fixtures to disk,
+// leaving this code here for now
+//
+// const nockBack = require('nock').back
+// nockBack.setMode('record');
+// nockBack.fixtures = __dirname + '/fixtures/nock';
 
 describe('~ efx-api-node', async () => {
   // sometimes nock gets stuck between test:watch
   nock.cleanAll()
 
   it('efx = await EFX(web3) // create an instance without throwing', async () => {
-    efx = await instance()
+    const efx = await instance()
   })
 
   // TODO: update mocked contracts, compile and deploy to ganache on every
@@ -25,19 +30,21 @@ describe('~ efx-api-node', async () => {
   })
 
   describe('Signing', () => {
-    //require('./signing')
+    require('./signing')
   })
 
   describe('Blockchain API', () => {
     // comment the line below if you want to skip blockchain tests
     // you need a ropsten node with some ETH / ZRX in order to test
     // those. FIXME: need contracts deployed during test
-    //require('./blockchain-api')
+    // require('./blockchain-api')
   })
 
   describe('HTTP API', () => {
     require('./http-api')
   })
+
+  return
 
   describe('ETH calls', () => {
     require('./eth.js')

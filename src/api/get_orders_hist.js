@@ -1,10 +1,9 @@
 const { post } = require('request-promise')
 
 module.exports = async (efx, symbol, id, token, signature) => {
-
   let url = efx.config.api + '/r/orders/'
 
-  if(symbol){
+  if (symbol) {
     url += 't' + symbol + '/hist'
   } else {
     url += 'hist'
