@@ -182,7 +182,7 @@ it("efx.releaseTokens('ZRX')", async () => {
 
 it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
   nock('https://staging.bitfinex.com:2998')
-    .post('/trustless/v1/submitOrder', async (body) => {
+    .post('/trustless/v1/w/on', async (body) => {
       assert.equal(body.type, 'EXCHANGE LIMIT')
       assert.equal(body.symbol, 'tETHUSD')
       assert.equal(body.amount, -0.1)
@@ -250,7 +250,7 @@ it('efx.submitSignedOrder(order)', async () => {
     [Object] ] ]
 
   nock('https://staging.bitfinex.com:2998')
-    .post('/trustless/v1/submitOrder', async (body) => {
+    .post('/trustless/v1/w/on', async (body) => {
       assert.equal(body.type, 'EXCHANGE LIMIT')
       assert.equal(body.symbol, 'tETHUSD')
       assert.equal(body.amount, -0.1)
@@ -275,7 +275,7 @@ it('efx.submitSignedOrder(order)', async () => {
 
   const signedOrder = await efx.sign.order(order)
 
-  const response = await efx.submitSignedOrder(signedOrder, symbol, amount, price)
+  const response = await efx.submitOrder(symbol, amount, price, null, null, signedOrder)
 
   // TODO:
   // - record real response using nock.recorder.rec()

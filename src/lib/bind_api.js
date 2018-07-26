@@ -59,7 +59,6 @@ module.exports = () => {
   efx.getOrdersHist = compose(require('../api/get_orders_hist'))
   efx.releaseTokens = compose(require('../api/release_tokens'))
   efx.submitOrder = compose(require('../api/submit_order'))
-  efx.submitSignedOrder = compose(require('../api/submit_signed_order'))
 
   return efx
 }
