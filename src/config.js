@@ -8,7 +8,7 @@ module.exports = {
   // exchangeContractAddress: '0x4d412AE6e3Ad6c4458dA0feed7eA8A5EdAFD6603',
 
   // ropsten address
-  exchangeContractAddress: '0x68ce3e415adcf280b5456ec82142030af54fda58',
+  exchangeContractAddress: '0x67799a5e640bc64ca24d3e6813842754e546d7b1',
 
   defaultExpiry: 60,
   defaultProvider: 'http://localhost:8545',
