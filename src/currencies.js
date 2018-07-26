@@ -31,12 +31,12 @@ module.exports = {
   ETH: {
     decimals: 18,
     tokenAddress: '0x0',
-    lockerAddress: '0x11f6a681f45d9d76ed037c9a00fd6c39295dc5ba'
+    lockerAddress: '0x965808e7f815cfffd4c018ef2ba4c5a65eba087e'
   },
   USD: {
     decimals: 6,
     tokenAddress: '0x0736d0c130b2ead47476cc262dbed90d7c4eeabd',
-    lockerAddress: '0xfc86648487f2612072ac0d53e77d5ae9286a8b86'
+    lockerAddress: '0x83e42e6d1ac009285376340ef64bac1c7d106c89'
   },
   ZRX: {
     decimals: 18,
