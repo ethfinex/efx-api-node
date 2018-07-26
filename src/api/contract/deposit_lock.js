@@ -5,7 +5,7 @@ module.exports = (efx, token) => {
   const currency = efx.CURRENCIES[token]
 
   const args = [
-    efx.config.account // address _owner
+    efx.get('account') // address _owner
   ]
 
   const action = 'depositLock'

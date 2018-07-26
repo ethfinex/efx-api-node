@@ -22,28 +22,33 @@ it('efx.sign(toSign) // sign arbitrary objects', async () => {
 
   const recovered = ecRecover(message.slice(2), signature)
 
-  assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+  assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
 })
 
 it('create and sign a buy order', async () => {
   await efx.account.unlock('password')
 
   const symbol = 'ETHUSD'
-  const amount = 1.5
-  const price = 300
+  const amount = 0.8
+  const price = 274
 
   const order = efx.contract.createOrder(symbol, amount, price)
 
   const signed = await efx.sign.order(order)
 
   const sellAmount = amount * price
-  const makerAmount = efx.web3.utils.toBN(10 ** CURRENCIES.USD.decimals * sellAmount).toString(10)
+  const makerAmount = efx.web3.utils.toBN(
+    Math.trunc(10 ** CURRENCIES.USD.decimals * sellAmount)
+  ).toString(10)
 
   assert.equal(signed.makerTokenAddress, CURRENCIES.USD.lockerAddress)
   assert.equal(signed.makerTokenAmount, makerAmount)
 
   const buyAmount = amount
-  const takerAmount = efx.web3.utils.toBN(10 ** CURRENCIES.ETH.decimals * buyAmount).toString(10)
+  const takerAmount = efx.web3.utils.toBN(
+    Math.trunc(10 ** CURRENCIES.ETH.decimals * buyAmount)
+  ).toString(10)
+
   assert.equal(signed.takerTokenAddress, CURRENCIES.ETH.lockerAddress)
   assert.equal(signed.takerTokenAmount, takerAmount)
 })
@@ -60,13 +65,17 @@ it('create and sign a sell order', async () => {
   const signed = await efx.sign.order(order)
 
   const sellAmount = Math.abs(amount)
-  const makerAmount = efx.web3.utils.toBN(10 ** CURRENCIES.ETH.decimals * sellAmount).toString(10)
+  const makerAmount = efx.web3.utils.toBN(
+    Math.trunc(10 ** CURRENCIES.ETH.decimals * sellAmount)
+  ).toString(10)
 
   assert.equal(signed.makerTokenAddress, CURRENCIES.ETH.lockerAddress)
   assert.equal(signed.makerTokenAmount, makerAmount)
 
   const buyAmount = Math.abs(amount * price)
-  const takerAmount = efx.web3.utils.toBN(10 ** CURRENCIES.USD.decimals * buyAmount).toString(10)
+  const takerAmount = efx.web3.utils.toBN(
+    Math.trunc(10 ** CURRENCIES.USD.decimals * buyAmount)
+  ).toString(10)
 
   assert.equal(signed.takerTokenAddress, CURRENCIES.USD.lockerAddress)
   assert.equal(signed.takerTokenAmount, takerAmount)

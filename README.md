@@ -48,8 +48,8 @@ const efx = await EFX() // we will automatically use your web3.currentProvider
 
 ### Locking tokens
 
-Before locking tokens you must have locking approve the LockerContract move
-tokens
+This will allow the lockTokenContract to transfer on the user's behalf.
+This step only needs to be carried out the first time interacting with each new ERC20 token.
 
 ```js
 
@@ -59,8 +59,9 @@ efx.contract.approve(token)
 
 ```
 
-Once you have approved, you can simply call .lock for locking your tokens
-into the locker address.
+Once you have approved, you can simply call .lock!
+
+This will transfer the specific token into the lockTokenContract.
 
 ```js
 
@@ -167,19 +168,47 @@ $ npm run test:watch
  - Add your tests to './test/index.js' file if necessary
  - Create your features on ./src/ folder
 
-### 4. Testing
+ * _You will need a ropsten node to do blockchain related tests_
 
-  - You can test on node.js context by running `npm run test`
-  - You can test on a headless browser by running `npm run test:web`
-  - You can try it out on your browser ( for instance with MetaMask ) console by running `npm run build:web:run` then going to [http://localhost:2222](http://localhost:2222)
+### 4. All tests
+
+### 4.1 Automated tests on node js test
+
+```bash
+$ npm run test
+```
+
+### 4.2 Automated tests on a headless browser ( using browserify and mochify )
+
+```bash
+$ npm run test:web
+```
+
+### 4.3 Testing manually on your browser
+
+  - Very useful in case you want to issue commands from Google Chrome
+  while using MetaMask !
+
+```bash
+$ npm run build:web:run
+```
+
+  - Open your browser on [http://localhost:2222](http://localhost:2222)
 
 ## 5. Building for browers
 
-In order to create a standalone browser build run `npm run build` the
-stadalone file will be created at `./dist` folder
+  - This will build the whole library as one big ugly standalone js file ( uses browserify )
+
+```bash
+$ npm run build
+```
 
 
 ## TODO
+
+ - Allow blockchain tests without relying on a local testnet node by using
+ npm run test:rpc ( ganache ) and deploying mocked contracts at the beginning
+ of the test.
 
  - Setup Travis-ci to test node.js, browser and standalone build. [see this page](https://blog.travis-ci.com/2017-09-12-build-stages-order-and-conditions)
 

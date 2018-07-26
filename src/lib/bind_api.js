@@ -1,29 +1,31 @@
 /**
- * - Creates a client instance
+ * - Creates an efx instance
  * - Load all functions from the ./api folder into this instance
- * - Binds the functions so they will always receive client as first argument
+ * - Binds the functions so they will always receive efx as first argument
  *
  * This way we get a regular looking API on top of functional code
  */
 const _ = require('lodash')
 
 module.exports = () => {
-  const client = {}
+  const efx = {}
 
+  // returns a function that will call api functions prepending efx
+  // as first argument
   const compose = (funk) => {
-    return _.partial(funk, client)
+    return _.partial(funk, efx)
   }
 
-  // web3 account related
-  client.account = {
+  // efx.account functions
+  efx.account = {
     balance: compose(require('../api/account/balance')),
     tokenBalance: compose(require('../api/account/token_balance')),
     select: compose(require('../api/account/select')),
     unlock: compose(require('../api/account/unlock'))
   }
 
-  // blockchain api
-  client.contract = {
+  // efx.contract functions
+  efx.contract = {
     approve: compose(require('../api/contract/approve')),
     isApproved: compose(require('../api/contract/is_approved')),
     depositLock: compose(require('../api/contract/deposit_lock')),
@@ -36,31 +38,27 @@ module.exports = () => {
     }
   }
 
-  // eth api utils
-  client.eth = {
+  // efx.eth functions
+  efx.eth = {
     call: compose(require('../api/eth/call')),
     send: compose(require('../api/eth/send')),
     getNetwork: compose(require('../api/eth/get_network'))
   }
 
-  // signing
-  client.sign = compose(require('../api/sign/sign'))
+  // efx.sign functions
+  efx.sign = compose(require('../api/sign/sign'))
+  // hack to get a nice method signature
+  efx.sign.order = compose(require('../api/sign/order'))
+  efx.sign.cancelOrder = compose(require('../api/sign/cancel_order'))
+  efx.sign.request = compose(require('../api/sign/request'))
 
-  // hack in order to have 'efx.sign' on the API instead of 'efx.sign.sign'
-  client.sign.order = compose(require('../api/sign/order'))
-  client.sign.cancelOrder = compose(require('../api/sign/cancel_order'))
-  client.sign.request = compose(require('../api/sign/request'))
+  // efx main functions
+  efx.cancelOrder = compose(require('../api/cancel_order'))
+  efx.getOrder = compose(require('../api/get_order'))
+  efx.getOrders = compose(require('../api/get_orders'))
+  efx.getOrdersHist = compose(require('../api/get_orders_hist'))
+  efx.releaseTokens = compose(require('../api/release_tokens'))
+  efx.submitOrder = compose(require('../api/submit_order'))
 
-  // http api
-  client.cancelOrder = compose(require('../api/cancel_order'))
-  client.cancelSignedOrder = compose(require('../api/cancel_signed_order'))
-  client.getOrder = compose(require('../api/get_order'))
-  client.getOrderList = compose(require('../api/get_order_list'))
-  client.getPendingOrders = compose(require('../api/get_pending_orders'))
-  client.registerOrderList = compose(require('../api/register_order_list'))
-  client.releaseTokens = compose(require('../api/release_tokens'))
-  client.submitOrder = compose(require('../api/submit_order'))
-  client.submitSignedOrder = compose(require('../api/submit_signed_order'))
-
-  return client
+  return efx
 }

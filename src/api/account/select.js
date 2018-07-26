@@ -7,19 +7,21 @@ module.exports = async (efx, id) => {
   // check for ethereum accounts and select a default one
   const accounts = await efx.web3.eth.getAccounts()
 
-  if (!isNaN(id)) {
+  if (typeof id === 'number') {
     if (!accounts[id]) {
       console.error('Error: You have no account at index:', +id)
     }
 
-    return accounts[id]
+    // emit and store current account
+    return efx.set('account', accounts[id])
   }
 
-  for (let account in accounts) {
-    if (account === id) {
-      return account
+  for (let index in accounts) {
+    if (accounts[index] === id) {
+      // emit and store current account
+      return efx.set('account', accounts[index])
     }
   }
 
-  return null
+  return efx.set('account', null)
 }

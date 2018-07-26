@@ -6,12 +6,12 @@ module.exports = async (efx, abi, address, action, args, value = 0) => {
   const method = contract.methods[action](...args)
 
   const estimatedGas = await method.estimateGas({
-    from: efx.config.account,
+    from: efx.get('account'),
     value: value
   })
 
   return method.send({
-    from: efx.config.account,
+    from: efx.get('account'),
     value: value,
     gas: estimatedGas
   })

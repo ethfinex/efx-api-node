@@ -1,7 +1,7 @@
 /**
  * Creats a client instance for testing
  **/
-const deployed = require('./contracts/deployed')
+const deployed = require('./fixtures/contracts/deployed')
 const Web3 = require('web3')
 
 const EFX = require('..')
@@ -45,7 +45,7 @@ module.exports = async () => {
     }
   }
 
-  config.api = 'https://staging.bitfinex.com:2998/trustless'
+  config.api = 'https://staging.bitfinex.com:2998/trustless/v1'
 
   return EFX(web3, config)
 }

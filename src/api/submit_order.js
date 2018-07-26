@@ -1,13 +1,17 @@
-const { post } = require('request-promise')
+const {post} = require('request-promise')
 
-module.exports = async (efx, symbol, amount, price, gid, cid) => {
+module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder) => {
   if (!(symbol && amount && price)) {
-    throw new Error('symbol, amount and price are required')
+    throw new Error('order, symbol, amount and price are required')
   }
 
-  const order = efx.contract.createOrder(symbol, amount, price)
+  if(!signedOrder){
+    const order = efx.contract.createOrder(symbol, amount, price)
 
-  const meta = await efx.sign.order(order)
+    signedOrder = await efx.sign.order(order)
+  }
+
+  const meta = signedOrder
 
   const type = 'EXCHANGE LIMIT'
 
@@ -26,7 +30,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid) => {
     protocol
   }
 
-  const url = efx.config.api + '/submitOrder'
+  const url = efx.config.api + '/w/on'
 
   return post(url, {json: data})
 }

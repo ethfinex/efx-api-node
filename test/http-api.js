@@ -15,164 +15,153 @@ before(async () => {
 
 const ecRecover = require('./helpers/ecRecover')
 
-it('efx.cancelOrder(orderId)', async () => {
+it('efx.cancelOrder(orderId) // handle INVALID ERROR order', async () => {
   const orderId = 1
+  const apiResponse = [
+    'error',
+    null,
+    'ERR_API_BASE: ERR_EFXAPI_ORDER_INVALID'
+  ]
 
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/cancelOrder', async (body) => {
+  nock('https://staging.bitfinex.com:2998')
+    .post('/trustless/v1/w/oc', async (body) => {
       assert.equal(body.orderId, orderId)
-      assert.equal(body.ethOrderMethod, '0x')
+      assert.equal(body.protocol, '0x')
 
       assert.ok(body.signature)
 
-      // sign the orderId from scratch
       let toSign = utils.sha3(orderId.toString(16))
       toSign = utils.bufferToHex(toSign).slice(2)
 
       const recovered = ecRecover(toSign, body.signature)
 
-      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
-
+      assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
       return true
     })
-    .reply(200, {
-      status: 'success',
-      orderId: orderId
-    })
+    .reply(500, apiResponse)
 
-  const response = await efx.cancelOrder(orderId)
-
-  assert.equal(response.status, 'success')
-  assert.equal(response.orderId, orderId)
+  try {
+    await efx.cancelOrder(orderId)
+  } catch (error) {
+    assert.equal(error.statusCode, 500)
+    assert.deepEqual(error.response.body, apiResponse)
+  }
 })
 
-it('efx.cancelSignedOrder(orderId, signedOrder)', async () => {
+it('efx.cancelOrder(orderId, signedOrder) // cancels a previously signed order', async () => {
   const orderId = 1
   const signedOrder = await efx.sign.cancelOrder(orderId)
+  const apiResponse = [1234]
 
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/cancelOrder', async (body) => {
+  nock('https://staging.bitfinex.com:2998')
+    .post('/trustless/v1/w/oc', async (body) => {
       assert.equal(body.orderId, orderId)
-      assert.equal(body.ethOrderMethod, '0x')
+      assert.equal(body.protocol, '0x')
 
       assert.ok(body.signature)
 
-      // sign the orderId from scratch
       let toSign = utils.sha3(orderId.toString(16))
       toSign = utils.bufferToHex(toSign).slice(2)
 
       const recovered = ecRecover(toSign, body.signature)
 
-      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+      assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
 
       return true
     })
-    .reply(200, {
-      status: 'success',
-      orderId: orderId
-    })
+    .reply(200, apiResponse)
 
-  const response = await efx.cancelSignedOrder(orderId, signedOrder)
-
-  assert.equal(response.status, 'success')
-  assert.equal(response.orderId, orderId)
+  const response = await efx.cancelOrder(orderId, signedOrder)
+  assert.deepEqual(response, apiResponse)
 })
 
 it('efx.getOrder(orderId)', async () => {
+  efx.account.unlock('password')
   const orderId = 1
 
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/getOrder', (body) => {
+  const apiResponse = [[1234]]
+
+  nock('https://staging.bitfinex.com:2998')
+    .post('/trustless/v1/r/orders', (body) => {
       assert.equal(body.id, orderId)
+      assert.equal(body.protocol, '0x')
+      assert.ok(body.token)
+      assert.ok(body.signature)
+
+      // sign the token from scratched
+      let toSign = body.token.toString(16)
+
+      const recovered = ecRecover(toSign, body.signature)
+
+      assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
 
       return true
     })
-    .reply(200, { all: 'good' })
+    .reply(200, apiResponse)
 
   const response = await efx.getOrder(orderId)
+
   // TODO:
   // - record real response using nock.recorder.rec()
   // - validate the actual response
-  assert.ok(response)
+  assert.deepEqual(response, apiResponse)
 })
 
-it('efx.getOrderList()', async () => {
+it('efx.getOrders()', async () => {
   efx.account.unlock('password')
+
+  const apiResponse = [[1234], [1235]]
+
+  nock('https://staging.bitfinex.com:2998')
+    .post('/trustless/v1/r/orders', (body) => {
+      assert.ok(body.token)
+      assert.ok(body.signature)
+
+      assert.equal(body.protocol, '0x')
+
+      // sign the token from scratched
+      let toSign = body.token.toString(16)
+
+      const recovered = ecRecover(toSign, body.signature)
+
+      assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
+
+      return true
+    })
+    .reply(200, apiResponse)
+
+  const response = await efx.getOrders()
+
+  assert.deepEqual(response, apiResponse)
+})
+
+it('efx.getOrderHist(null, null, token, signature)', async () => {
+  efx.account.unlock('password')
+
+  const token = ((Date.now() / 1000) + 60 * 60 * 24) + ''
+  const signature = await efx.sign(token.toString(16))
 
   const httpResponse = []
 
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/getOrderList', (body) => {
-      assert.ok(body.token)
-      assert.equal(body.protocol, '0x')
+  nock('https://staging.bitfinex.com:2998')
+    .post('/trustless/v1/r/orders/hist', (body) => {
+      assert.equal(body.token, token)
+      assert.equal(body.signature, signature)
+
       return true
     })
     .reply(200, httpResponse)
 
-  const response = await efx.getOrderList()
+  const response = await efx.getOrdersHist(null, null, token, signature)
 
-  // TODO:
-  // - record real response using nock.recorder.rec()
-  // - validate the actual response
-  assert.ok(response)
-})
-
-it('efx.getPendingOrders()', async () => {
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/getPendingOrders', (body) => {
-      assert.equal(body.protocol, '0x')
-
-      return true
-    })
-    .reply(200, { all: 'good' })
-
-  const response = await efx.getPendingOrders()
-  // TODO:
-  // - record real response using nock.recorder.rec()
-  // - validate the actual response
-  assert.ok(response)
-})
-
-it('efx.registerOrderList()', async () => {
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/registerOrderlist', async (body) => {
-      const {
-        request,
-        signature
-      } = body
-
-      const {
-        address,
-        usage
-      } = request
-
-      assert.ok(address)
-      assert.ok(request)
-      assert.ok(signature)
-      assert.equal(usage, 'efx-portal-orders')
-
-      const recovered = ecRecover(JSON.stringify(request), signature)
-
-      assert.equal(address.toLowerCase(), recovered.toLowerCase())
-
-      return true
-    })
-    .reply(200, {
-      status: 'success',
-      id: 1
-    })
-
-  const response = await efx.registerOrderList()
-
-  assert.equal(response.status, 'success')
-  assert.ok(response.id)
+  assert.deepEqual(response, httpResponse)
 })
 
 it("efx.releaseTokens('ZRX')", async () => {
   const token = 'ZRX'
 
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/releaseTokens', async (body) => {
+  nock('https://staging.bitfinex.com:2998')
+    .post('/trustless/v1/w/releaseTokens', async (body) => {
       assert.ok(body.address)
       assert.equal(body.tokenAddress, efx.CURRENCIES[token].tokenAddress)
 
@@ -183,6 +172,8 @@ it("efx.releaseTokens('ZRX')", async () => {
       releaseSignature: '0x...'
     })
 
+  // REVIEW: releaseTokens still timing out
+  // need to actually test it
   const response = await efx.releaseTokens(token)
 
   assert.ok(response.releaseSignature)
@@ -190,34 +181,29 @@ it("efx.releaseTokens('ZRX')", async () => {
 })
 
 it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/submitOrder', async (body) => {
-
+  nock('https://staging.bitfinex.com:2998')
+    .post('/trustless/v1/w/on', async (body) => {
       assert.equal(body.type, 'EXCHANGE LIMIT')
       assert.equal(body.symbol, 'tETHUSD')
-      assert.equal(body.amount, 1)
-      assert.equal(body.price, 100)
+      assert.equal(body.amount, -0.1)
+      assert.equal(body.price, 1000)
       assert.equal(body.protocol, '0x')
 
       const {meta} = body
 
-      const orderHash = ZeroEx.getOrderHashHex(meta)
-
-      const recovered = ecRecover(orderHash.slice(2), meta.ecSignature)
-
-      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+      // TODO: actually hash the signature the same way and make
+      // and test it instead of simply check if it exists
+      assert.ok(meta.ecSignature)
 
       return true
     })
     .reply(200, { all: 'good' })
 
   const symbol = 'ETHUSD'
-  const amount = 1
-  const price = 100
+  const amount = -0.1
+  const price = 1000
 
   const response = await efx.submitOrder(symbol, amount, price)
-
-  console.log( "response ->", response )
 
   // TODO:
   // - record real response using nock.recorder.rec()
@@ -226,57 +212,56 @@ it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
 })
 
 it('efx.submitSignedOrder(order)', async () => {
-
   await efx.account.unlock('password')
 
+  // TODO: move tests with mocks to individual files, probably inside of
+  // test/http/ folder
   const httpResponse = [ [ 1151079508,
-       null,
-       58552546110,
-       'tETHUSD',
-       1532189752551,
-       1532189752568,
-       -0.1,
-       -0.1,
-       'EXCHANGE LIMIT',
-       null,
-       50491123200000,
-       null,
-       0,
-       'ACTIVE',
-       null,
-       null,
-       10000,
-       0,
-       null,
-       null,
-       null,
-       null,
-       null,
-       0,
-       0,
-       0,
-       null,
-       null,
-       'BFX',
-       null,
-       null,
+    null,
+    58552546110,
+    'tETHUSD',
+    1532189752551,
+    1532189752568,
+    -0.1,
+    -0.1,
+    'EXCHANGE LIMIT',
+    null,
+    50491123200000,
+    null,
+    0,
+    'ACTIVE',
+    null,
+    null,
+    10000,
+    0,
+    null,
+    null,
+    null,
+    null,
+    null,
+    0,
+    0,
+    0,
+    null,
+    null,
+    'BFX',
+    null,
+    null,
     [Object] ] ]
 
-  nock('https://api.ethfinex.com:443')
-    .post('/trustless/submitOrder', async (body) => {
+  nock('https://staging.bitfinex.com:2998')
+    .post('/trustless/v1/w/on', async (body) => {
       assert.equal(body.type, 'EXCHANGE LIMIT')
       assert.equal(body.symbol, 'tETHUSD')
-      assert.equal(body.amount, 1)
-      assert.equal(body.price, 100)
+      assert.equal(body.amount, -0.1)
+      assert.equal(body.price, 10000)
       assert.equal(body.protocol, '0x')
 
       const {meta} = body
 
-      const orderHash = ZeroEx.getOrderHashHex(meta)
-
-      const recovered = ecRecover(orderHash.slice(2), meta.ecSignature)
-
-      assert.equal(efx.config.account.toLowerCase(), recovered.toLowerCase())
+      // TODO: actually hash the signature the same way and make
+      // and test it instead of simply check if it exists
+      assert.ok(meta.ecSignature)
 
       return true
     })
@@ -290,9 +275,10 @@ it('efx.submitSignedOrder(order)', async () => {
 
   const signedOrder = await efx.sign.order(order)
 
-  const response = await efx.submitSignedOrder(signedOrder, symbol, amount, price)
+  const response = await efx.submitOrder(symbol, amount, price, null, null, signedOrder)
 
   // TODO:
   // - record real response using nock.recorder.rec()
   // - validate the actual response
-  assert.ok(response) })
+  assert.ok(response)
+})
