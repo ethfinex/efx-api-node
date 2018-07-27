@@ -7,6 +7,9 @@ const instance = require('./instance')
 const {ZeroEx} = require('0x.js')
 const utils = require('ethereumjs-util')
 
+// TODO: use arrayToOrder to convert response from HTTP API
+//const orderToArray = require('lib-js-util-schema')
+
 let efx
 
 before(async () => {
@@ -141,7 +144,81 @@ it('efx.getOrderHist(null, null, token, signature)', async () => {
   const token = ((Date.now() / 1000) + 60 * 60 * 24) + ''
   const signature = await efx.sign(token.toString(16))
 
-  const httpResponse = []
+  const httpResponse = [{ _id: '5b56333fd952c07b351c5940',
+    id: '1151079509',
+    type: 'EXCHANGE LIMIT',
+    pair: 'ETHUSD',
+    status: 'CANCELED',
+    created_at: '2018-07-21 16:15:58',
+    updated_at: '2018-07-23 19:52:51',
+    user_id: 5,
+    amount: '-0.10000000',
+    price: '10000.00000000',
+    originalamount: '-0.10000000',
+    routing: 'BFX',
+    lockedperiod: 0,
+    trailingprice: '0.00000000',
+    hidden: 0,
+    vir: 0,
+    maxrate: '0.00000000000000000000',
+    placed_id: null,
+    placed_trades: null,
+    nopayback: null,
+    avg_price: '0.00000000000000000000',
+    active: 0,
+    fiat_currency: 'USD',
+    cid: '58558087372',
+    cid_date: '2018-07-21',
+    mseq: '2',
+    gid: null,
+    flags: null,
+    price_aux_limit: '0.00000000',
+    type_prev: null,
+    tif: '3570',
+    v_pair: 'ETHUSD',
+    meta:
+     { '$F15': 1,
+       auth: '0x97ebb3391b30f495ce8cb97857db9b72d3e9dbcb' },
+    symbol: 'tETHUSD',
+    t: 1532375571000 },
+  { _id: '5b56333fd952c07b351c593f',
+    id: '1151079508',
+    type: 'EXCHANGE LIMIT',
+    pair: 'ETHUSD',
+    status: 'CANCELED',
+    created_at: '2018-07-21 16:15:53',
+    updated_at: '2018-07-23 19:52:51',
+    user_id: 5,
+    amount: '-0.10000000',
+    price: '10000.00000000',
+    originalamount: '-0.10000000',
+    routing: 'BFX',
+    lockedperiod: 0,
+    trailingprice: '0.00000000',
+    hidden: 0,
+    vir: 0,
+    maxrate: '0.00000000000000000000',
+    placed_id: null,
+    placed_trades: null,
+    nopayback: null,
+    avg_price: '0.00000000000000000000',
+    active: 0,
+    fiat_currency: 'USD',
+    cid: '58552546110',
+    cid_date: '2018-07-21',
+    mseq: '2',
+    gid: null,
+    flags: null,
+    price_aux_limit: '0.00000000',
+    type_prev: null,
+    tif: '3570',
+    v_pair: 'ETHUSD',
+    meta:
+     { '$F15': 1,
+       auth: '0x97ebb3391b30f495ce8cb97857db9b72d3e9dbcb' },
+    symbol: 'tETHUSD',
+    t: 1532375571000
+  }]
 
   nock('https://staging.bitfinex.com:2998')
     .post('/trustless/v1/r/orders/hist', (body) => {
@@ -216,38 +293,7 @@ it('efx.submitSignedOrder(order)', async () => {
 
   // TODO: move tests with mocks to individual files, probably inside of
   // test/http/ folder
-  const httpResponse = [ [ 1151079508,
-    null,
-    58552546110,
-    'tETHUSD',
-    1532189752551,
-    1532189752568,
-    -0.1,
-    -0.1,
-    'EXCHANGE LIMIT',
-    null,
-    50491123200000,
-    null,
-    0,
-    'ACTIVE',
-    null,
-    null,
-    10000,
-    0,
-    null,
-    null,
-    null,
-    null,
-    null,
-    0,
-    0,
-    0,
-    null,
-    null,
-    'BFX',
-    null,
-    null,
-    [Object] ] ]
+  const httpResponse = [[1234]]
 
   nock('https://staging.bitfinex.com:2998')
     .post('/trustless/v1/w/on', async (body) => {

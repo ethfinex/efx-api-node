@@ -11,11 +11,9 @@ module.exports = async (efx, token, amount) => {
 
   const response = await efx.releaseTokens(token)
 
-  console.log( "releasetokens repsnse ->", response )
-
   const sig = response.releaseSignature
 
-  const args = [value, sig.v, sig.r, sig.s, response.unlockTill]
+  const args = [value, sig.v, sig.r, sig.s, response.unlockUntil]
 
   return efx.eth.send(
     efx.contract.abi.locker,
