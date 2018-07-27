@@ -46,7 +46,6 @@ it("efx.contract.lock('ETH', 0.1, duration) // lock 0.0001 ETH", async () => {
   assert.equal(response.status, true)
 })
 
-/**
 it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => {
   const token = 'ZRX'
   const amount = 0.0001
@@ -59,7 +58,7 @@ it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => 
 
   // TODO: - validate receipt fields
 })
-**/
+
 it("efx.contract.unlock('ETH', 0.01) // unlock 0.0001 ETH", async () => {
   const token = 'ETH'
   const amount = 0.01
@@ -67,10 +66,7 @@ it("efx.contract.unlock('ETH', 0.01) // unlock 0.0001 ETH", async () => {
   // const response = await efx.contract.lock(token, amount, duration)
   const response = await efx.contract.unlock(token, amount)
 
-  assert.ok(response.events.Withdrawal)
-
-  console.log( "response ->", response )
-
+  assert.equal(response.status, true)
   // TODO: - validate receipt fields
 })
 

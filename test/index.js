@@ -3,8 +3,8 @@
 const instance = require('./instance')
 const nock = require('nock')
 
-// soon we will be recording fixtures to disk,
-// leaving this code here for now
+// TODO: use nockBack and record fixtures to disk.
+// leaving this code here for now as reference
 //
 // const nockBack = require('nock').back
 // nockBack.setMode('record');
@@ -40,12 +40,9 @@ describe('~ efx-api-node', async () => {
     require('./blockchain-api')
   })
 
-  return
-
   describe('HTTP API', () => {
     require('./http-api')
   })
-
 
   describe('ETH calls', () => {
     require('./eth.js')
