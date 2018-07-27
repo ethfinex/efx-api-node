@@ -1,6 +1,6 @@
 module.exports = {
 
-  api: 'https://api.ethfinex.com/trustless',
+  api: 'https://staging.bitfinex.com:2998/trustless/v1',
 
   ethfinexAddress: '0x9faf5515f177f3a8a845d48c19032b33cc54c09c',
 

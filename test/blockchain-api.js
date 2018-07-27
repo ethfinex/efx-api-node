@@ -10,15 +10,28 @@ before(async () => {
   efx = await instance()
 })
 
-it("efx.contract.depositLock('ETH') // returns depositLock value", async () => {
-  const token = 'ZRX'
 
-  const response = await efx.contract.depositLock(token)
+it("efx.contract.locked('ETH') // returns amount of ETH locked", async () => {
+  const token = 'ETH'
+
+  const response = await efx.contract.locked(token)
 
   console.log( 'locked eth ->', efx.web3.utils.fromWei(response) )
 
   assert.notOk(isNaN(response))
 })
+
+/**
+
+it("efx.contract.depositLock('ETH') // returns depositLock value", async () => {
+  const token = 'ETH'
+
+  const response = await efx.contract.depositLock(token)
+
+  assert.notOk(isNaN(response))
+})
+
+
 
 it("efx.contract.isApproved('ZRX') // returns allowance", async () => {
   const token = 'ZRX'
@@ -39,7 +52,7 @@ it("efx.contract.approve('ZRX') // should yield Approval event", async () => {
 
 it("efx.contract.lock('ETH', 0.1, duration) // lock 0.0001 ETH", async () => {
   const token = 'ETH'
-  const amount = 0.05
+  const amount = 0.2
   const duration = 1
 
   // const response = await efx.contract.lock(token, amount, duration)
@@ -61,12 +74,16 @@ it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => 
   // TODO: - validate receipt fields
 })
 
+  **/
+
 it("efx.contract.unlock('ETH', 0.01) // unlock 0.0001 ETH", async () => {
   const token = 'ETH'
-  const amount = 0.01
+  const amount = 0.1
 
   // const response = await efx.contract.lock(token, amount, duration)
   const response = await efx.contract.unlock(token, amount)
+
+  console.log( 'unlock response ->', response )
 
   assert.equal(response.status, true)
   // TODO: - validate receipt fields

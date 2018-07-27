@@ -1,5 +1,5 @@
 /**
- * Check if a token is deposit still locked
+ * Returns the unlockUntil
  */
 module.exports = (efx, token) => {
   const currency = efx.CURRENCIES[token]
