@@ -5,6 +5,8 @@ module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder) => {
     throw new Error('order, symbol, amount and price are required')
   }
 
+  //TODO: check if symbol is a valid symbol
+
   if(!signedOrder){
     const order = efx.contract.createOrder(symbol, amount, price)
 

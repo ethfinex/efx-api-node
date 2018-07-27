@@ -1,6 +1,6 @@
 {
   "name": "efx-api-node",
-  "version": "0.0.1",
+  "version": "1.0.2",
   "main": "src/efx.js",
   "contributors": [
     "Henrique Matias <hems.inlet@gmail.com>",

@@ -3,22 +3,34 @@
 const EFX = require('..')
 
 work = async () => {
+  // assuming you have a provider running at:
+  // http://localhost:8545
   efx = await EFX()
 
+  // unlock wallet so we can sign transactions
+  await efx.account.unlock('password')
+
+  // check how much ETH is already locked
   let response
 
   response = await efx.contract.locked('ETH')
 
-  const locked = efx.web3.utils.fromWei(response)
+  const locked = Number(efx.web3.utils.fromWei(response)).toFixed(8)
 
-  console.log( `You locked ${locked} ETH` )
+  response = await efx.account.balance('ETH')
+
+  const balance = Number(efx.web3.utils.fromWei(response)).toFixed(8)
+
+  console.log( `Your account: ${efx.get('account')}` )
+  console.log( ` - balance: ${balance} ETH` )
+  console.log( ` -  locked: ${locked} ETH` )
 
   console.log("")
 
-  console.log("efx.contract.lock('ETH', 0.01, 1)")
+  console.log("efx.contract.lock('ETH', 0.001, 1)")
 
   // lock some more
-  response = await efx.contract.lock('ETH', 0.01, 1)
+  response = await efx.contract.lock('ETH', 0.001, 1)
 
   if(response.status){
     console.log( " - OK")
@@ -29,10 +41,24 @@ work = async () => {
 
   console.log("")
 
+  console.log("efx.submitOrder('ETH', 0.01, 1000)")
+
+  // submit an order to sell ETH for 1000 USD
+  response = await efx.submitOrder('ETHUSD', -0.01, 1000)
+
+  if(response.length){
+    console.log(` - Submitted Order #: ${response[0]}`)
+  } else {
+    console.log("Error:")
+    console.log(response)
+  }
+
+  console.log("")
+
   console.log("efx.contract.unlock('ETH', 0.01)")
 
   // unlock some
-  response = await efx.contract.unlock('ETH', 0.01)
+  response = await efx.contract.unlock('ETH', 0.01, 1000)
 
   if(response.status){
     console.log( " - OK")
