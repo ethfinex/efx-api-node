@@ -37,14 +37,15 @@ describe('~ efx-api-node', async () => {
     // comment the line below if you want to skip blockchain tests
     // you need a ropsten node with some ETH / ZRX in order to test
     // those. FIXME: need contracts deployed during test
-    // require('./blockchain-api')
+    require('./blockchain-api')
   })
+
+  return
 
   describe('HTTP API', () => {
     require('./http-api')
   })
 
-  return
 
   describe('ETH calls', () => {
     require('./eth.js')

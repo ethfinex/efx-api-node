@@ -30,6 +30,8 @@ it('await efx.account.balance() // return ETH balance', async () => {
   const response = await efx.account.balance()
 
   assert.notOk(isNaN(response))
+
+  console.log( 'eth balance ->', efx.web3.utils.fromWei(response) )
 })
 
 it("await efx.account.tokenBalance('ZRX') // return ZRX balance", async () => {
