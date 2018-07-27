@@ -9,24 +9,13 @@ module.exports = async (efx, token, amount) => {
 
   const action = 'withdraw'
 
-  let args = []
-
-  if (token === 'ETH') {
-    args = [value]
-
-    return efx.eth.send(
-      efx.contract.abi.weth,
-      currency.lockerAddress,
-      action,
-      args
-    )
-  }
-
   const response = await efx.releaseTokens(token)
+
+  console.log( "releasetokens repsnse ->", response )
 
   const sig = response.releaseSignature
 
-  args = [sig.v, sig.r, sig.s, value, response.unlockTill]
+  const args = [value, sig.v, sig.r, sig.s, response.unlockTill]
 
   return efx.eth.send(
     efx.contract.abi.locker,
