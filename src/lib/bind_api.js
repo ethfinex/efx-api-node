@@ -30,6 +30,7 @@ module.exports = () => {
     isApproved: compose(require('../api/contract/is_approved')),
     depositLock: compose(require('../api/contract/deposit_lock')),
     lock: compose(require('../api/contract/lock')),
+    locked: compose(require('../api/contract/locked')),
     unlock: compose(require('../api/contract/unlock')),
     createOrder: compose(require('../api/contract/createOrder')),
     abi: {

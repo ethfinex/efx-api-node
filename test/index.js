@@ -40,6 +40,8 @@ describe('~ efx-api-node', async () => {
     require('./blockchain-api')
   })
 
+  return
+
   describe('HTTP API', () => {
     require('./http-api')
   })
