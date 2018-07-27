@@ -15,6 +15,8 @@ it("efx.contract.depositLock('ETH') // returns depositLock value", async () => {
 
   const response = await efx.contract.depositLock(token)
 
+  console.log( 'locked eth ->', efx.web3.utils.fromWei(response) )
+
   assert.notOk(isNaN(response))
 })
 
@@ -69,8 +71,6 @@ it("efx.contract.unlock('ETH', 0.01) // unlock 0.0001 ETH", async () => {
   assert.equal(response.status, true)
   // TODO: - validate receipt fields
 })
-
-return
 
 it("efx.contract.unlock('ETH', 100) // fail to unlock 100 ETH", async () => {
   const token = 'ETH'
