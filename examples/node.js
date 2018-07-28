@@ -25,18 +25,31 @@ work = async () => {
   console.log( ` - balance: ${balance} ETH` )
   console.log( ` -  locked: ${locked} ETH` )
 
-    /**
-
   console.log("")
 
-  console.log("efx.contract.lock('ETH', 0.001, 1)")
+  console.log("efx.contract.lock('ETH', 0.02, 1)")
   // lock some more
-  response = await efx.contract.lock('ETH', 0.001, 1)
+  response = await efx.contract.lock('ETH', 0.02, 1)
 
   if(response.status){
     console.log( " - OK")
   } else {
     console.log( "Error:")
+    console.log(response)
+  }
+
+  /**
+  console.log("")
+
+  console.log("efx.submitOrder('ETH', -0.01, 1000)")
+
+  // submit an order to sell ETH for 1000 USD
+  response = await efx.submitOrder('ETHUSD', -0.01, 1000)
+
+  if(response.length){
+    console.log(` - Submitted Order #: ${response[0]}`)
+  } else {
+    console.log("Error:")
     console.log(response)
   }
   **/
@@ -59,24 +72,9 @@ work = async () => {
       response = await efx.cancelOrder(order.id)
       console.log(" - OK")
     } catch(e) {
+      //console.log( 'e ->', e)
       console.log( "error:", e.response.body )
     }
-  }
-
-  return
-
-  console.log("")
-
-  console.log("efx.submitOrder('ETH', 0.01, 1000)")
-
-  // submit an order to sell ETH for 1000 USD
-  response = await efx.submitOrder('ETHUSD', -0.01, 1000)
-
-  if(response.length){
-    console.log(` - Submitted Order #: ${response[0]}`)
-  } else {
-    console.log("Error:")
-    console.log(response)
   }
 
   console.log("")
