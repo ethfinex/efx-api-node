@@ -25,10 +25,11 @@ work = async () => {
   console.log( ` - balance: ${balance} ETH` )
   console.log( ` -  locked: ${locked} ETH` )
 
+    /**
+
   console.log("")
 
   console.log("efx.contract.lock('ETH', 0.001, 1)")
-
   // lock some more
   response = await efx.contract.lock('ETH', 0.001, 1)
 
@@ -38,6 +39,31 @@ work = async () => {
     console.log( "Error:")
     console.log(response)
   }
+  **/
+
+  console.log("")
+
+  console.log("efx.getOrders('ETHUSD')")
+
+  // Cancel all orders
+  response = await efx.getOrders('ETHUSD')
+
+  console.log(`Found ${response.length} orders`)
+
+  for(const order of response){
+    console.log("")
+
+    console.log(`efx.cancelOrder(${order.id})`)
+
+    try {
+      response = await efx.cancelOrder(order.id)
+      console.log(" - OK")
+    } catch(e) {
+      console.log( "error:", e.response.body )
+    }
+  }
+
+  return
 
   console.log("")
 
