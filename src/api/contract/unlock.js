@@ -9,11 +9,26 @@ module.exports = async (efx, token, amount) => {
 
   const action = 'withdraw'
 
-  const response = await efx.releaseTokens(token)
+  // get timestamp for depositLock
+  const depositLock = await efx.contract.depositLock(token)
 
-  const sig = response.releaseSignature
+  // arguments for the contract call
+  let args = [value]
 
-  const args = [value, sig.v, sig.r, sig.s, response.unlockUntil]
+  // no need to call releaseTokens
+  if( Date.now() / 1000 > depositLock ) {
+    args = args.concat([0, '0x', '0x', 0])
+  }
+
+  // we need to call releaseTokens to fetch a signature
+  if( Date.now() / 1000 < depositLock ) {
+    const response = await efx.releaseTokens(token)
+
+    const sig = response.releaseSignature
+
+    // push values into arguments array
+    args = args.concat([sig.v, sig.r, sig.s, response.unlockUntil])
+  }
 
   return efx.eth.send(
     efx.contract.abi.locker,
