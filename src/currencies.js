@@ -1,5 +1,39 @@
 module.exports = {
 
+  // main ethereum network
+
+  /**
+  ETH: {
+    decimals: 18,
+    tokenAddress: '0x0',
+    lockerAddress: '0x768c42ff6f5805bd2631ac7cc9eabe3af17b4b41',
+  },
+  USD: {
+    decimals: 6,
+    tokenAddress: '0xdAC17F958D2ee523a2206206994597C13D831ec7',
+    lockerAddress: '0x4c24a4dfb0c67916d47b4726958eb66b63bdd268',
+  },
+  OMG: {
+    decimals: 18,
+    tokenAddress: '0xd26114cd6EE289AccF82350c8d8487fedB8A0C07',
+    lockerAddress: '0x8bffb657e0481d8cdf9801f1b160e9e0125b5148',
+  },
+  ZRX: {
+    decimals: 18,
+    tokenAddress: '0xe41d2489571d322189246dafa5ebde1f4699f498',
+    lockerAddress: '0xd7a7afe4b20611f2c839ec5cd340f27fe08c949c',
+  },
+  BAT: {
+    decimals: 18,
+    tokenAddress: '0x0d8775f648430679a709e98d2b0cb6250d2887ef',
+    lockerAddress: '0xea7abb773104745798ee36b1978b64f2bf061b3f',
+  },
+  REP: {
+    decimals: 18,
+    tokenAddress: '0x1985365e9f78359a9B6AD760e32412f4a445E862',
+    lockerAddress: '0x5501c4c4b63728806ed9f0663d1eb012aa06c8ca'
+  }**/
+
   // kovan network
 
   /**
@@ -23,6 +57,7 @@ module.exports = {
     lockerAddress: '0xFce2a93Ff63CA3F3f6580E38347aE6eD59046534'
   },
   REP: {
+    decimals: 18,
     tokenAddress: '0xb18845c260f680d5b9d84649638813e342e4f8c9',
     lockerAddress: '0xEa8E40b0647Ccf2D4AccE31B6935BF4260EAa8cc'
   }**/
