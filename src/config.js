@@ -7,6 +7,9 @@ module.exports = {
   // kovan address
   // exchangeContractAddress: '0x4d412AE6e3Ad6c4458dA0feed7eA8A5EdAFD6603',
 
+  // mainnet address
+  // exchangeContractAddress: '0x651aa5ea257af3d6fd08aedca8c5a446edb7b7a6',
+
   // ropsten address
   exchangeContractAddress: '0x67799a5e640bc64ca24d3e6813842754e546d7b1',
 
