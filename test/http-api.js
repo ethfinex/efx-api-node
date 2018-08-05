@@ -90,11 +90,11 @@ it('efx.getOrder(orderId)', async () => {
     .post('/trustless/v1/r/orders', (body) => {
       assert.equal(body.id, orderId)
       assert.equal(body.protocol, '0x')
-      assert.ok(body.token)
+      assert.ok(body.nonce)
       assert.ok(body.signature)
 
-      // sign the token from scratched
-      let toSign = body.token.toString(16)
+      // sign the nonce from scratched
+      let toSign = body.nonce.toString(16)
 
       const recovered = ecRecover(toSign, body.signature)
 
@@ -119,13 +119,13 @@ it('efx.getOrders()', async () => {
 
   nock('https://staging.bitfinex.com:2998')
     .post('/trustless/v1/r/orders', (body) => {
-      assert.ok(body.token)
+      assert.ok(body.nonce)
       assert.ok(body.signature)
 
       assert.equal(body.protocol, '0x')
 
-      // sign the token from scratched
-      let toSign = body.token.toString(16)
+      // sign the nonce from scratched
+      let toSign = body.nonce.toString(16)
 
       const recovered = ecRecover(toSign, body.signature)
 
@@ -140,11 +140,11 @@ it('efx.getOrders()', async () => {
   assert.deepEqual(response, apiResponse)
 })
 
-it('efx.getOrderHist(null, null, token, signature)', async () => {
+it('efx.getOrderHist(null, null, nonce, signature)', async () => {
   efx.account.unlock('password')
 
-  const token = ((Date.now() / 1000) + 60 * 60 * 24) + ''
-  const signature = await efx.sign(token.toString(16))
+  const nonce = ((Date.now() / 1000) + 60 * 60 * 24) + ''
+  const signature = await efx.sign(nonce.toString(16))
 
   const httpResponse = [{ _id: '5b56333fd952c07b351c5940',
     id: '1151079509',
@@ -224,14 +224,14 @@ it('efx.getOrderHist(null, null, token, signature)', async () => {
 
   nock('https://staging.bitfinex.com:2998')
     .post('/trustless/v1/r/orders/hist', (body) => {
-      assert.equal(body.token, token)
+      assert.equal(body.nonce, nonce)
       assert.equal(body.signature, signature)
 
       return true
     })
     .reply(200, httpResponse)
 
-  const response = await efx.getOrdersHist(null, null, token, signature)
+  const response = await efx.getOrdersHist(null, null, nonce, signature)
 
   assert.deepEqual(response, httpResponse)
 })
@@ -241,7 +241,7 @@ it("efx.releaseTokens('ZRX')", async () => {
 
   nock('https://staging.bitfinex.com:2998')
     .post('/trustless/v1/w/releaseTokens', async (body) => {
-      assert.ok(body.token)
+      assert.ok(body.nonce)
       assert.ok(body.signature)
       assert.equal(body.tokenAddress, efx.CURRENCIES[token].tokenAddress)
 

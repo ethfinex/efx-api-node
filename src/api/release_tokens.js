@@ -1,18 +1,18 @@
 const { post } = require('request-promise')
 
-module.exports = async (efx, coin, token, signature) => {
+module.exports = async (efx, coin, nonce, signature) => {
   const url = efx.config.api + '/w/releaseTokens'
 
   const currency = efx.CURRENCIES[coin]
 
-  if (!token) {
-    token = ((Date.now() / 1000) + 30) + ''
+  if (!nonce) {
+    nonce = ((Date.now() / 1000) + 30) + ''
 
-    signature = await efx.sign(token.toString(16))
+    signature = await efx.sign(nonce.toString(16))
   }
 
   const data = {
-    token,
+    nonce,
     signature,
     tokenAddress: currency.tokenAddress
   }
