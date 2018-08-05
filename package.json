@@ -1,6 +1,6 @@
 {
   "name": "efx-api-node",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "main": "src/efx.js",
   "contributors": [
     "Henrique Matias <hems.inlet@gmail.com>",
@@ -32,6 +32,7 @@
     "0x.js": "^0.38.4",
     "aware": "^0.3.1",
     "bluebird": "^3.5.1",
+    "del": "^3.0.0",
     "ethereumjs-util": "^5.2.0",
     "lodash": "^4.17.10",
     "request": "^2.87.0",
