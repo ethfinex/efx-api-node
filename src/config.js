@@ -13,7 +13,8 @@ module.exports = {
   // ropsten address
   exchangeContractAddress: '0x67799a5e640bc64ca24d3e6813842754e546d7b1',
 
-  defaultExpiry: 60,
+  // default expire time for orders, in seconds
+  defaultExpiry: 3600,
   defaultProvider: 'http://localhost:8545',
   account: 0 // account to use, can be an index or an address
 

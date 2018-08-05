@@ -1,6 +1,6 @@
 const {ZeroEx} = require('0x.js')
 
-module.exports = (efx, symbol, amount, price) => {
+module.exports = (efx, symbol, amount, price, validFor) => {
   const { web3, config } = efx
 
   // symbols are always 3 letters
@@ -34,7 +34,7 @@ module.exports = (efx, symbol, amount, price) => {
 
   let expiration
   expiration = Math.round((new Date()).getTime() / 1000)
-  expiration += (efx.config.defaultExpiry || 60) * 60
+  expiration += validFor || config.defaultExpiry
 
   // create order object
   const order = {
