@@ -14,7 +14,7 @@ module.exports = async (efx, coin, nonce, signature) => {
   const data = {
     nonce,
     signature,
-    tokenAddress: currency.tokenAddress
+    tokenAddress: currency.lockerAddress
   }
 
   return post(url, {json: data})
