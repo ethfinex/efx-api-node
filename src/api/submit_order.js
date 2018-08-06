@@ -1,6 +1,6 @@
 const {post} = require('request-promise')
 
-module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder) => {
+module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, validFor) => {
   if (!(symbol && amount && price)) {
     throw new Error('order, symbol, amount and price are required')
   }
@@ -8,7 +8,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder) => {
   //TODO: check if symbol is a valid symbol
 
   if(!signedOrder){
-    const order = efx.contract.createOrder(symbol, amount, price)
+    const order = efx.contract.createOrder(symbol, amount, price, validFor)
 
     signedOrder = await efx.sign.order(order)
   }
