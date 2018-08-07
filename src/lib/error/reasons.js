@@ -1,0 +1,142 @@
+module.exports = {
+
+  ERR_MAKERTOKEN_ADDRESS_INVALID: `
+    The 'maker' token address provided in the signed-order did not
+    match the pair specified by the API call.
+  `,
+  ERR_TAKERTOKEN_ADDRESS_INVALID: `
+    The 'taker' token address provided in the signed-order did not
+    match the pair specified by the API call.
+  `,
+  ERR_MAKERTOKEN_AMOUNT_INVALID: `
+    The signed-order maker amount did not match with the
+    amount and price specified in the API call.
+  `,
+  ERR_TAKERTOKEN_AMOUNT_INVALID: `
+    The signed-order taker amount did not match with the
+    amount and price specified in the API call.
+  `,
+  ERR_UTIL_0X_ONLY_EXCHANGE_LIMIT_ORDERS: `
+    Only exchange limit orders are currently accepted.
+  `,
+  ERR_UTIL_0X_INVALID_CCY: `
+    The token specified is currently not tradable via the trustless api.
+  `,
+  ERR_UTIL_0X_SIGNATURE_INVALID: `
+    The signature provided with the order was invalid.
+  `,
+  ERR_UTIL_0X_FEE_RECIPIENT_INVALID: `
+    The fee recipient address was not specified as Ethfinex.
+  `,
+  ERR_UTIL_0X_TAKER_INVALID: `
+    The taker address for the trade was not specified as Ethfinex.
+  `,
+  ERR_UTIL_0X_EXCHANGE_INVALID: `
+    The exchange contract address for the trade was not specified correctly.
+  `,
+  ERR_UTIL_0X_EXPIRED: `
+    The order expiration date was too soon, or has already passed.
+  `,
+  ERR_UTIL_0X_BELOW_MIN_SIZE: `
+    The order size was below the minimum allowed.
+  `,
+  ERR_UTIL_0X_LOCK_TIME_INSUFFICIENT: `
+    The tokens required for the trade are not locked for long enough.
+  `,
+  ERR_UTIL_0X_LOCK_INVALID: `
+    The tokens required must be locked until after the order expiration time.
+  `,
+  ERR_UTIL_0X_BALANCE_EMPTY: `
+    You do not have any balance of the locked tokens required.
+  `,
+  ERR_UTIL_0X_UNLOCK_TOO_LONG: `
+    The time of validity for the unlock request is too long.
+  `,
+  ERR_ETHFX_API_RELEASE_TOKENS_ORDERS_ACTIVE: `
+    You must cancel active orders involve those tokens before unlocking.
+  `,
+  ERR_EFXAPI_TOKEN_VERIFY: `
+    The provided authentication signature was not valid.
+  `,
+  ERR_EFXAPI_ORDER_INVALID: `
+    The order requested for cancelation does not exist or is not active.
+  `,
+  ERR_EFXAPI_OWNER_INVALID: `
+    The signature for cancellation request does not match the order owner.
+  `,
+  ERR_EFXAPI_ORDER_CANCEL_FAILURE_0: `
+    Cancellation failed. Please try again.
+  `,
+  ERR_EFXAPI_ORDER_CANCEL_FAILURE_1: `
+    Cancellation failed. Please try again.
+  `,
+  ERR_EFXAPI_ORDER_CANCEL_FAILURE_2: `
+    Cancellation failed. Please try again.
+  `,
+  ERR_ETHFX_API_ORDER_SUBMIT_CONCURRENCY: `
+    You cannot submit new orders concurrently. Please wait and submit again.
+  `,
+  ERR_EFXAPI_TOKEN_INVALID: `
+    The submitted nonce must be a timestamp in the future.
+  `,
+  // REVIEW: Add descriptions to the following errors
+  // see https://github.com/bitfinexcom/bfx-util-efxapi-js/blob/master/workers/loc.api/efxapi.util.js
+  // for a list of all possible errors
+  ERR_EFXAPI_ORDER_SUBMIT_FAILURE_0: `
+    N/A
+  `,
+  ERR_EFXAPI_ORDER_SUBMIT_FAILURE_1: `
+    N/A
+  `,
+  ERR_EFXAPI_TOKEN_VERIFY: `
+    N/A
+  `,
+  ERR_EFXAPI_ORDER_INVALID: `
+    N/A
+  `,
+  ERR_EFXAPI_OWNER_INVALID: `
+    N/A
+  `,
+  ERR_EFXAPI_ORDER_CANCEL_FAILURE_0: `
+    N/A
+  `,
+  ERR_EFXAPI_ORDER_CANCEL_FAILURE_1: `
+    N/A
+  `,
+  ERR_EFXAPI_ORDER_CANCEL_FAILURE_2: `
+    N/A
+  `,
+  ERR_ETHFX_API_ORDER_SUBMIT_CONCURRENCY: `
+    N/A
+  `,
+  FAIL_ORDER_SUBMIT_2: `
+    N/A
+  `,
+  ERR_ETHFX_API_ORDER_SUBMIT_CONCURRENCY: `
+    N/A
+  `,
+  ERR_ETHFX_API_RELEASE_TOKENS_ORDERS_ACTIVE: `
+    N/A
+  `,
+  ERR_ETHFX_API_RELEASE_TOKENS_GEN: `
+    N/A
+  `,
+  ERR_ETHFX_API_RELEASE_TOKENS_RELEASE: `
+    N/A
+  `,
+  ERR_ETHFX_API_ORDER_SUBMIT_CONCURRENCY: `
+    N/A
+  `,
+  FAIL_ORDER_CANCEL: `
+    N/A
+  `,
+  ERR_EFXAPI_TOKEN_INVALID: `
+    N/A
+  `,
+  ERR_EFXAPI_TOKEN_VERIFY: `
+    N/A
+  `,
+  ERR_EFXAPI_TOKEN_VERIFY: `
+    N/A
+  `,
+}

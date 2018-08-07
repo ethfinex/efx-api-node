@@ -1,4 +1,5 @@
 const { post } = require('request-promise')
+const parse = require('../lib/parse/response/orders')
 
 module.exports = async (efx, symbol, id, nonce, signature) => {
   let url = efx.config.api + '/r/orders'
@@ -17,5 +18,5 @@ module.exports = async (efx, symbol, id, nonce, signature) => {
 
   const data = {id, nonce, signature, protocol}
 
-  return post(url, {json: data})
+  return parse(post(url, {json: data}))
 }

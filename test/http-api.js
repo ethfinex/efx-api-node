@@ -22,11 +22,11 @@ it('efx.cancelOrder(orderId) // handle INVALID ERROR order', async () => {
   const orderId = 1
   const apiResponse = [
     'error',
-    null,
-    'ERR_API_BASE: ERR_EFXAPI_ORDER_INVALID'
+    10020,
+    'ERR_EFXAPI_ORDER_INVALID'
   ]
 
-  nock('https://staging.bitfinex.com:2998')
+  nock('https://test.ethfinex.com')
     .post('/trustless/v1/w/oc', async (body) => {
       assert.equal(body.orderId, orderId)
       assert.equal(body.protocol, '0x')
@@ -44,20 +44,22 @@ it('efx.cancelOrder(orderId) // handle INVALID ERROR order', async () => {
     })
     .reply(500, apiResponse)
 
-  try {
-    await efx.cancelOrder(orderId)
-  } catch (error) {
-    assert.equal(error.statusCode, 500)
-    assert.deepEqual(error.response.body, apiResponse)
-  }
+    result = await efx.cancelOrder(orderId)
+
+  assert.equal(result.error.code, 10020)
+  assert.equal(result.error.message, 'ERR_EFXAPI_ORDER_INVALID')
+  assert.ok(result.error.reason)
+
 })
+
+return
 
 it('efx.cancelOrder(orderId, signedOrder) // cancels a previously signed order', async () => {
   const orderId = 1
   const signedOrder = await efx.sign.cancelOrder(orderId)
   const apiResponse = [1234]
 
-  nock('https://staging.bitfinex.com:2998')
+  nock('https://test.ethfinex.com')
     .post('/trustless/v1/w/oc', async (body) => {
       assert.equal(body.orderId, orderId)
       assert.equal(body.protocol, '0x')
@@ -86,7 +88,7 @@ it('efx.getOrder(orderId)', async () => {
 
   const apiResponse = [[1234]]
 
-  nock('https://staging.bitfinex.com:2998')
+  nock('https://test.ethfinex.com')
     .post('/trustless/v1/r/orders', (body) => {
       assert.equal(body.id, orderId)
       assert.equal(body.protocol, '0x')
@@ -117,7 +119,7 @@ it('efx.getOrders()', async () => {
 
   const apiResponse = [[1234], [1235]]
 
-  nock('https://staging.bitfinex.com:2998')
+  nock('https://test.ethfinex.com')
     .post('/trustless/v1/r/orders', (body) => {
       assert.ok(body.nonce)
       assert.ok(body.signature)
@@ -222,7 +224,7 @@ it('efx.getOrderHist(null, null, nonce, signature)', async () => {
     t: 1532375571000
   }]
 
-  nock('https://staging.bitfinex.com:2998')
+  nock('https://test.ethfinex.com')
     .post('/trustless/v1/r/orders/hist', (body) => {
       assert.equal(body.nonce, nonce)
       assert.equal(body.signature, signature)
@@ -239,7 +241,7 @@ it('efx.getOrderHist(null, null, nonce, signature)', async () => {
 it("efx.releaseTokens('ZRX')", async () => {
   const token = 'ZRX'
 
-  nock('https://staging.bitfinex.com:2998')
+  nock('https://test.ethfinex.com')
     .post('/trustless/v1/w/releaseTokens', async (body) => {
       assert.ok(body.nonce)
       assert.ok(body.signature)
@@ -261,7 +263,7 @@ it("efx.releaseTokens('ZRX')", async () => {
 })
 
 it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
-  nock('https://staging.bitfinex.com:2998')
+  nock('https://test.ethfinex.com')
     .post('/trustless/v1/w/on', async (body) => {
       assert.equal(body.type, 'EXCHANGE LIMIT')
       assert.equal(body.symbol, 'tETHUSD')
@@ -298,7 +300,7 @@ it('efx.submitSignedOrder(order)', async () => {
   // test/http/ folder
   const httpResponse = [[1234]]
 
-  nock('https://staging.bitfinex.com:2998')
+  nock('https://test.ethfinex.com')
     .post('/trustless/v1/w/on', async (body) => {
       assert.equal(body.type, 'EXCHANGE LIMIT')
       assert.equal(body.symbol, 'tETHUSD')

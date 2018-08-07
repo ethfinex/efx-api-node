@@ -1,4 +1,5 @@
 const { post } = require('request-promise')
+const parse = require('../lib/parse/response/release_tokens')
 
 module.exports = async (efx, coin, nonce, signature) => {
   const url = efx.config.api + '/w/releaseTokens'
@@ -17,5 +18,5 @@ module.exports = async (efx, coin, nonce, signature) => {
     tokenAddress: currency.lockerAddress
   }
 
-  return post(url, {json: data})
+  return parse(post(url, {json: data}))
 }
