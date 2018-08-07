@@ -32,7 +32,7 @@ module.exports = () => {
     lock: compose(require('../api/contract/lock')),
     locked: compose(require('../api/contract/locked')),
     unlock: compose(require('../api/contract/unlock')),
-    createOrder: compose(require('../api/contract/createOrder')),
+    createOrder: compose(require('../api/contract/create_order')),
     abi: {
       locker: require('../api/contract/abi/locker.abi.js'),
       token: require('../api/contract/abi/token.abi.js')
