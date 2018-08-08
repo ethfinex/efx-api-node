@@ -79,64 +79,16 @@ module.exports = {
   ERR_EFXAPI_TOKEN_INVALID: `
     The submitted nonce must be a timestamp in the future.
   `,
-  // REVIEW: Add descriptions to the following errors
-  // see https://github.com/bitfinexcom/bfx-util-efxapi-js/blob/master/workers/loc.api/efxapi.util.js
-  // for a list of all possible errors
   ERR_EFXAPI_ORDER_SUBMIT_FAILURE_0: `
-    N/A
+    Failed to submit order to order book.
   `,
   ERR_EFXAPI_ORDER_SUBMIT_FAILURE_1: `
-    N/A
-  `,
-  ERR_EFXAPI_TOKEN_VERIFY: `
-    N/A
-  `,
-  ERR_EFXAPI_ORDER_INVALID: `
-    N/A
-  `,
-  ERR_EFXAPI_OWNER_INVALID: `
-    N/A
-  `,
-  ERR_EFXAPI_ORDER_CANCEL_FAILURE_0: `
-    N/A
-  `,
-  ERR_EFXAPI_ORDER_CANCEL_FAILURE_1: `
-    N/A
-  `,
-  ERR_EFXAPI_ORDER_CANCEL_FAILURE_2: `
-    N/A
-  `,
-  ERR_ETHFX_API_ORDER_SUBMIT_CONCURRENCY: `
-    N/A
-  `,
-  FAIL_ORDER_SUBMIT_2: `
-    N/A
-  `,
-  ERR_ETHFX_API_ORDER_SUBMIT_CONCURRENCY: `
-    N/A
-  `,
-  ERR_ETHFX_API_RELEASE_TOKENS_ORDERS_ACTIVE: `
-    N/A
+    Failed to submit order to order book.
   `,
   ERR_ETHFX_API_RELEASE_TOKENS_GEN: `
-    N/A
+    Failed to contact ethereum node, please try request again.
   `,
   ERR_ETHFX_API_RELEASE_TOKENS_RELEASE: `
-    N/A
-  `,
-  ERR_ETHFX_API_ORDER_SUBMIT_CONCURRENCY: `
-    N/A
-  `,
-  FAIL_ORDER_CANCEL: `
-    N/A
-  `,
-  ERR_EFXAPI_TOKEN_INVALID: `
-    N/A
-  `,
-  ERR_EFXAPI_TOKEN_VERIFY: `
-    N/A
-  `,
-  ERR_EFXAPI_TOKEN_VERIFY: `
-    N/A
-  `,
+    Failed to sign release permission, please try request again.
+  `
 }
