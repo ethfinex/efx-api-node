@@ -12,7 +12,7 @@ module.exports = (errorArray) => {
 
   for(let message in reasons){
     if(error.message == message){
-      error.reason = reasons[message]
+      error.reason = reasons[message].trim()
     }
   }
 

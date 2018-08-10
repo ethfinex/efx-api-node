@@ -1,6 +1,6 @@
 {
   "name": "efx-api-node",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "src/efx.js",
   "contributors": [
     "Henrique Matias <hems.inlet@gmail.com>",
@@ -50,7 +50,7 @@
     "mocha": "^5.1.1",
     "mochify": "^5.8.0",
     "nock": "^9.4.1",
-    "node-minify": "^3.1.0",
+    "node-minify": "^3.2.0",
     "solc": "^0.4.24",
     "standard": "^11.0.1"
   }
