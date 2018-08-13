@@ -30,7 +30,7 @@ describe('~ efx-api-node', async () => {
   })
 
   describe('Signing', () => {
-    require('./signing')
+    //require('./signing')
   })
 
   describe('Blockchain API', () => {

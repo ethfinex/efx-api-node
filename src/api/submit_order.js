@@ -1,4 +1,5 @@
 const {post} = require('request-promise')
+const parse = require('../lib/parse/response/submit_order')
 
 module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, validFor) => {
   if (!(symbol && amount && price)) {
@@ -34,5 +35,5 @@ module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, valid
 
   const url = efx.config.api + '/w/on'
 
-  return post(url, {json: data})
+  return parse(post(url, {json: data}))
 }
