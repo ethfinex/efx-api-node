@@ -6,6 +6,6 @@ module.exports = async (request) => {
 
     return response
   } catch (error) {
-    return parseError(error)
+    return parseError(error.response.body)
   }
 }
