@@ -6,6 +6,13 @@ module.exports = async (request) => {
 
     return response
   } catch (error) {
+
+    // if it's not a HTTP response error,
+    // throw the error
+    if(!error.response) {
+      throw error
+    }
+
     return parseError(error.response.body)
   }
 }
