@@ -16,40 +16,40 @@ module.exports = {
     The signed-order taker amount did not match with the
     amount and price specified in the API call.
   `,
-  ERR_UTIL_0X_ONLY_EXCHANGE_LIMIT_ORDERS: `
+  ERR_CORE_ETHFX_0X_ONLY_EXCHANGE_LIMIT_ORDERS: `
     Only exchange limit orders are currently accepted.
   `,
-  ERR_UTIL_0X_INVALID_CCY: `
+  ERR_CORE_ETHFX_0X_INVALID_CCY: `
     The token specified is currently not tradable via the trustless api.
   `,
-  ERR_UTIL_0X_SIGNATURE_INVALID: `
+  ERR_CORE_ETHFX_0X_SIGNATURE_INVALID: `
     The signature provided with the order was invalid.
   `,
-  ERR_UTIL_0X_FEE_RECIPIENT_INVALID: `
+  ERR_CORE_ETHFX_0X_FEE_RECIPIENT_INVALID: `
     The fee recipient address was not specified as Ethfinex.
   `,
-  ERR_UTIL_0X_TAKER_INVALID: `
+  ERR_CORE_ETHFX_0X_TAKER_INVALID: `
     The taker address for the trade was not specified as Ethfinex.
   `,
-  ERR_UTIL_0X_EXCHANGE_INVALID: `
+  ERR_CORE_ETHFX_0X_EXCHANGE_INVALID: `
     The exchange contract address for the trade was not specified correctly.
   `,
-  ERR_UTIL_0X_EXPIRED: `
+  ERR_CORE_ETHFX_0X_EXPIRED: `
     The order expiration date was too soon, or has already passed.
   `,
-  ERR_UTIL_0X_BELOW_MIN_SIZE: `
+  ERR_CORE_ETHFX_0X_BELOW_MIN_SIZE: `
     The order size was below the minimum allowed.
   `,
-  ERR_UTIL_0X_LOCK_TIME_INSUFFICIENT: `
+  ERR_CORE_ETHFX_0X_LOCK_TIME_INSUFFICIENT: `
     The tokens required for the trade are not locked for long enough.
   `,
-  ERR_UTIL_0X_LOCK_INVALID: `
+  ERR_CORE_ETHFX_0X_LOCK_INVALID: `
     The tokens required must be locked until after the order expiration time.
   `,
-  ERR_UTIL_0X_BALANCE_EMPTY: `
+  ERR_CORE_ETHFX_0X_BALANCE_EMPTY: `
     You do not have any balance of the locked tokens required.
   `,
-  ERR_UTIL_0X_UNLOCK_TOO_LONG: `
+  ERR_CORE_ETHFX_0X_UNLOCK_TOO_LONG: `
     The time of validity for the unlock request is too long.
   `,
   ERR_ETHFX_API_RELEASE_TOKENS_ORDERS_ACTIVE: `
@@ -58,37 +58,37 @@ module.exports = {
   ERR_EFXAPI_TOKEN_VERIFY: `
     The provided authentication signature was not valid.
   `,
-  ERR_EFXAPI_ORDER_INVALID: `
+  ERR_TRADING_ETHFX_TRUSTLESS_ORDER_INVALID: `
     The order requested for cancelation does not exist or is not active.
   `,
-  ERR_EFXAPI_OWNER_INVALID: `
+  ERR_TRADING_ETHFX_TRUSTLESS_OWNER_INVALID: `
     The signature for cancellation request does not match the order owner.
   `,
-  ERR_EFXAPI_ORDER_CANCEL_FAILURE_0: `
+  ERR_TRADING_ETHFX_TRUSTLESS_ORDER_CANCEL_FAILURE_0: `
     Cancellation failed. Please try again.
   `,
-  ERR_EFXAPI_ORDER_CANCEL_FAILURE_1: `
+  ERR_TRADING_ETHFX_TRUSTLESS_ORDER_CANCEL_FAILURE_1: `
     Cancellation failed. Please try again.
   `,
-  ERR_EFXAPI_ORDER_CANCEL_FAILURE_2: `
+  ERR_TRADING_ETHFX_TRUSTLESS_ORDER_CANCEL_FAILURE_2: `
     Cancellation failed. Please try again.
   `,
-  ERR_ETHFX_API_ORDER_SUBMIT_CONCURRENCY: `
+  ERR_TRADING_ETHFX_TRUSTLESS_API_ORDER_SUBMIT_CONCURRENCY: `
     You cannot submit new orders concurrently. Please wait and submit again.
   `,
-  ERR_EFXAPI_TOKEN_INVALID: `
+  ERR_TRADING_ETHFX_TRUSTLESS_TOKEN_INVALID: `
     The submitted nonce must be a timestamp in the future.
   `,
-  ERR_EFXAPI_ORDER_SUBMIT_FAILURE_0: `
+  ERR_TRADING_ETHFX_TRUSTLESS_ORDER_SUBMIT_FAILURE_0: `
     Failed to submit order to order book.
   `,
-  ERR_EFXAPI_ORDER_SUBMIT_FAILURE_1: `
+  ERR_TRADING_ETHFX_TRUSTLESS_ORDER_SUBMIT_FAILURE_1: `
     Failed to submit order to order book.
   `,
-  ERR_ETHFX_API_RELEASE_TOKENS_GEN: `
+  ERR_TRADING_ETHFX_TRUSTLESS_API_RELEASE_TOKENS_GEN: `
     Failed to contact ethereum node, please try request again.
   `,
-  ERR_ETHFX_API_RELEASE_TOKENS_RELEASE: `
+  ERR_TRADING_ETHFX_TRUSTLESS_API_RELEASE_TOKENS_RELEASE: `
     Failed to sign release permission, please try request again.
   `
 }
