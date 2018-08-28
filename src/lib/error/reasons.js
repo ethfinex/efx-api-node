@@ -52,10 +52,10 @@ module.exports = {
   ERR_CORE_ETHFX_0X_UNLOCK_TOO_LONG: `
     The time of validity for the unlock request is too long.
   `,
-  ERR_ETHFX_API_RELEASE_TOKENS_ORDERS_ACTIVE: `
+  ERR_TRADING_ETHFX_TRUSTLESS_API_RELEASE_TOKENS_ORDERS_ACTIVE: `
     You must cancel active orders involve those tokens before unlocking.
   `,
-  ERR_EFXAPI_TOKEN_VERIFY: `
+  ERR_TRADING_ETHFX_TRUSTLESS_TOKEN_VERIFY: `
     The provided authentication signature was not valid.
   `,
   ERR_TRADING_ETHFX_TRUSTLESS_ORDER_INVALID: `
