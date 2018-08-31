@@ -90,5 +90,14 @@ module.exports = {
   `,
   ERR_TRADING_ETHFX_TRUSTLESS_API_RELEASE_TOKENS_RELEASE: `
     Failed to sign release permission, please try request again.
-  `
+  `,
+  ERR_TRADING_ETHFX_HOT_BALANCE_LOW: `
+    Insufficient Ethfinex liquidity available to trade trustlessly, please wait and re-submit your order.
+  `,
+  ERR_TRADING_ETHFX_TRUSTLESS_PROTO_INVALID: `
+    Trustless protocol type not specified, or invalid, in order submission.
+  `,
+  ERR_TRADING_ETHFX_TRUSTLESS_BALANCE_INVALID: `
+    Insufficient unused balance to place order.
+  `,
 }
