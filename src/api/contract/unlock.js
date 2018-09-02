@@ -24,6 +24,8 @@ module.exports = async (efx, token, amount) => {
   if( Date.now() / 1000 < depositLock ) {
     const response = await efx.releaseTokens(token)
 
+    if(response.error) return response
+
     const sig = response.releaseSignature
 
     // push values into arguments array
