@@ -12,10 +12,13 @@ module.exports = async (efx, coin, nonce, signature) => {
     signature = await efx.sign(nonce.toString(16))
   }
 
+  const protocol = '0x'
+
   const data = {
     nonce,
     signature,
-    tokenAddress: currency.lockerAddress
+    tokenAddress: currency.lockerAddress,
+    protocol
   }
 
   return parse(post(url, {json: data}))
