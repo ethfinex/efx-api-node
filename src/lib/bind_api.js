@@ -54,6 +54,7 @@ module.exports = () => {
   efx.sign.request = compose(require('../api/sign/request'))
 
   // efx main functions
+  efx.getConfig = compose(require('../api/get_config'))
   efx.cancelOrder = compose(require('../api/cancel_order'))
   efx.getOrder = compose(require('../api/get_order'))
   efx.getOrders = compose(require('../api/get_orders'))

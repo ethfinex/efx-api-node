@@ -22,6 +22,8 @@ getOrders = async (efx, account) => {
 
   if(!response || response.error){
     console.log(`Error getting orders for ${account}`)
+    console.log(response.error)
+    console.log()
   }
 
   setTimeout(() => {getOrders(efx,account), 500})

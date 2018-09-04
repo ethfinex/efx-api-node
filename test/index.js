@@ -26,7 +26,7 @@ describe('~ efx-api-node', async () => {
   })
 
   describe('Account', () => {
-    require('./account')
+    //require('./account')
   })
 
   describe('Signing', () => {

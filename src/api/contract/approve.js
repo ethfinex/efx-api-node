@@ -1,9 +1,9 @@
+const reasons = require('../../lib/error/reasons')
 /**
  * Approves a token for locking
  *
  */
-
-module.exports = (efx, token) => {
+module.exports = async (efx, token) => {
   const currency = efx.CURRENCIES[token]
 
   // REVIEW: 2 ** 256 -1 should be the max value for "uint"
@@ -13,6 +13,14 @@ module.exports = (efx, token) => {
     currency.lockerAddress, // address _spender
     amount // uint amount
   ]
+
+  // TODO: review error format
+  if(token == 'USD' && (await efx.contract.isApproved(token) != 0)){
+    return {
+      error: 'ERR_TRADING_ETHFX_CANT_APPROVE_USDT_TWICE',
+      reason: reasons.ERR_TRADING_ETHFX_CANT_APPROVE_USDT_TWICE.trim()
+    }
+  }
 
   const action = 'approve'
 

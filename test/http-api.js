@@ -18,6 +18,32 @@ before(async () => {
 
 const ecRecover = require('./helpers/ecRecover')
 
+it('efx.getConfig() // handle INVALID ERROR order', async () => {
+
+  console.log("efx ->", efx.config)
+
+  const apiResponse = {}
+
+  nock('https://test.ethfinex.com/trustless/v1')
+    .post('', async (body) => {
+
+      console.log( "posting ->", body )
+
+      // TODO: fix ecRecover algo for orderId signature
+      //assert.equal(efx.get('account').toLowerCase(), recovered.toLowerCase())
+      return true
+    })
+    .reply(500, apiResponse)
+
+    result = await efx.getConfig()
+
+  //assert.equal(result.error.code, 10020)
+  //assert.equal(result.error.message, 'ERR_EFXAPI_ORDER_INVALID')
+  //assert.ok(result.error.reason)
+})
+
+return
+
 it('efx.cancelOrder(orderId) // handle INVALID ERROR order', async () => {
   const orderId = 1
   const apiResponse = [

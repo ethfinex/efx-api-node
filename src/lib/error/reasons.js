@@ -103,4 +103,7 @@ module.exports = {
   ERR_TRADING_ETHFX_TRUSTLESS_BALANCE_INVALID: `
     Insufficient unused balance to place order.
   `,
+  ERR_TRADING_ETHFX_CANT_APPROVE_USDT_TWICE:`
+    You need to set allowance to 0 before approving this token
+  `,
 }

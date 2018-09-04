@@ -14,8 +14,10 @@ work = async () => {
 
   // lock some ETH
 
-  console.log("efx.contract.lock('ETH', 0.02, 10)")
-  response = await efx.contract.lock('ETH', 0.02, 10)
+  //console.log("efx.contract.lock('ETH', 0.02, 10)")
+  //response = await efx.contract.lock('ETH', 0.02, 10)
+  await efx.contract.approve('USD')
+  response = await efx.contract.lock('USD', 20, 10)
 
   if(response.status){
     console.log( " - OK")
