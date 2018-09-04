@@ -1,5 +1,6 @@
 const { post } = require('request-promise')
 const parse = require('../lib/parse/response/release_tokens')
+const reasons = require('../lib/error/reasons.js')
 
 module.exports = async (efx, coin, nonce, signature) => {
   const url = efx.config.api + '/w/releaseTokens'
@@ -10,6 +11,14 @@ module.exports = async (efx, coin, nonce, signature) => {
     nonce = ((Date.now() / 1000) + 30) + ''
 
     signature = await efx.sign(nonce.toString(16))
+  } else {
+    if(!signature){
+      // TODO: review error format
+      return {
+        error: 'ERR_RELEASE_TOKENS_NONCE_REQUIRES_SIGNATURE',
+        reason: reasons.ERR_RELEASE_TOKENS_NONCE_REQUIRES_SIGNATURE.trim()
+      }
+    }
   }
 
   const protocol = '0x'

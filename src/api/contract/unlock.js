@@ -1,7 +1,7 @@
 /**
  * Call unlock method on wrapper contract
  */
-module.exports = async (efx, token, amount) => {
+module.exports = async (efx, token, amount, nonce, signature) => {
   const currency = efx.CURRENCIES[token]
 
   // value we asking to unlock
@@ -22,7 +22,7 @@ module.exports = async (efx, token, amount) => {
 
   // we need to call releaseTokens to fetch a signature
   if( Date.now() / 1000 < depositLock ) {
-    const response = await efx.releaseTokens(token)
+    const response = await efx.releaseTokens(token, nonce, signature)
 
     if(response.error) return response
 
