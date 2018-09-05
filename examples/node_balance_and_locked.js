@@ -7,35 +7,44 @@ work = async () => {
   // http://localhost:8545
   efx = await EFX()
 
-  // unlock wallet so we can sign transactions
-  await efx.account.unlock('password')
+  const accounts = await efx.web3.eth.getAccounts()
 
-  // check how much ETH is already locked
-  let response
+  for(account of accounts){
 
-  response = await efx.contract.locked('ETH')
+    await efx.account.select(account)
 
-  const lockedETH = Number(efx.web3.utils.fromWei(response)).toFixed(8)
+    // unlock wallet so we can sign transactions
+    await efx.account.unlock('password')
 
-  response = await efx.contract.locked('USD')
+    // check how much ETH is already locked
+    let response
 
-  const lockedUSD = Number(efx.web3.utils.fromWei(response)).toFixed(8)
+    response = await efx.contract.locked('ETH')
 
-  // check what's the ETH balance for this account
-  response = await efx.account.balance()
+    const lockedETH = Number(efx.web3.utils.fromWei(response)).toFixed(8)
 
-  const balanceETH = Number(efx.web3.utils.fromWei(response)).toFixed(8)
+    response = await efx.contract.locked('USD')
 
-  // check what's the USD balance for this account
-  response = await efx.account.tokenBalance('USD')
+    const lockedUSD = Number(efx.web3.utils.fromWei(response)).toFixed(8)
 
-  const balanceUSD = Number(response) / Math.pow(10, 6)
+    // check what's the ETH balance for this account
+    response = await efx.account.balance()
 
-  console.log( `Your account: ${efx.get('account')}` )
-  console.log( ` - balance: ${balanceETH} ETH` )
-  console.log( ` - balance: ${balanceUSD} USD` )
-  console.log( ` -  locked: ${lockedETH} ETH` )
-  console.log( ` -  locked: ${lockedUSD} USD` )
+    const balanceETH = Number(efx.web3.utils.fromWei(response)).toFixed(8)
+
+    // check what's the USD balance for this account
+    response = await efx.account.tokenBalance('USD')
+
+    const balanceUSD = Number(response) / Math.pow(10, 6)
+
+    console.log( `Your account: ${efx.get('account')}` )
+    console.log( ` - balance: ${balanceETH} ETH` )
+    console.log( ` - balance: ${balanceUSD} USD` )
+    console.log( ` -  locked: ${lockedETH} ETH` )
+    console.log( ` -  locked: ${lockedUSD} USD` )
+
+
+  }
 
 }
 
