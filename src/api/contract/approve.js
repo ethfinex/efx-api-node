@@ -22,6 +22,13 @@ module.exports = async (efx, token) => {
     }
   }
 
+  if(token == 'ETH'){
+    return {
+      error: 'ERR_TRADING_ETHFX_APPROVE_ETH_NOT_REQUIRED',
+      reason: reasons.ERR_TRADING_ETHFX_APPROVE_ETH_NOT_REQUIRED.trim()
+    }
+  }
+
   const action = 'approve'
 
   return efx.eth.send(

@@ -109,4 +109,7 @@ module.exports = {
   ERR_RELEASE_TOKENS_NONCE_REQUIRES_SIGNATURE:`
     When providing a nonce you should also provide a signature
   `,
+  ERR_TRADING_ETHFX_APPROVE_ETH_NOT_REQUIRED:`
+    Approve ETH is not required
+  `
 }
