@@ -7,44 +7,39 @@ work = async () => {
   // http://localhost:8545
   efx = await EFX()
 
-  const accounts = await efx.web3.eth.getAccounts()
+  console.log( "account ->", await efx.account.select(0) )
 
-  for(account of accounts){
+  return
 
-    await efx.account.select(account)
+  // unlock wallet so we can sign transactions
+  await efx.account.unlock('password')
 
-    // unlock wallet so we can sign transactions
-    await efx.account.unlock('password')
+  // check how much ETH is already locked
+  let response
 
-    // check how much ETH is already locked
-    let response
+  response = await efx.contract.locked('ETH')
 
-    response = await efx.contract.locked('ETH')
+  const lockedETH = Number(efx.web3.utils.fromWei(response)).toFixed(8)
 
-    const lockedETH = Number(efx.web3.utils.fromWei(response)).toFixed(8)
+  response = await efx.contract.locked('USD')
 
-    response = await efx.contract.locked('USD')
+  const lockedUSD = Number(efx.web3.utils.fromWei(response)).toFixed(8)
 
-    const lockedUSD = Number(efx.web3.utils.fromWei(response)).toFixed(8)
+  // check what's the ETH balance for this account
+  response = await efx.account.balance()
 
-    // check what's the ETH balance for this account
-    response = await efx.account.balance()
+  const balanceETH = Number(efx.web3.utils.fromWei(response)).toFixed(8)
 
-    const balanceETH = Number(efx.web3.utils.fromWei(response)).toFixed(8)
+  // check what's the USD balance for this account
+  response = await efx.account.tokenBalance('USD')
 
-    // check what's the USD balance for this account
-    response = await efx.account.tokenBalance('USD')
+  const balanceUSD = Number(response) / Math.pow(10, 6)
 
-    const balanceUSD = Number(response) / Math.pow(10, 6)
-
-    console.log( `Your account: ${efx.get('account')}` )
-    console.log( ` - balance: ${balanceETH} ETH` )
-    console.log( ` - balance: ${balanceUSD} USD` )
-    console.log( ` -  locked: ${lockedETH} ETH` )
-    console.log( ` -  locked: ${lockedUSD} USD` )
-
-
-  }
+  console.log( `Your account: ${efx.get('account')}` )
+  console.log( ` - balance: ${balanceETH} ETH` )
+  console.log( ` - balance: ${balanceUSD} USD` )
+  console.log( ` -  locked: ${lockedETH} ETH` )
+  console.log( ` -  locked: ${lockedUSD} USD` )
 
 }
 
