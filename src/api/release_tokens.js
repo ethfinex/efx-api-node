@@ -26,7 +26,7 @@ module.exports = async (efx, token, nonce, signature) => {
   const data = {
     nonce,
     signature,
-    tokenAddress: currency.lockerAddress,
+    tokenAddress: currency.wrapperAddress,
     protocol
   }
 

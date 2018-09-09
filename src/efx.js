@@ -49,7 +49,7 @@ module.exports = async (web3, userConfig = {}) => {
 
   // REVIEW: should we actually use web3.eth.defaultAccount ?
   // see: https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#raising_hand-account-list-reflects-user-preference
-  await efx.account.select(efx.config.account)
+  await efx.account.select(0)
 
   if (!efx.get('account')) {
     console.warn('Please specify a valid account or account index')

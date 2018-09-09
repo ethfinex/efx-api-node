@@ -1,11 +1,12 @@
 /* eslint-env mocha */
-
 const instance = require('./instance')
 const { assert } = require('chai')
+const mockGetConf = require('./fixtures/nock/get_conf')
 
 let efx
 
 before(async () => {
+  mockGetConf()
   efx = await instance()
 })
 
@@ -34,8 +35,8 @@ it('await efx.account.balance() // return ETH balance', async () => {
   console.log( 'eth balance ->', efx.web3.utils.fromWei(response) )
 })
 
-it("await efx.account.tokenBalance('ZRX') // return ZRX balance", async () => {
-  const token = 'ZRX'
+it("await efx.account.tokenBalance('USD') // return USD balance", async () => {
+  const token = 'USD'
 
   const response = await efx.account.tokenBalance(token)
 
@@ -45,6 +46,6 @@ it("await efx.account.tokenBalance('ZRX') // return ZRX balance", async () => {
 // NOTE:
 //  - Unlocking is necessary in order to sign on node.js
 //  - MetaMask will throw a pop up at you
-it('efx.account.unlock(passwd) // unlock account', () => {
+it('efx.account.unlock(passwd) // unlock account', async () => {
   return efx.account.unlock('password')
 })

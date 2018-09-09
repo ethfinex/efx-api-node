@@ -2,6 +2,7 @@
 
 const { assert } = require('chai')
 const nock = require('nock')
+const mockGetConf = require('./fixtures/nock/get_conf')
 
 const instance = require('./instance')
 const {ZeroEx} = require('0x.js')
@@ -13,6 +14,7 @@ const utils = require('ethereumjs-util')
 let efx
 
 before(async () => {
+  mockGetConf()
   efx = await instance()
 })
 
@@ -44,7 +46,7 @@ it('efx.cancelOrder(orderId) // handle INVALID ERROR order', async () => {
     })
     .reply(500, apiResponse)
 
-    result = await efx.cancelOrder(orderId)
+  result = await efx.cancelOrder(orderId)
 
   assert.equal(result.error.code, 10020)
   assert.equal(result.error.message, 'ERR_EFXAPI_ORDER_INVALID')
@@ -236,14 +238,14 @@ it('efx.getOrderHist(null, null, nonce, signature)', async () => {
   assert.deepEqual(response, httpResponse)
 })
 
-it("efx.releaseTokens('ZRX')", async () => {
-  const token = 'ZRX'
+it("efx.releaseTokens('USD')", async () => {
+  const token = 'USD'
 
   nock('https://test.ethfinex.com')
     .post('/trustless/v1/w/releaseTokens', async (body) => {
       assert.ok(body.nonce)
       assert.ok(body.signature)
-      assert.equal(body.tokenAddress, efx.config['0x'].tokenRegistry[token].tokenAddress)
+      assert.equal(body.tokenAddress, efx.config['0x'].tokenRegistry[token].wrapperAddress)
 
       return true
     })

@@ -111,5 +111,8 @@ module.exports = {
   `,
   ERR_TRADING_ETHFX_APPROVE_ETH_NOT_REQUIRED:`
     Approve ETH is not required
+  `,
+  ERR_EFXAPI_ORDER_INVALID:`
+    Invalid Order
   `
 }

@@ -41,8 +41,8 @@ module.exports = (efx, symbol, amount, price, validFor) => {
     makerAddress: efx.get('account').toLowerCase(),
     takerAddress: '0x0000000000000000000000000000000000000000',
 
-    feeRecipientAddress: efx.config.ethfinexAddress.toLowerCase(),
-    senderAddress: efx.config.ethfinexAddress.toLowerCase(),
+    feeRecipientAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
+    senderAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
 
     makerAssetAmount: web3.utils.toBN(
       Math.trunc(10 ** sellCurrency.decimals * sellAmount)
