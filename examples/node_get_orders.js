@@ -17,10 +17,10 @@ work = async () => {
 
   console.log("")
 
-  console.log("efx.getOrders('ETHUSD')")
+  console.log("efx.getOrders()")
 
   // Cancel all orders
-  response = await efx.getOrders('ETHUSD')
+  response = await efx.getOrders()
 
   console.log(`Found ${response.length} orders`)
 
