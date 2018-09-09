@@ -6,7 +6,6 @@ work = async () => {
   // http://localhost:8545
   efx = await EFX()
 
-  efx.account.select(2)
   // unlock wallet so we can sign transactions
   await efx.account.unlock('password')
 
@@ -18,7 +17,7 @@ work = async () => {
   //console.log("efx.contract.lock('ETH', 0.02, 10)")
   //response = await efx.contract.lock('ETH', 0.02, 10)
   //response = await efx.contract.approve('USD')
-  response = await efx.contract.lock('USD', 1, 10)
+  response = await efx.contract.lock('ETH', 0.05, 10)
 
   if(response.status){
     console.log( " - OK")

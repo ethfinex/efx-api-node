@@ -16,9 +16,9 @@ work = async () => {
   console.log("")
 
   // submit an order to SELL 0.01 ETH for 200 USD
-  console.log("efx.submitOrder('ETHUSD', -0.01, 100)")
+  console.log("efx.submitOrder('ETHUSD', -0.02, 100)")
 
-  response = await efx.submitOrder('ETHUSD', -0.08, 100)
+  response = await efx.submitOrder('ETHUSD', -0.02, 100)
 
   if(response.length){
     console.log(` - Submitted Order: #${response[0]}`)
