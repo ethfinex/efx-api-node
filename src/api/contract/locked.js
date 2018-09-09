@@ -6,5 +6,5 @@ module.exports = (efx, token) => {
   const action = 'balanceOf'
   const args = [ efx.get('account') ]
 
-  return efx.eth.call(efx.contract.abi.locker, currency.lockerAddress, action, args)
+  return efx.eth.call(efx.contract.abi.locker, currency.wrapperAddress, action, args)
 }

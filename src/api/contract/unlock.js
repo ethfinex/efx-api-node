@@ -34,7 +34,7 @@ module.exports = async (efx, token, amount, nonce, signature) => {
 
   return efx.eth.send(
     efx.contract.abi.locker,
-    currency.lockerAddress,
+    currency.wrapperAddress,
     action,
     args
   )

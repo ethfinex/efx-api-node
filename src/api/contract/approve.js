@@ -10,7 +10,7 @@ module.exports = async (efx, token) => {
   const amount = ((2 ** 256) - 1).toString(16)
 
   const args = [
-    currency.lockerAddress, // address _spender
+    currency.wrapperAddress, // address _spender
     amount // uint amount
   ]
 

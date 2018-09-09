@@ -21,7 +21,7 @@ module.exports = async (efx, token, amount, duration) => {
   if (token === 'ETH') {
     return efx.eth.send(
       efx.contract.abi.locker,
-      currency.lockerAddress,
+      currency.wrapperAddress,
       action,
       args,
       value // send ETH to the contract
@@ -30,7 +30,7 @@ module.exports = async (efx, token, amount, duration) => {
 
   return efx.eth.send(
     efx.contract.abi.locker,
-    currency.lockerAddress,
+    currency.wrapperAddress,
     action,
     args
   )

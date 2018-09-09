@@ -60,9 +60,9 @@ module.exports = (efx, symbol, amount, price, validFor) => {
 
     salt: generatePseudoRandomSalt(),
 
-    makerAssetData: assetDataUtils.encodeERC20AssetData(sellCurrency.lockerAddress.toLowerCase()),
+    makerAssetData: assetDataUtils.encodeERC20AssetData(sellcurrency.wrapperAddress.toLowerCase()),
 
-    takerAssetData: assetDataUtils.encodeERC20AssetData(buyCurrency.lockerAddress.toLowerCase()),
+    takerAssetData: assetDataUtils.encodeERC20AssetData(buycurrency.wrapperAddress.toLowerCase()),
 
     exchangeAddress: config.exchangeContractAddress.toLowerCase(),
   }

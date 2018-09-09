@@ -7,10 +7,6 @@ work = async () => {
   // http://localhost:8545
   efx = await EFX()
 
-  console.log( "account ->", await efx.account.select(0) )
-
-  return
-
   // unlock wallet so we can sign transactions
   await efx.account.unlock('password')
 
