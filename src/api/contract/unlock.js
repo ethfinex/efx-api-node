@@ -2,7 +2,7 @@
  * Call unlock method on wrapper contract
  */
 module.exports = async (efx, token, amount, nonce, signature) => {
-  const currency = efx.CURRENCIES[token]
+  const currency = efx.config['0x'].tokenRegistry[token]
 
   // value we asking to unlock
   const value = amount * (10 ** currency.decimals)

@@ -2,7 +2,7 @@
  * Returns the unlockUntil
  */
 module.exports = (efx, token) => {
-  const currency = efx.CURRENCIES[token]
+  const currency = efx.config['0x'].tokenRegistry[token]
 
   const args = [
     efx.get('account') // address _owner

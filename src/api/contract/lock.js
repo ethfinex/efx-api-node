@@ -4,7 +4,7 @@
  * duration - duration the tokens will be locked, in hours
  */
 module.exports = async (efx, token, amount, duration) => {
-  const currency = efx.CURRENCIES[token]
+  const currency = efx.config['0x'].tokenRegistry[token]
 
   // value we sending to the lockerContract
   const value = (amount * (10 ** currency.decimals))

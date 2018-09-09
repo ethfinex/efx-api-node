@@ -1,4 +1,4 @@
-const {ZeroEx} = require('0x.js')
+const {assetDataUtils, generatePseudoRandomSalt} = require('@0xproject/order-utils')
 
 module.exports = (efx, symbol, amount, price, validFor) => {
   const { web3, config } = efx
@@ -38,25 +38,33 @@ module.exports = (efx, symbol, amount, price, validFor) => {
 
   // create order object
   const order = {
-    expirationUnixTimestampSec: web3.utils.toBN(expiration).toString(10),
-    feeRecipient: efx.config.ethfinexAddress.toLowerCase(),
+    makerAddress: efx.get('account').toLowerCase(),
+    takerAddress: '0x0000000000000000000000000000000000000000',
 
-    maker: efx.get('account').toLowerCase(),
-    makerFee: web3.utils.toBN('0'),
-    makerTokenAddress: sellCurrency.lockerAddress.toLowerCase(),
-    makerTokenAmount: web3.utils.toBN(
+    feeRecipientAddress: efx.config.ethfinexAddress.toLowerCase(),
+    senderAddress: efx.config.ethfinexAddress.toLowerCase(),
+
+    makerAssetAmount: web3.utils.toBN(
       Math.trunc(10 ** sellCurrency.decimals * sellAmount)
     ).toString(10),
 
-    salt: ZeroEx.generatePseudoRandomSalt(),
-    taker: config.ethfinexAddress.toLowerCase(),
-    takerFee: web3.utils.toBN('0'),
-    takerTokenAddress: buyCurrency.lockerAddress.toLowerCase(),
-    takerTokenAmount: web3.utils.toBN(
+    takerAssetAmount: web3.utils.toBN(
       Math.trunc(10 ** buyCurrency.decimals * buyAmount)
     ).toString(10),
 
-    exchangeContractAddress: config.exchangeContractAddress.toLowerCase()
+    makerFee: web3.utils.toBN('0').toString(10),
+
+    takerFee: web3.utils.toBN('0').toString(10),
+
+    expirationTimeSeconds: web3.utils.toBN(expiration).toString(10),
+
+    salt: generatePseudoRandomSalt(),
+
+    makerAssetData: assetDataUtils.encodeERC20AssetData(sellCurrency.lockerAddress.toLowerCase()),
+
+    takerAssetData: assetDataUtils.encodeERC20AssetData(buyCurrency.lockerAddress.toLowerCase()),
+
+    exchangeAddress: config.exchangeContractAddress.toLowerCase(),
   }
 
   return order

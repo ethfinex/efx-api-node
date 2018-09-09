@@ -2,10 +2,10 @@ const { post } = require('request-promise')
 const parse = require('../lib/parse/response/release_tokens')
 const reasons = require('../lib/error/reasons.js')
 
-module.exports = async (efx, coin, nonce, signature) => {
+module.exports = async (efx, token, nonce, signature) => {
   const url = efx.config.api + '/w/releaseTokens'
 
-  const currency = efx.CURRENCIES[coin]
+  const currency = efx.config['0x'].tokenRegistry[token]
 
   if (!nonce) {
     nonce = ((Date.now() / 1000) + 30) + ''
