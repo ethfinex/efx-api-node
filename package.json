@@ -1,6 +1,6 @@
 {
   "name": "efx-api-node",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "main": "src/efx.js",
   "contributors": [
     "Henrique Matias <hems.inlet@gmail.com>",
@@ -37,7 +37,7 @@
     "lodash": "^4.17.10",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
-    "web3": "^1.0.0-beta.33"
+    "web3": "1.0.0-beta.33"
   },
   "devDependencies": {
     "browser-run": "^5.0.0",
