@@ -12,5 +12,5 @@ module.exports = (efx, token) => {
 
   const action = 'allowance'
 
-  return efx.eth.call(efx.contract.abi.token, currency.wrapperAddress, action, args)
+  return efx.eth.call(efx.contract.abi.token, currency.tokenAddress, action, args)
 }
