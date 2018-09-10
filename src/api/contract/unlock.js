@@ -1,8 +1,8 @@
 /**
  * Call unlock method on wrapper contract
  */
-module.exports = async (efx, token, amount) => {
-  const currency = efx.CURRENCIES[token]
+module.exports = async (efx, token, amount, nonce, signature) => {
+  const currency = efx.config['0x'].tokenRegistry[token]
 
   // value we asking to unlock
   const value = amount * (10 ** currency.decimals)
@@ -22,7 +22,7 @@ module.exports = async (efx, token, amount) => {
 
   // we need to call releaseTokens to fetch a signature
   if( Date.now() / 1000 < depositLock ) {
-    const response = await efx.releaseTokens(token)
+    const response = await efx.releaseTokens(token, nonce, signature)
 
     if(response.error) return response
 
@@ -34,7 +34,7 @@ module.exports = async (efx, token, amount) => {
 
   return efx.eth.send(
     efx.contract.abi.locker,
-    currency.lockerAddress,
+    currency.wrapperAddress,
     action,
     args
   )

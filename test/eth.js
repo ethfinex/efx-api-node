@@ -2,10 +2,12 @@
 
 const { assert } = require('chai')
 const instance = require('./instance')
+const mockGetConf = require('./fixtures/nock/get_conf')
 
 let efx
 
 before(async () => {
+  mockGetConf()
   efx = await instance()
 })
 

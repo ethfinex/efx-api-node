@@ -1,10 +1,12 @@
 /* eslint-env mocha */
 
 const instance = require('./instance')
+const { assert } = require('chai')
 const nock = require('nock')
+const mockGetConf = require('./fixtures/nock/get_conf')
 
 // TODO: use nockBack and record fixtures to disk.
-// leaving this code here for now as reference
+// leaving this code here as reference
 //
 // const nockBack = require('nock').back
 // nockBack.setMode('record');
@@ -15,7 +17,30 @@ describe('~ efx-api-node', async () => {
   nock.cleanAll()
 
   it('efx = await EFX(web3) // create an instance without throwing', async () => {
-    const efx = await instance()
+
+    //nock.recorder.rec()
+
+    mockGetConf()
+
+    const efx = await instance(null, {defaultExpiry: 222})
+
+    //nock.restore()
+
+    assert.ok(efx.config['0x'])
+    assert.ok(efx.config['0x'].exchangeAddress)
+    assert.ok(efx.config['0x'].ethfinexAddress)
+    assert.ok(efx.config['0x'].exchangeSymbols)
+    assert.ok(efx.config['0x'].tokenRegistry)
+
+    assert.ok(efx.config['0x'].tokenRegistry.ETH)
+    assert.equal(efx.config['0x'].tokenRegistry.ETH.decimals, 18)
+
+    assert.ok(efx.config['0x'].tokenRegistry.ETH.wrapperAddress)
+
+    assert.ok(efx.config['0x'].tokenRegistry.USD)
+    assert.ok(efx.config['0x'].tokenRegistry.USD.wrapperAddress)
+    //assert.ok(result['0x'].tokenRegistry.USDwrapperAddress)
+
   })
 
   // TODO: update mocked contracts, compile and deploy to ganache on every
@@ -41,10 +66,13 @@ describe('~ efx-api-node', async () => {
   })
 
   describe('HTTP API', () => {
-    require('./http-api')
-  })
+    try {
+      require('./http-api')
+    } catch(e){
 
-  return
+      console.log("e ->", e)
+    }
+  })
 
   describe('ETH calls', () => {
     require('./eth.js')

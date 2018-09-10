@@ -1,14 +1,13 @@
 const bind = require('./lib/bind_api')
 const defaultConfig = require('./config')
 const Web3 = require('web3')
-const CURRENCIES = require('./currencies')
 const aware = require('aware')
 
 /**
  * web3 - web3 object
  * config - config to be merged with defaultConfig
  */
-module.exports = async (web3, config = {}) => {
+module.exports = async (web3, userConfig = {}) => {
   // binds all ./api methods into a fresh object, similar to creating an instance
   let efx = bind()
 
@@ -16,10 +15,13 @@ module.exports = async (web3, config = {}) => {
   aware(efx)
 
   // merge user config with default config
-  efx.config = Object.assign({}, defaultConfig, config)
+  efx.config = Object.assign({}, defaultConfig, userConfig)
 
-  // it's possible to overwrite contract map by providing CURRENCIES
-  efx.CURRENCIES = config.CURRENCIES || CURRENCIES
+  // eftcg excgabge config
+  const exchangeConf = await efx.getConfig()
+
+  //user config has priority
+  efx.config = Object.assign({}, defaultConfig, exchangeConf, userConfig )
 
   // working towards being as compatible as possible
   efx.isBrowser = typeof window !== 'undefined'
@@ -47,7 +49,7 @@ module.exports = async (web3, config = {}) => {
 
   // REVIEW: should we actually use web3.eth.defaultAccount ?
   // see: https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#raising_hand-account-list-reflects-user-preference
-  await efx.account.select(efx.config.account)
+  await efx.account.select(0)
 
   if (!efx.get('account')) {
     console.warn('Please specify a valid account or account index')
@@ -56,7 +58,3 @@ module.exports = async (web3, config = {}) => {
   return efx
 }
 
-// convenient shortcuts
-module.exports.CURRENCIES = CURRENCIES
-
-module.exports.Web3 = Web3

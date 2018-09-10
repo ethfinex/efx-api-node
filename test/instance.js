@@ -23,26 +23,6 @@ module.exports = async () => {
   // if we deployed contracts, then use the deployed ones
   if (Object.keys(deployed).length > 0) {
     console.log(' - Using deployed contracts')
-
-    config = {
-      CURRENCIES: {
-        ETH: {
-          decimals: 18,
-          tokenAddress: deployed.WETH9_.options.address,
-          lockerAddress: deployed.WETH9_.options.address
-        },
-        USD: {
-          decimals: 6,
-          tokenAddress: deployed.WUSD9_.options.address,
-          lockerAddress: deployed.WUSD9_.options.address
-        },
-        ZRX: {
-          decimals: 18,
-          tokenAddress: deployed.ZRXToken.options.address,
-          lockerAddress: '0xafb7c8b4a5abc354afdac2fdc6966f060b11f928'
-        }
-      }
-    }
   }
 
   config.api = 'https://test.ethfinex.com/trustless/v1'

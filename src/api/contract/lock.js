@@ -4,7 +4,7 @@
  * duration - duration the tokens will be locked, in hours
  */
 module.exports = async (efx, token, amount, duration) => {
-  const currency = efx.CURRENCIES[token]
+  const currency = efx.config['0x'].tokenRegistry[token]
 
   // value we sending to the lockerContract
   const value = (amount * (10 ** currency.decimals))
@@ -21,7 +21,7 @@ module.exports = async (efx, token, amount, duration) => {
   if (token === 'ETH') {
     return efx.eth.send(
       efx.contract.abi.locker,
-      currency.lockerAddress,
+      currency.wrapperAddress,
       action,
       args,
       value // send ETH to the contract
@@ -30,7 +30,7 @@ module.exports = async (efx, token, amount, duration) => {
 
   return efx.eth.send(
     efx.contract.abi.locker,
-    currency.lockerAddress,
+    currency.wrapperAddress,
     action,
     args
   )
