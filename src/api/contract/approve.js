@@ -33,7 +33,7 @@ module.exports = async (efx, token) => {
 
   return efx.eth.send(
     efx.contract.abi.token,
-    currency.wrapperAddress,
+    currency.tokenAddress,
     action,
     args
   )
