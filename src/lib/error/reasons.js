@@ -104,15 +104,18 @@ module.exports = {
     Insufficient unused balance to place order.
   `,
   ERR_TRADING_ETHFX_CANT_APPROVE_USDT_TWICE:`
-    You need to set allowance to 0 before approving this token
+    You need to set allowance to 0 before approving this token.
   `,
   ERR_RELEASE_TOKENS_NONCE_REQUIRES_SIGNATURE:`
-    When providing a nonce you should also provide a signature
+    When providing a nonce you should also provide a signature.
   `,
   ERR_TRADING_ETHFX_APPROVE_ETH_NOT_REQUIRED:`
-    Approve ETH is not required
+    Approving ETH is not required.
   `,
   ERR_EFXAPI_ORDER_INVALID:`
     Invalid Order
-  `
+  `,
+  ERR_TRADING_ETHFX_TRUSTLESS_API_NECTAR_INVALID:`
+    During Beta phase you are required to hold NEC in your personal wallet to trade.
+  `,
 }
