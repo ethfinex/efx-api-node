@@ -7,7 +7,7 @@ module.exports = async (efx, token, amount, duration) => {
   const currency = efx.config['0x'].tokenRegistry[token]
 
   // value we sending to the lockerContract
-  const value = (amount * (10 ** currency.decimals))
+  const value = (amount * (10 ** currency.decimals)).toString(10)
 
   const action = 'deposit'
 
