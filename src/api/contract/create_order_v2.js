@@ -16,15 +16,15 @@ module.exports = (efx, symbol, amount, price, validFor) => {
   let buyAmount, sellAmount
 
   if (amount > 0) {
-    buyAmount = amount
-    sellAmount = amount * price
+    buyAmount = web3.utils.toBN(Math.trunc(10 ** buyCurrency.decimals * amount))
+    sellAmount = web3.utils.toBN(Math.trunc(10 ** sellCurrency.decimals * amount * price))
 
     // console.log( "Buying " + amount + ' ' + buySymbol + " for: " + price + ' ' + sellSymbol )
   }
 
   if (amount < 0) {
-    buyAmount = Math.abs(amount * price)
-    sellAmount = Math.abs(amount)
+    buyAmount = web3.utils.toBN(Math.trunc(10 ** buyCurrency.decimals * amount * price)).abs()
+    sellAmount = web3.utils.toBN(Math.trunc(10 ** sellCurrency.decimals * amount)).abs()
 
     // console.log( "Selling " + Math.abs(amount) + ' ' + sellSymbol + " for: " + price + ' ' + buySymbol )
   }
@@ -44,13 +44,9 @@ module.exports = (efx, symbol, amount, price, validFor) => {
     feeRecipientAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
     senderAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
 
-    makerAssetAmount: web3.utils.toBN(
-      Math.trunc(10 ** sellCurrency.decimals * sellAmount)
-    ).toString(10),
+    makerAssetAmount: sellAmount.toString(10),
 
-    takerAssetAmount: web3.utils.toBN(
-      Math.trunc(10 ** buyCurrency.decimals * buyAmount)
-    ).toString(10),
+    takerAssetAmount: buyAmount.toString(10),
 
     makerFee: web3.utils.toBN('0').toString(10),
 

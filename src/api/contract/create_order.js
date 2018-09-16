@@ -16,15 +16,15 @@ module.exports = (efx, symbol, amount, price, validFor) => {
   let buyAmount, sellAmount
 
   if (amount > 0) {
-    buyAmount = amount
-    sellAmount = amount * price
+    buyAmount = web3.utils.toBN(Math.trunc(10 ** buyCurrency.decimals * amount))
+    sellAmount = web3.utils.toBN(Math.trunc(10 ** sellCurrency.decimals * amount * price))
 
     // console.log( "Buying " + amount + ' ' + buySymbol + " for: " + price + ' ' + sellSymbol )
   }
 
   if (amount < 0) {
-    buyAmount = Math.abs(amount * price)
-    sellAmount = Math.abs(amount)
+    buyAmount = web3.utils.toBN(Math.trunc(10 ** buyCurrency.decimals * amount * price)).abs()
+    sellAmount = web3.utils.toBN(Math.trunc(10 ** sellCurrency.decimals * amount)).abs()
 
     // console.log( "Selling " + Math.abs(amount) + ' ' + sellSymbol + " for: " + price + ' ' + buySymbol )
   }
@@ -44,17 +44,13 @@ module.exports = (efx, symbol, amount, price, validFor) => {
     maker: efx.get('account').toLowerCase(),
     makerFee: web3.utils.toBN('0'),
     makerTokenAddress: sellCurrency.wrapperAddress.toLowerCase(),
-    makerTokenAmount: web3.utils.toBN(
-      Math.trunc(10 ** sellCurrency.decimals * sellAmount)
-    ).toString(10),
+    makerTokenAmount: sellAmount.toString(10),
 
     salt: ZeroEx.generatePseudoRandomSalt(),
     taker: efx.config['0x'].ethfinexAddress.toLowerCase(),
     takerFee: web3.utils.toBN('0'),
     takerTokenAddress: buyCurrency.wrapperAddress.toLowerCase(),
-    takerTokenAmount: web3.utils.toBN(
-      Math.trunc(10 ** buyCurrency.decimals * buyAmount)
-    ).toString(10),
+    takerTokenAmount: buyAmount.toString(10),
 
     exchangeContractAddress: efx.config['0x'].exchangeAddress.toLowerCase()
   }
