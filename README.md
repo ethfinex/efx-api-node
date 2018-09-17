@@ -4,7 +4,7 @@
 
 A Node.JS reference implementation of the Ethfinex API
 
- - API Documentation: [https://docs.ethfinex.com/v2/reference](https://docs.ethfinex.com/v2/reference)
+ - API Documentation: [https://ethfinex.docs.apiary.io/](https://ethfinex.docs.apiary.io/)
 
 ## Installing
 
