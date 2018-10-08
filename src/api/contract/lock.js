@@ -1,3 +1,4 @@
+const BigNumber = require('bignumber.js');
 /**
  * Execute 'deposit' method on locker address
  *
@@ -7,7 +8,7 @@ module.exports = async (efx, token, amount, duration) => {
   const currency = efx.config['0x'].tokenRegistry[token]
 
   // value we sending to the lockerContract
-  const value = (amount * (10 ** currency.decimals)).toString(10)
+  const value = (new BigNumber(10)).pow(currency.decimals).times(amount).integerValue(BigNumber.ROUND_FLOOR).toString()
 
   const action = 'deposit'
 

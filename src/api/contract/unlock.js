@@ -1,3 +1,4 @@
+const BigNumber = require('bignumber.js');
 /**
  * Call unlock method on wrapper contract
  */
@@ -5,7 +6,7 @@ module.exports = async (efx, token, amount, nonce, signature) => {
   const currency = efx.config['0x'].tokenRegistry[token]
 
   // value we asking to unlock
-  const value = (amount * (10 ** currency.decimals)).toString(10)
+  const value = (new BigNumber(10)).pow(currency.decimals).times(amount).integerValue(BigNumber.ROUND_FLOOR).toString()
 
   const action = 'withdraw'
 
