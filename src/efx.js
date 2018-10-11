@@ -2,6 +2,8 @@ const bind = require('./lib/bind_api')
 const defaultConfig = require('./config')
 const Web3 = require('web3')
 const aware = require('aware')
+const BigNumber = require('bignumber.js')
+BigNumber.config({ EXPONENTIAL_AT: 1e+9 })
 
 /**
  * web3 - web3 object
