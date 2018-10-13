@@ -33,6 +33,7 @@ module.exports = () => {
     locked: compose(require('../api/contract/locked')),
     unlock: compose(require('../api/contract/unlock')),
     createOrder: compose(require('../api/contract/create_order')),
+    createOrderV2: compose(require('../api/contract/create_order_v2')),
     abi: {
       locker: require('../api/contract/abi/locker.abi.js'),
       token: require('../api/contract/abi/token.abi.js')
@@ -50,6 +51,7 @@ module.exports = () => {
   efx.sign = compose(require('../api/sign/sign'))
   // hack to get a nice method signature
   efx.sign.order = compose(require('../api/sign/order'))
+    efx.sign.orderV2 = compose(require('../api/sign/order_v2'))
   efx.sign.cancelOrder = compose(require('../api/sign/cancel_order'))
   efx.sign.request = compose(require('../api/sign/request'))
 
@@ -61,6 +63,7 @@ module.exports = () => {
   efx.getOrdersHist = compose(require('../api/get_orders_hist'))
   efx.releaseTokens = compose(require('../api/release_tokens'))
   efx.submitOrder = compose(require('../api/submit_order'))
+  efx.submitOrderV2 = compose(require('../api/submit_order_v2'))
   efx.submitBuyOrder = compose(require('../api/submit_buy_order'))
   efx.submitSellOrder = compose(require('../api/submit_sell_order'))
 

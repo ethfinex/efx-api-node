@@ -12,7 +12,7 @@ module.exports = async (efx, order) => {
     signerType
   )
 
-  // order.signature = signedOrder
+  order.signature = signature
 
   /**
   const isValid = ZeroEx.isValidSignature(orderHash, signedOrder, efx.get('account').toLowerCase())
@@ -20,5 +20,5 @@ module.exports = async (efx, order) => {
   console.log( "is_valid ->", isValid)
   **/
 
-  return signature
+  return order
 }

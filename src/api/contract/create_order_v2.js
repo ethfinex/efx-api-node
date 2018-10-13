@@ -1,4 +1,5 @@
 const {assetDataUtils, generatePseudoRandomSalt} = require('@0xproject/order-utils')
+const BigNumber = require('bignumber.js');
 
 module.exports = (efx, symbol, amount, price, validFor) => {
   const { web3, config } = efx
@@ -16,21 +17,18 @@ module.exports = (efx, symbol, amount, price, validFor) => {
   let buyAmount, sellAmount
 
   if (amount > 0) {
-    buyAmount = web3.utils.toBN(Math.trunc(10 ** buyCurrency.decimals * amount))
-    sellAmount = web3.utils.toBN(Math.trunc(10 ** sellCurrency.decimals * amount * price))
+    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).integerValue(BigNumber.ROUND_FLOOR).toString()
+    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).times(price).integerValue(BigNumber.ROUND_FLOOR).toString()
 
     // console.log( "Buying " + amount + ' ' + buySymbol + " for: " + price + ' ' + sellSymbol )
   }
 
   if (amount < 0) {
-    buyAmount = web3.utils.toBN(Math.trunc(10 ** buyCurrency.decimals * amount * price)).abs()
-    sellAmount = web3.utils.toBN(Math.trunc(10 ** sellCurrency.decimals * amount)).abs()
+    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).times(price).abs().integerValue(BigNumber.ROUND_FLOOR).toString()
+    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).abs().integerValue(BigNumber.ROUND_FLOOR).toString()
 
     // console.log( "Selling " + Math.abs(amount) + ' ' + sellSymbol + " for: " + price + ' ' + buySymbol )
   }
-
-  // console.log( "   buy amount: " + buyAmount + " " + buySymbol )
-  // console.log( "  sell amount: " + sellAmount + " " + sellSymbol )
 
   let expiration
   expiration = Math.round((new Date()).getTime() / 1000)
@@ -44,9 +42,9 @@ module.exports = (efx, symbol, amount, price, validFor) => {
     feeRecipientAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
     senderAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
 
-    makerAssetAmount: sellAmount.toString(10),
+    makerAssetAmount: sellAmount,
 
-    takerAssetAmount: buyAmount.toString(10),
+    takerAssetAmount: buyAmount,
 
     makerFee: web3.utils.toBN('0').toString(10),
 
@@ -56,11 +54,11 @@ module.exports = (efx, symbol, amount, price, validFor) => {
 
     salt: generatePseudoRandomSalt(),
 
-    makerAssetData: assetDataUtils.encodeERC20AssetData(sellcurrency.wrapperAddress.toLowerCase()),
+    makerAssetData: assetDataUtils.encodeERC20AssetData(sellCurrency.wrapperAddress.toLowerCase()),
 
-    takerAssetData: assetDataUtils.encodeERC20AssetData(buycurrency.wrapperAddress.toLowerCase()),
+    takerAssetData: assetDataUtils.encodeERC20AssetData(buyCurrency.wrapperAddress.toLowerCase()),
 
-    exchangeAddress: config.exchangeContractAddress.toLowerCase(),
+    exchangeAddress: efx.config['0x'].exchangeAddress.toLowerCase()
   }
 
   return order
