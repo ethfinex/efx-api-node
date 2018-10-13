@@ -52,7 +52,7 @@ module.exports = (efx, symbol, amount, price, validFor) => {
 
     expirationTimeSeconds: web3.utils.toBN(expiration).toString(10),
 
-    salt: generatePseudoRandomSalt(),
+    salt: generatePseudoRandomSalt().toString(10),
 
     makerAssetData: assetDataUtils.encodeERC20AssetData(sellCurrency.wrapperAddress.toLowerCase()),
 
