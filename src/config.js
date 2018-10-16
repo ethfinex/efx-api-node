@@ -1,6 +1,7 @@
 module.exports = {
 
-  api: 'https://test.ethfinex.com/trustless/v1',
+  // test environment 'https://test.ethfinex.com/trustless/v1',
+  api: 'https://api.ethfinex.com/trustless/v1',
 
   defaultExpiry: 3600,
   defaultProvider: 'http://localhost:8545',
