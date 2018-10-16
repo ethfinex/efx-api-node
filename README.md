@@ -11,6 +11,7 @@ A Node.JS client for Ethfinex API
     - [Instancing](#instancing)
         - [Using MetaMask or a local node](#using-metamask-or-a-local-node)
         - [Using a remote node](#using-a-remote-node)
+        - [Configuration](#configuration)
 - [Placing an Order](#placing-an-order)
     - [Approving tokens](#approving-tokens)
     - [Locking tokens](#locking-tokens)
@@ -79,6 +80,57 @@ const config = efx.config
 ```javascript
 const EFX = require('efx-api-node')
 const web3 = new EFX.Web3("https://your-web3-provider")
+const efx = await EFX()
+
+const config = efx.config
+```
+
+#### Configuration
+
+It's possible to overwrite values on the configuration on a per instance basis.
+
+The [default configuration](./src/config.js) can be overwriten with an optional
+parameter userConf when calling the EFX function.
+
+For instance:
+
+```javascript
+  efx = await EFX(web3, {
+    api: 'https://your-custom-api-address'
+  })
+```
+
+The configuration is also merged with the configuration provided by the exchange
+on the HTTP endpoint `/trustless/v1/r/get/conf` which at the moment looks similar
+to this:
+
+```json
+"0x":{
+    "minOrderTime":300,
+    "tokenRegistry":{
+      "ETH":{
+          "decimals":18,
+          "wrapperAddress":"0x965808e7f815cfffd4c018ef2ba4c5a65eba087e",
+          "minOrderSize":0.02
+      },
+      "USD":{
+          "decimals":6,
+          "wrapperAddress":"0x83e42e6d1ac009285376340ef64bac1c7d106c89",
+          "tokenAddress":"0x0736d0c130b2ead47476cc262dbed90d7c4eeabd",
+          "minOrderSize":10
+      }
+    },
+    "ethfinexAddress":"0x9faf5515f177f3a8a845d48c19032b33cc54c09c",
+    "exchangeAddress":"0x67799a5e640bc64ca24d3e6813842754e546d7b1",
+    "exchangeSymbols":[
+      "tETHUSD"
+    ]
+}
+```
+
+The complete compiled configuration is accessible through `efx.config`, for instance:
+
+```javascript
 const efx = await EFX()
 
 const config = efx.config
