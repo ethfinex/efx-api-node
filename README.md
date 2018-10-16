@@ -1,7 +1,5 @@
 # Ethfinex Trading API for Node.JS
 
-[![Build Status](https://travis-ci.org/hems/efx-api-node.svg?branch=master)](https://travis-ci.org/hems/efx-api-node)
-
 A Node.JS reference implementation of the Ethfinex API
 
  - API Documentation: [https://ethfinex.docs.apiary.io/](https://ethfinex.docs.apiary.io/)
