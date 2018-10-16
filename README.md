@@ -1,3 +1,5 @@
+<img src="https://avatars3.githubusercontent.com/u/33315316?s=200&v=4" align="right" />
+
 # Ethfinex Trading API for Node.JS
 
 A Node.JS client for Ethfinex API
