@@ -21,7 +21,7 @@ module.exports = async (efx, token, amount, nonce, signature) => {
     args = args.concat([0, '0x', '0x', 0])
   }
 
-  // we need to call releaseTokens to fetch a signature
+  // we need to call releaseTokens to fetch a signed permission to unlock
   if( Date.now() / 1000 < depositLock ) {
     const response = await efx.releaseTokens(token, nonce, signature)
 
