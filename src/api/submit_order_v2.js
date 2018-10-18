@@ -18,7 +18,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, valid
 
   const type = 'EXCHANGE LIMIT'
 
-  const protocol = '0x2'
+  const protocol = '0x'
 
   symbol = 't' + symbol
 
