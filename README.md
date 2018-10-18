@@ -57,7 +57,7 @@ Alternatively on the browser you can use the standalone build
 Authentication to make all the following requests is done by signing using an
 Ethereum private key. Signing is handled by the Ethfinex Trustless client
 library if the account is available and unlocked. However if signing using
-a hardware wallet, or using a raw private key, the message and signature needs
+a hardware wallet, or using a raw private key, the message and signature need
 to be prepared separately.
 
 ### Pre Requisites
@@ -82,7 +82,7 @@ const config = efx.config
 ```javascript
 const EFX = require('efx-api-node')
 const web3 = new EFX.Web3("https://your-web3-provider")
-const efx = await EFX()
+const efx = await EFX(web3)
 
 const config = efx.config
 ```
@@ -92,7 +92,7 @@ const config = efx.config
 It's possible to overwrite values on the configuration on a per instance basis.
 
 The [default configuration](./src/config.js) can be overwriten with an optional
-parameter userConf when calling the EFX function.
+parameter `userConf` when calling the EFX function.
 
 For instance:
 
@@ -140,7 +140,7 @@ const config = efx.config
 
 ### Placing an Order
 
-Before placing an order, you are required to lock tokens into the Ethfinex Wrapper
+Before placing an order, you are required to lock tokens into the Ethfinex wrapper
 contracts. This allows for guaranteed execution and ensures Trustless orders
 can be added directly onto the centralised order book, and matched against
 trades from centralised users.
@@ -188,10 +188,10 @@ const price = 0.0025
 const orderId = await efx.submitOrder(symbol, amount, price)
 ```
 
-Orders are generated and submitted, returning either an orderId or error. A
-full list of possible errors and their associated explanation is available here.
+Orders are generated and submitted, returning either an `orderId` or error. A
+full list of possible errors and their associated explanation is available [here](https://ethfinex.docs.apiary.io/#introduction/error-codes/troubleshooting).
 
-When submitting this order we used the 3 first parameters:
+When submitting this order we use the 3 first parameters:
 
  - `symbol` is the pair which you wish to trade
  - `amount` is specified in the first currency in the symbol (i.e. ZRXETH). For a
@@ -213,7 +213,7 @@ You can additionally provide
  to 3600 seconds as specified [on the default configuration](./src/config.js#L5)
 
 ### Cancelling Orders
-Cancelling orders requires the orderId you wish to cancel to be signed by the
+Cancelling orders requires the `orderId` you wish to cancel to be signed by the
 address which created and placed the order.
 
 #### Standard Cancel
@@ -249,9 +249,9 @@ const historicalOrders = await efx.getOrderHist()
 ```
 
 If an unlocked account is not available to sign with, for example when using a
-raw private key or hardware wallet, authentication nonce and signature must be
-pre-signed and passed into the calls. nonce is required to be a timestamp less
-than 3 hours in the future. signature is that nonce signed using the relevant
+raw private key or hardware wallet, authentication `nonce` and `signature` must be
+pre-signed and passed into the calls. `nonce` is required to be a timestamp less
+than 3 hours in the future. `signature` is the `nonce` signed using the relevant
 private key for the address who's orders you wish to view.
 
 ```javascript
@@ -326,7 +326,7 @@ const response = await efx.contract.unlock(token, amount, forTime)
 
 ## More Examples
 
-  Aside from this examples, there are complete examples on the [examples folder](./src/examples)
+  Aside from these examples, there are complete examples in the [examples folder](./src/examples)
 ### Submitting a buy order
 
 ```js
