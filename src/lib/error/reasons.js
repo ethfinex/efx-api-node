@@ -92,7 +92,7 @@ module.exports = {
     Failed to sign release permission, please try request again.
   `,
   ERR_TRADING_ETHFX_HOT_SIZE_INVALID: `
-    Insufficient Ethfinex liquidity available to trade trustlessly, please wait and re-submit your order.
+    Unable to place order of this size at the moment. Please place smaller order or wait and re-submit your order later.
   `,
   ERR_TRADING_ETHFX_HOT_BALANCE_INSUFFICIENT: `
     Too many settlements currently pending on-chain, please wait and re-submit your order.
