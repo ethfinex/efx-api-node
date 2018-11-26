@@ -1,79 +1,319 @@
+<img src="https://avatars3.githubusercontent.com/u/33315316?s=200&v=4" align="right" />
+
 # Ethfinex Trading API for Node.JS
 
-[![Build Status](https://travis-ci.org/hems/efx-api-node.svg?branch=master)](https://travis-ci.org/hems/efx-api-node)
+A Node.JS client for Ethfinex API
 
-A Node.JS reference implementation of the Ethfinex API
+- [Installation](#installation)
+    - [NPM](#npm)
+    - [Prebuild for browser](#prebuild-for-browser)
+- [Setup](#setup)
+    - [Authentication](#authentication)
+    - [Pre Requisites](#pre-requisites)
+    - [Instancing](#instancing)
+        - [Using MetaMask or a local node](#using-metamask-or-a-local-node)
+        - [Using a remote node](#using-a-remote-node)
+        - [Configuration](#configuration)
+- [Placing an Order](#placing-an-order)
+    - [Approving tokens](#approving-tokens)
+    - [Locking tokens](#locking-tokens)
+    - [Submitting an order](#submitting-an-order)
+- [Cancelling Orders](#cancelling-orders)
+    - [Standard cancel](#standard-cancel)
+    - [Signing externally](#signing-externally)
+- [Account History](#account-history)
+- [Unlocking Tokens](#unlocking-tokens)
+- [More examples](#more-examples)
+    - [Submitting a buy order](#submitting-a-buy-order)
+    - [Submitting a sell order](#submitting-a-sell-order)
+    - [Fetching info about specific order](#fetchin-info-about-specific-order)
+- [Troubleshooting](#troubleshooting)
+- [Developing](#developing)
+    - [Setup](#setup-1)
+    - [Run a node](#run-a-node)
+    - [Implementing-a-new-future](#implementing-a-new-feature)
+- [Useful Links](#links)
+- [Developing](#developing)
 
- - API Documentation: [https://ethfinex.docs.apiary.io/](https://ethfinex.docs.apiary.io/)
 
-## Installing
+## Installation
+
+### NPM
 
 ```bash
   npm i efx-api-node
 ```
+### Prebuild for browser
 
 Alternatively on the browser you can use the standalone build
 ```html
 <script src="http://path/to/dist/efx.js"></script>
 ```
-## Usage
 
-### Create your efx-api-node instance
+## Setup
 
- - running on node.js context
-```js
+### Authentication
+
+Authentication to make all the following requests is done by signing using an
+Ethereum private key. Signing is handled by the Ethfinex Trustless client
+library if the account is available and unlocked. However if signing using
+a hardware wallet, or using a raw private key, the message and signature need
+to be prepared separately.
+
+### Pre Requisites
+
+  - An ethereum wallet
+  - A web3 provider with your account or a private key
+    * Such as MetaMask, keystore file, hardware wallet or raw private key
+
+### Instancing
+
+#### Using MetaMask or a local node
+
+```javascript
 const EFX = require('efx-api-node')
+const efx = await EFX()
 
-const web3 = new EFX.Web3(/*your web3 provider*/)
-
-const efx = await EFX( web3 )
+const config = efx.config
 ```
 
- - running on browser context with window.web3 available
-```js
+#### Using a remote node
+
+```javascript
 const EFX = require('efx-api-node')
+const web3 = new EFX.Web3("https://your-web3-provider")
+const efx = await EFX(web3)
 
-const efx = await EFX() // we will automatically use your web3.currentProvider
+const config = efx.config
 ```
 
- - running standalone build on browser without window.web3 available
-```html
-<script src="../dist/efx.js"></script>
+#### Configuration
 
-<script>
-  web3 = new EFX.Web3(/*your web3 provider*/)
-  efx  = await EFX(web3)
-</script>
+It's possible to overwrite values on the configuration on a per instance basis.
+
+The [default configuration](./src/config.js) can be overwriten with an optional
+parameter `userConf` when calling the EFX function.
+
+For instance:
+
+```javascript
+  efx = await EFX(web3, {
+    api: 'https://your-custom-api-address'
+  })
 ```
+
+The configuration is also merged with the configuration provided by the exchange
+on the HTTP endpoint `/trustless/v1/r/get/conf` which at the moment looks similar
+to this:
+
+```json
+"0x":{
+    "minOrderTime":300,
+    "tokenRegistry":{
+      "ETH":{
+          "decimals":18,
+          "wrapperAddress":"0x965808e7f815cfffd4c018ef2ba4c5a65eba087e",
+          "minOrderSize":0.02
+      },
+      "USD":{
+          "decimals":6,
+          "wrapperAddress":"0x83e42e6d1ac009285376340ef64bac1c7d106c89",
+          "tokenAddress":"0x0736d0c130b2ead47476cc262dbed90d7c4eeabd",
+          "minOrderSize":10
+      }
+    },
+    "ethfinexAddress":"0x9faf5515f177f3a8a845d48c19032b33cc54c09c",
+    "exchangeAddress":"0x67799a5e640bc64ca24d3e6813842754e546d7b1",
+    "exchangeSymbols":[
+      "tETHUSD"
+    ]
+}
+```
+
+The complete compiled configuration is accessible through `efx.config`, for instance:
+
+```javascript
+const efx = await EFX()
+
+const config = efx.config
+```
+
+### Placing an Order
+
+Before placing an order, you are required to lock tokens into the Ethfinex wrapper
+contracts. This allows for guaranteed execution and ensures Trustless orders
+can be added directly onto the centralised order book, and matched against
+trades from centralised users.
+
+### Approving Tokens
+
+
+The first time locking an ERC20 Ethereum-based token from a specific account,
+you are required to approve it to interact with the time-lock smart contracts.
+
+```javascript
+const token = 'ZRX'
+efx.contract.approve(token)
+```
+
+This step does not need to be repeated again, and subsequently you are required
+only to call the lock function. This transfers tokens into the wrapper token
+contract, ready to trade.
+
 
 ### Locking tokens
 
-This will allow the lockTokenContract to transfer on the user's behalf.
-This step only needs to be carried out the first time interacting with each new ERC20 token.
-
-```js
-
+```javascript
 const token = 'ZRX'
-
-efx.contract.approve(token)
-
-```
-
-Once you have approved, you can simply call .lock!
-
-This will transfer the specific token into the lockTokenContract.
-
-```js
-
-const token = 'ZRX'
-const amount = 0.001
-const forTime = 5
+const amount = 15 // Number of tokens to lock
+const forTime = 48 // Time after which unlocking does not require permission
 
 const response = await efx.contract.lock(token, amount, forTime)
+```
 
+The time limit specified when locking is a maximum - tokens can always be
+unlocked after this time limit (in hours) expires. In order to unlock tokens
+before this expires, you must request a signed permission from Ethfinex.
+
+This is always returned if you have no orders open involving those tokens.
+
+### Submitting an order
+
+
+```javascript
+const symbol = 'ZRXETH'
+const amount = -15
+const price = 0.0025
+
+const orderId = await efx.submitOrder(symbol, amount, price)
+```
+
+Orders are generated and submitted, returning either an `orderId` or error. A
+full list of possible errors and their associated explanation is available [here](https://ethfinex.docs.apiary.io/#introduction/error-codes/troubleshooting).
+
+When submitting this order we use the 3 first parameters:
+
+ - `symbol` is the pair which you wish to trade
+ - `amount` is specified in the first currency in the symbol (i.e. ZRXETH). For a
+sell, amount is negative. Amount accepts either maximum 8 d.p, or as many
+decimals as are available on the relevant token's smart contract if it is
+fewer than 8.
+ - `price` is specified in the second currency in the symbol (i.e. ZRXETH). Prices
+should be specified to 5 s.f. maximum.
+
+The client library also provides methods for [submitBuyOrder](./src/api/submit_buy_order.js)
+and [submitSellOrder](./src/api/submit_sell_order.js).
+
+You can additionally provide
+
+ - `gid` - Group ID for your order
+ - `cid` - Client order ID
+ - `signedOrder` - A previously signed order, in case you're handling signing
+ - `validFor` - optional amount of hours this order will be valid for, default
+ to 3600 seconds as specified [on the default configuration](./src/config.js#L5)
+
+### Cancelling Orders
+Cancelling orders requires the `orderId` you wish to cancel to be signed by the
+address which created and placed the order.
+
+#### Standard Cancel
+
+In case you're not signing the requests yourself
+
+```javascript
+await efx.cancelOrder(orderId)
+```
+
+#### Signing Externally
+
+In case you're signing the requests yourself:
+
+```javascript
+const sig = await efx.sign(parseInt(orderId).toString(16))
+const sigConcat = ethUtils.toRpcSig(sig.v, ethUtils.toBuffer(sig.r), ethUtils.toBuffer(sig.s))
+
+await efx.cancelOrder(parseInt(orderId), sigConcat)
+```
+
+### Account History
+
+If you already have an unlocked wallet available to web3 to use for signing,
+you can simply get open orders and order history from the API as follows:
+
+```javascript
+// Get all open orders
+const openOrders = await efx.getOrders()
+
+// Get all historical orders
+const historicalOrders = await efx.getOrderHist()
+```
+
+If an unlocked account is not available to sign with, for example when using a
+raw private key or hardware wallet, authentication `nonce` and `signature` must be
+pre-signed and passed into the calls. `nonce` is required to be a timestamp less
+than 3 hours in the future. `signature` is the `nonce` signed using the relevant
+private key for the address who's orders you wish to view.
+
+```javascript
+const ethUtils = require('ethereumjs-utils')
+
+const privKey = /* Your Private Key */
+const nonce = ((Date.now() / 1000) + 10800) + ''
+
+const hash = ethUtils.hashPersonalMessage(ethUtils.toBuffer(nonce.toString(16)))
+const signature = ethUtils.ecsign(hash, privKey)
+
+// Get all open orders
+const openOrders = await efx.getOrders(null, null, nonce, signature)
+
+// Get all historical orders
+const historicalOrders = await efx.getOrderHist(null, null, nonce, signature)
 ```
 
 ### Unlocking tokens
+
+If tokens are not used in active orders they can always be unlocked. If
+unlocking after the time specified when locking has expired, no permission is
+required. When unlocking before this, Ethfinex must sign a release permission,
+after verifying that you have no orders currently active which require that token.
+
+If you need permission the library will [automatically call the expected endpoint](./src/api/contract/unlock.js#L24)
+on Ethfinex API to ask for such permission.
+
+```javascript
+const token = 'ZRX'
+const amount = 15
+const response = await efx.contract.unlock(token, amount)
+```
+
+When a particular token's lock time has not yet expired, permission is required
+from Ethfinex to unlock early. This permission can be requested directly from
+Ethfinex using an API call.
+
+The request must be authenticated using a nonce and signature, and the response
+contains a signed permission from Ethfinex. This permission will always be
+granted if Ethfinex is online and your address has no open orders involving
+those tokens. In case you're signing the requests yourself you could use the
+following code:
+
+```javascript
+// This example shows how to generate the signature from a raw private key
+// Signing using hardware wallets such as Ledger or Trezor can be done using their documentation
+
+const ethUtils = require('ethereumjs-utils')
+
+const privKey = /* Your Private Key */
+const nonce = ((Date.now() / 1000) + 350) + ''
+
+const hash = ethUtils.hashPersonalMessage(ethUtils.toBuffer(nonce.toString(16)))
+const signature = ethUtils.ecsign(hash, privKey)
+
+const response = await efx.contract.unlock(token, amount, nonce, signature)
+
+```
+
+
+
 
 ```js
 
@@ -84,6 +324,9 @@ const response = await efx.contract.unlock(token, amount, forTime)
 
 ```
 
+## More Examples
+
+  Aside from these examples, there are complete examples in the [examples folder](./src/examples)
 ### Submitting a buy order
 
 ```js
@@ -108,15 +351,7 @@ const orderId = await efx.submitOrder(symbol, amount, price)
 
 ```
 
-### Getting all orders
-
-```js
-
-const orders = await efx.getOrderList()
-
-```
-
-### Getting an order
+### Fetching info about specific order
 
 ```js
 
@@ -126,15 +361,28 @@ const order = await efx.getOrder(id)
 
 ```
 
+## Troubleshooting
+
+A list of error codes returned by the API and reasons are available [here](./src/lib/error/reasons.js#L1).
+Some more detailed explanations can also be found in the [API Documentation](https://ethfinex.docs.apiary.io/).
+
+If you have suggestions to improve this guide or any of the available
+documentation, please raise an issue on Github, or email [feedback@ethfinex.com](mailto:feedback@ethfinex.com).
+
+## Links
+
+ - [API documentation](https://ethfinex.docs.apiary.io/)
+ - [Ethfinex trustless developer guide](https://blog.ethfinex.com/ethfinex-trustless-developer-guide/)
+
 ## Developing
 
-### 1. Setup
+### Setup
 
  - `git clone`
  - `npm install`
  - `bash <(curl https://get.parity.io -L) # install parity`
 
-### 2. Run a node
+### Run a node
 
 On kovan:
 
@@ -156,7 +404,7 @@ easily run an eth rpc node emulator. (NOTE: currently tests will fail using gana
 npm test:rpc
 ```
 
-### 3. Implementing a new feature
+### Implementing a new feature
 
 Starting by watching the test files ( you will need a node running )
 
@@ -170,21 +418,21 @@ $ npm run test:watch
 
  * _You will need a ropsten node to do blockchain related tests_
 
-### 4. All tests
+### Testing
 
-### 4.1 Automated tests on node js test
+#### On node.js
 
 ```bash
 $ npm run test
 ```
 
-### 4.2 Automated tests on a headless browser ( using browserify and mochify )
+#### On a headless browser ( using browserify and mochify )
 
 ```bash
 $ npm run test:web
 ```
 
-### 4.3 Testing manually on your browser
+#### Manually on your browser on a browser console
 
   - Very useful in case you want to issue commands from Google Chrome
   while using MetaMask !
@@ -195,7 +443,7 @@ $ npm run build:web:run
 
   - Open your browser on [http://localhost:2222](http://localhost:2222)
 
-## 5. Building for browers
+### Building for browers
 
   - This will build the whole library as one big ugly standalone js file ( uses browserify )
 

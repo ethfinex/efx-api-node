@@ -3,13 +3,18 @@
 const { assert } = require('chai')
 
 const instance = require('./instance')
+const mockGetConf = require('./fixtures/nock/get_conf')
 
 let efx
 
 before(async () => {
+  mockGetConf()
+
   efx = await instance()
 })
 
+
+return
 
 it("efx.contract.locked('ETH') // returns amount of ETH locked", async () => {
   const token = 'ETH'
@@ -21,8 +26,6 @@ it("efx.contract.locked('ETH') // returns amount of ETH locked", async () => {
   assert.notOk(isNaN(response))
 })
 
-/**
-
 it("efx.contract.depositLock('ETH') // returns depositLock value", async () => {
   const token = 'ETH'
 
@@ -30,8 +33,6 @@ it("efx.contract.depositLock('ETH') // returns depositLock value", async () => {
 
   assert.notOk(isNaN(response))
 })
-
-
 
 it("efx.contract.isApproved('ZRX') // returns allowance", async () => {
   const token = 'ZRX'
@@ -73,8 +74,6 @@ it("efx.contract.lock('ZRX', 0.0001, duration) // lock 0.0001 ZRX", async () => 
 
   // TODO: - validate receipt fields
 })
-
-  **/
 
 it("efx.contract.unlock('ETH', 0.01) // unlock 0.0001 ETH", async () => {
   const token = 'ETH'

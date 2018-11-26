@@ -10,6 +10,7 @@ module.exports = async (efx, orderId, signature) => {
 
   const protocol = '0x'
 
+  orderId = parseInt(orderId)
   const data = {orderId, protocol, signature}
 
   return parse(post(url, {json: data}))

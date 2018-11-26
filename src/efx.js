@@ -17,9 +17,10 @@ module.exports = async (web3, userConfig = {}) => {
   aware(efx)
 
   // merge user config with default config
+  // needed for the efx.getConfig method
   efx.config = Object.assign({}, defaultConfig, userConfig)
 
-  // eftcg excgabge config
+  // ethfinex exchange config
   const exchangeConf = await efx.getConfig()
 
   //user config has priority
@@ -51,7 +52,7 @@ module.exports = async (web3, userConfig = {}) => {
 
   // REVIEW: should we actually use web3.eth.defaultAccount ?
   // see: https://github.com/MetaMask/faq/blob/master/DEVELOPERS.md#raising_hand-account-list-reflects-user-preference
-  await efx.account.select(0)
+  await efx.account.select(efx.config.account)
 
   if (!efx.get('account')) {
     console.warn('Please specify a valid account or account index')
