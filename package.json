@@ -1,6 +1,6 @@
 {
   "name": "efx-api-node",
-  "version": "1.2.6",
+  "version": "1.2.7",
   "main": "src/efx.js",
   "contributors": [
     "Henrique Matias <hems.inlet@gmail.com>",
@@ -27,6 +27,12 @@
     "build:web:hash": "hash-filename ./dist/efx*.js;del ./dist/{efx.js,efx.min.js}",
     "build:web:run": "browserify --debug ./src/efx.js --standalone EFX | browser-run --port 2222"
   },
+  "keywords": [
+    "bitfinex",
+    "ethfinex",
+    "ethereum"
+  ],
+  "homepage": "https://github.com/ethfinex/efx-api-node",
   "license": "MIT",
   "dependencies": {
     "0x.js": "^0.38.4",
