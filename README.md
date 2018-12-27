@@ -201,6 +201,10 @@ fewer than 8.
  - `price` is specified in the second currency in the symbol (i.e. ZRXETH). Prices
 should be specified to 5 s.f. maximum.
 
+**Warning:** Trustless orders will always be settled at the **exact price you specify**, and can never be adjusted by Ethfinex, **even if it is at a worse price than the market**. 
+
+For example, when placing a sell order, if the `price` specified is below the highest bid available on the order book, the order will be executed instantly at market. However, the amount you receive will reflect only the `price` that you entered, and not the market price at the time of execution.
+
 The client library also provides methods for [submitBuyOrder](./src/api/submit_buy_order.js)
 and [submitSellOrder](./src/api/submit_sell_order.js).
 
