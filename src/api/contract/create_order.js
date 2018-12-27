@@ -17,15 +17,15 @@ module.exports = (efx, symbol, amount, price, validFor) => {
   let buyAmount, sellAmount
 
   if (amount > 0) {
-    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).integerValue(BigNumber.ROUND_FLOOR).toString()
-    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).times(price).integerValue(BigNumber.ROUND_FLOOR).toString()
+    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).times(1 + (buyCurrency.settleSpread || 0)).integerValue(BigNumber.ROUND_FLOOR).toString()
+    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).times(price).times(1 + (sellCurrency.settleSpread || 0)).integerValue(BigNumber.ROUND_FLOOR).toString()
 
     // console.log( "Buying " + amount + ' ' + buySymbol + " for: " + price + ' ' + sellSymbol )
   }
 
   if (amount < 0) {
-    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).times(price).abs().integerValue(BigNumber.ROUND_FLOOR).toString()
-    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).abs().integerValue(BigNumber.ROUND_FLOOR).toString()
+    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).times(price).abs().times(1 + (buyCurrency.settleSpread || 0)).integerValue(BigNumber.ROUND_FLOOR).toString()
+    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).abs().times(1 + (sellCurrency.settleSpread || 0)).integerValue(BigNumber.ROUND_FLOOR).toString()
 
     // console.log( "Selling " + Math.abs(amount) + ' ' + sellSymbol + " for: " + price + ' ' + buySymbol )
   }

@@ -18,6 +18,7 @@ A Node.JS client for Ethfinex API
     - [Approving tokens](#approving-tokens)
     - [Locking tokens](#locking-tokens)
     - [Submitting an order](#submitting-an-order)
+    - [Tether market shift](#tether-market-shift)
 - [Cancelling Orders](#cancelling-orders)
     - [Standard cancel](#standard-cancel)
     - [Signing externally](#signing-externally)
@@ -119,7 +120,8 @@ to this:
           "decimals":6,
           "wrapperAddress":"0x83e42e6d1ac009285376340ef64bac1c7d106c89",
           "tokenAddress":"0x0736d0c130b2ead47476cc262dbed90d7c4eeabd",
-          "minOrderSize":10
+          "minOrderSize":10,
+          "settleSpread": 0.002
       }
     },
     "ethfinexAddress":"0x9faf5515f177f3a8a845d48c19032b33cc54c09c",
@@ -201,7 +203,7 @@ fewer than 8.
  - `price` is specified in the second currency in the symbol (i.e. ZRXETH). Prices
 should be specified to 5 s.f. maximum.
 
-**Warning:** Trustless orders will always be settled at the **exact price you specify**, and can never be adjusted by Ethfinex, **even if it is at a worse price than the market**. 
+**Warning:** Trustless orders will always be settled at the **exact price you specify**, and can never be adjusted by Ethfinex, **even if it is at a worse price than the market**.
 
 For example, when placing a sell order, if the `price` specified is below the highest bid available on the order book, the order will be executed instantly at market. However, the amount you receive will reflect only the `price` that you entered, and not the market price at the time of execution.
 
@@ -215,6 +217,39 @@ You can additionally provide
  - `signedOrder` - A previously signed order, in case you're handling signing
  - `validFor` - optional amount of hours this order will be valid for, default
  to 3600 seconds as specified [on the default configuration](./src/config.js#L5)
+
+### Tether market shift
+
+The XXX/**USDT** markets on Trustless build on the liquidity of XXX/**USD** markets on the
+centralised exchanges of Bitfinex and Ethfinex. However since there is often not a
+direct 1:1 rate between USD and USDT, a shift must be applied to the order books.
+
+The configuration for Trustless returns a `settleSpread` parameter:
+
+```json
+      "USD":{
+          "decimals":6,
+          "wrapperAddress":"0x83e42e6d1ac009285376340ef64bac1c7d106c89",
+          "tokenAddress":"0x0736d0c130b2ead47476cc262dbed90d7c4eeabd",
+          "minOrderSize":10,
+          "settleSpread": 0.02
+      }
+```
+
+This `settleSpread` is indicative of the current USDT/USD exchange rate. When orders are placed
+on USDT markets, the settlement price in the signed order must be shifted by the `settleSpread`
+parameter before the order is accepted.
+
+For example, if placing a buy order on the ETH/USD(T) market at a price of 100 USD relative to the centralised exchange the order will be settled on Trustless at a price of 102 USDT.
+Equally a sell order at 100 USD would receive 102 USDT when settled on Trustless.
+
+```javascript
+efx.submitOrder(symbol, amount, price) // => settlementPrice = price * (1 + settleSpread)
+```
+The `settleSpread` parameter is set dynamically as a 30 minute rolling mean of the USDT/USD
+market exchange rate. When placing orders using `submitOrder` or generating them with
+`createOrder` the shift is applied for you.
+
 
 ### Cancelling Orders
 Cancelling orders requires the `orderId` you wish to cancel to be signed by the
