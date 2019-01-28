@@ -1,4 +1,4 @@
-const {assetDataUtils, generatePseudoRandomSalt} = require('@0xproject/order-utils')
+const {assetDataUtils, generatePseudoRandomSalt} = require('@0x/order-utils')
 const BigNumber = require('bignumber.js');
 
 module.exports = (efx, symbol, amount, price, validFor) => {
@@ -17,15 +17,15 @@ module.exports = (efx, symbol, amount, price, validFor) => {
   let buyAmount, sellAmount
 
   if (amount > 0) {
-    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).integerValue(BigNumber.ROUND_FLOOR).toString()
-    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).times(price).integerValue(BigNumber.ROUND_FLOOR).toString()
+    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).integerValue(BigNumber.ROUND_FLOOR)
+    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).times(price).integerValue(BigNumber.ROUND_FLOOR)
 
     // console.log( "Buying " + amount + ' ' + buySymbol + " for: " + price + ' ' + sellSymbol )
   }
 
   if (amount < 0) {
-    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).times(price).abs().integerValue(BigNumber.ROUND_FLOOR).toString()
-    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).abs().integerValue(BigNumber.ROUND_FLOOR).toString()
+    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).times(price).abs().integerValue(BigNumber.ROUND_FLOOR)
+    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).abs().integerValue(BigNumber.ROUND_FLOOR)
 
     // console.log( "Selling " + Math.abs(amount) + ' ' + sellSymbol + " for: " + price + ' ' + buySymbol )
   }
@@ -40,19 +40,19 @@ module.exports = (efx, symbol, amount, price, validFor) => {
     takerAddress: '0x0000000000000000000000000000000000000000',
 
     feeRecipientAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
-    senderAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
+    senderAddress: '0x14d06788090769f669427b6aea1c0240d2321f34', // efx.config['0x'].ethfinexAddress.toLowerCase(),
 
     makerAssetAmount: sellAmount,
 
     takerAssetAmount: buyAmount,
 
-    makerFee: web3.utils.toBN('0').toString(10),
+    makerFee: web3.utils.toBN('0'),
 
-    takerFee: web3.utils.toBN('0').toString(10),
+    takerFee: web3.utils.toBN('0'),
 
-    expirationTimeSeconds: web3.utils.toBN(expiration).toString(10),
+    expirationTimeSeconds: new BigNumber(expiration),
 
-    salt: generatePseudoRandomSalt().toString(10),
+    salt: generatePseudoRandomSalt(),
 
     makerAssetData: assetDataUtils.encodeERC20AssetData(sellCurrency.wrapperAddress.toLowerCase()),
 
