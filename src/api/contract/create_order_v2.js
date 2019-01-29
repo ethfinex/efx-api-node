@@ -40,7 +40,7 @@ module.exports = (efx, symbol, amount, price, validFor) => {
     takerAddress: '0x0000000000000000000000000000000000000000',
 
     feeRecipientAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
-    senderAddress: '0x14d06788090769f669427b6aea1c0240d2321f34', // efx.config['0x'].ethfinexAddress.toLowerCase(),
+    senderAddress: efx.config['0x'].ethfinexAddress.toLowerCase(),
 
     makerAssetAmount: sellAmount,
 
