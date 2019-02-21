@@ -1,7 +1,7 @@
 const {post} = require('request-promise')
 const parse = require('../lib/parse/response/submit_order')
 
-module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, validFor) => {
+module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, validFor, partner_id, fee_rate) => {
   if (!(symbol && amount && price)) {
     throw new Error('order, symbol, amount and price are required')
   }
@@ -30,7 +30,9 @@ module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, valid
     amount,
     price,
     meta,
-    protocol
+    protocol,
+    partern_id,
+    fee_rate
   }
 
   const url = efx.config.api + '/w/on'
