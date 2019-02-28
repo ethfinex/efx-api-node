@@ -1,8 +1,15 @@
 const {assetDataUtils, generatePseudoRandomSalt} = require('@0x/order-utils')
 const BigNumber = require('bignumber.js');
 
-module.exports = (efx, symbol, amount, price, validFor) => {
+module.exports = (efx, symbol, amount, price, validFor, fee_rate = 0) => {
   const { web3, config } = efx
+
+  if(fee_rate < 0 || fee_rate > 0.05 || isNaN(fee_rate)){
+    // use 0.0025 for 0.25% fee
+    // use 0.01   for 1% fee
+    // use 0.05   for 5% fee
+    throw('fee_rate should be between 0 and 0.05')
+  }
 
   // symbols are always 3 letters
   const symbolOne = symbol.substr(0, symbol.length - 3)
@@ -17,15 +24,39 @@ module.exports = (efx, symbol, amount, price, validFor) => {
   let buyAmount, sellAmount
 
   if (amount > 0) {
-    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).times(1 + (buyCurrency.settleSpread || 0)).integerValue(BigNumber.ROUND_FLOOR)
-    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).times(price).times(1 + (sellCurrency.settleSpread || 0)).integerValue(BigNumber.ROUND_FLOOR)
+    buyAmount = (new BigNumber(10))
+      .pow(buyCurrency.decimals)
+      .times(amount)
+      .times(1 + (buyCurrency.settleSpread || 0))
+      .times(1 - fee_rate)
+      .integerValue(BigNumber.ROUND_FLOOR)
+
+    sellAmount = (new BigNumber(10))
+      .pow(sellCurrency.decimals)
+      .times(amount)
+      .times(price)
+      .times(1 + (sellCurrency.settleSpread || 0))
+      .integerValue(BigNumber.ROUND_FLOOR)
 
     // console.log( "Buying " + amount + ' ' + buySymbol + " for: " + price + ' ' + sellSymbol )
   }
 
   if (amount < 0) {
-    buyAmount = (new BigNumber(10)).pow(buyCurrency.decimals).times(amount).times(price).abs().times(1 + (buyCurrency.settleSpread || 0)).integerValue(BigNumber.ROUND_FLOOR)
-    sellAmount = (new BigNumber(10)).pow(sellCurrency.decimals).times(amount).abs().times(1 + (sellCurrency.settleSpread || 0)).integerValue(BigNumber.ROUND_FLOOR)
+    buyAmount = (new BigNumber(10))
+      .pow(buyCurrency.decimals)
+      .times(amount)
+      .times(price)
+      .abs()
+      .times(1 + (buyCurrency.settleSpread || 0))
+      .times(1 - fee_rate)
+      .integerValue(BigNumber.ROUND_FLOOR)
+
+    sellAmount = (new BigNumber(10))
+      .pow(sellCurrency.decimals)
+      .times(amount)
+      .abs()
+      .times(1 + (sellCurrency.settleSpread || 0))
+      .integerValue(BigNumber.ROUND_FLOOR)
 
     // console.log( "Selling " + Math.abs(amount) + ' ' + sellSymbol + " for: " + price + ' ' + buySymbol )
   }

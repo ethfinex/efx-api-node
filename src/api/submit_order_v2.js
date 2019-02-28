@@ -7,9 +7,8 @@ module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, valid
   }
 
   //TODO: check if symbol is a valid symbol
-
   if(!signedOrder){
-    const order = efx.contract.createOrderV2(symbol, amount, price, validFor)
+    const order = efx.contract.createOrderV2(symbol, amount, price, validFor, fee_rate)
 
     signedOrder = await efx.sign.orderV2(order)
   }
@@ -31,7 +30,7 @@ module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, valid
     price,
     meta,
     protocol,
-    partern_id,
+    partner_id,
     fee_rate
   }
 
