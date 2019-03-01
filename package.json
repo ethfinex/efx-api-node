@@ -1,7 +1,7 @@
 {
   "name": "efx-api-node",
   "version": "1.2.9",
-  "main": "src/efx.js",
+  "main": "dist/efx.min.js",
   "contributors": [
     "Henrique Matias <hems.inlet@gmail.com>",
     "Will Harborne <will.harborne@gmail.com>"
@@ -21,7 +21,7 @@
     "test:watch": "mocha ./test/index.js --watch ./ --timeout 1200000000",
     "test:web": "mochify ./test/index.js --timeout 1200000000",
     "test:web:watch": "mochify ./test/index.js --watch --timeout 1200000000",
-    "build": "npm run build:web:browserify; npm run build:web:minify; npm run build:web:hash",
+    "build": "npm run build:web:browserify; npm run build:web:minify;",
     "build:web:browserify": "del ./dist/*.js; browserify ./src/efx.js --standalone EFX -o ./dist/efx.js",
     "build:web:minify": "node-minify --compressor uglify-es --input './dist/efx.js' --output './dist/efx.min.js'",
     "build:web:hash": "hash-filename ./dist/efx*.js;del ./dist/{efx.js,efx.min.js}",
