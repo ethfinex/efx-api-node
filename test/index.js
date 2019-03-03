@@ -20,7 +20,7 @@ describe('~ efx-api-node', async () => {
 
     //nock.recorder.rec()
 
-    mockGetConf()
+    //mockGetConf()
 
     const efx = await instance(null, {defaultExpiry: 222})
 
@@ -55,15 +55,17 @@ describe('~ efx-api-node', async () => {
   })
 
   describe('Signing', () => {
-    require('./signing')
+    //require('./signing')
   })
 
   describe('Blockchain API', () => {
     // comment the line below if you want to skip blockchain tests
     // you need a ropsten node with some ETH / ZRX in order to test
     // those. FIXME: need contracts deployed during test
-    require('./blockchain-api')
+    //require('./blockchain-api')
   })
+
+  return
 
   describe('HTTP API', () => {
     try {
