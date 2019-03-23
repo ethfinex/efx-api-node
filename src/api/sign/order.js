@@ -1,4 +1,4 @@
-const {signatureUtils, orderHashUtils} = require('@0xproject/order-utils')
+const {signatureUtils, orderHashUtils} = require('@0x/order-utils')
 
 module.exports = async (efx, order) => {
   const orderHash = orderHashUtils.getOrderHashHex(order)
