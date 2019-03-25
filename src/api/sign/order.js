@@ -1,18 +1,18 @@
-const {ZeroEx} = require('0x.js')
+const {signatureUtils, orderHashUtils} = require('@0x/order-utils')
 
 module.exports = async (efx, order) => {
-  const orderHash = ZeroEx.getOrderHashHex(order)
+  const orderHash = orderHashUtils.getOrderHashHex(order)
 
-  // remove 0x from the hash
-  // let signature = await efx.sign(orderHash)
+  const signerType = efx.isMetaMask ? 'METAMASK' : 'DEFAULT'
 
-  const network = await efx.eth.getNetwork()
+  const signature = await signatureUtils.ecSignOrderHashAsync(
+    efx.web3.currentProvider,
+    orderHash,
+    efx.get('account'),
+    signerType
+  )
 
-  const zeroEx = new ZeroEx(efx.web3.currentProvider, {networkId: network.id})
-
-  const signedOrder = await zeroEx.signOrderHashAsync(orderHash, efx.get('account'), efx.isMetaMask)
-
-  order.ecSignature = signedOrder
+  order.signature = signature
 
   /**
   const isValid = ZeroEx.isValidSignature(orderHash, signedOrder, efx.get('account').toLowerCase())
