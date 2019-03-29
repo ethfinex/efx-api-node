@@ -73,6 +73,8 @@ to be prepared separately.
 #### Using MetaMask or a local node
 
 ```javascript
+
+// In case of MetaMask make sure you call ethereum.enable() before using it
 const EFX = require('efx-api-node')
 const efx = await EFX()
 ```

@@ -36,6 +36,7 @@
   "license": "MIT",
   "dependencies": {
     "@0x/order-utils": "^7.0.2",
+    "@0x/subproviders": "^4.0.4",
     "aware": "^0.3.1",
     "bignumber.js": "^7.2.1",
     "bluebird": "^3.5.1",
