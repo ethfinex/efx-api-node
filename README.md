@@ -13,6 +13,7 @@ A Node.JS client for Ethfinex API
     - [Instancing](#instancing)
         - [Using MetaMask or a local node](#using-metamask-or-a-local-node)
         - [Using a remote node](#using-a-remote-node)
+        - [Using Infura](#using-infura)
         - [Configuration](#configuration)
 - [Placing an Order](#placing-an-order)
     - [Approving tokens](#approving-tokens)
@@ -72,10 +73,10 @@ to be prepared separately.
 #### Using MetaMask or a local node
 
 ```javascript
+
+// In case of MetaMask make sure you call ethereum.enable() before using it
 const EFX = require('efx-api-node')
 const efx = await EFX()
-
-const config = efx.config
 ```
 
 #### Using a remote node
@@ -84,9 +85,26 @@ const config = efx.config
 const EFX = require('efx-api-node')
 const web3 = new EFX.Web3("https://your-web3-provider")
 const efx = await EFX(web3)
-
-const config = efx.config
 ```
+
+#### Using Infura
+
+
+````javascript
+const HDWalletProvider = require("truffle-hdwallet-provider");
+const Web3 = require("Web3")
+
+const privateKey = '8F085...' // Account's private key
+const infuraKey = '9e28b...'  // Your Infura API KEY
+const infuraURL = 'https://mainnet.infura.io/v3/' + infuraKey
+
+const provider = new HDWalletProvider(privateKey, infuraURL)
+const web3 = new Web3(provider)
+
+efx = await EFX(web3)
+````
+
+View the full example: [/examples/node_sell_eth_infura.js](/examples/node_sell_eth_infura.js)
 
 #### Configuration
 

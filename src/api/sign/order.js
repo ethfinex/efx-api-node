@@ -1,21 +1,23 @@
+const { MetamaskSubprovider } = require ("@0x/subproviders")
 const {signatureUtils, orderHashUtils} = require('@0x/order-utils')
 
 module.exports = async (efx, order) => {
   const orderHash = orderHashUtils.getOrderHashHex(order)
 
-  const signerType = efx.isMetaMask ? 'METAMASK' : 'DEFAULT'
+  const provider = efx.isMetaMask
+                    ? new MetamaskSubprovider(efx.web3.currentProvider)
+                    : efx.web3.currentProvider
 
-  const signature = await signatureUtils.ecSignOrderHashAsync(
-    efx.web3.currentProvider,
+  const signature = await signatureUtils.ecSignHashAsync(
+    provider,
     orderHash,
-    efx.get('account'),
-    signerType
+    efx.get('account')
   )
 
   order.signature = signature
 
   /**
-  const isValid = ZeroEx.isValidSignature(orderHash, signedOrder, efx.get('account').toLowerCase())
+  const isValid = signatureUtils.isValidSignatureAsync(orderHash, signedOrder, efx.get('account').toLowerCase())
 
   console.log( "is_valid ->", isValid)
   **/
