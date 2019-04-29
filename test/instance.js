@@ -25,7 +25,6 @@ module.exports = async () => {
     console.log(' - Using deployed contracts')
   }
 
-  config.api = 'https://test.ethfinex.com/trustless/v1'
-
+  //config.api = 'https://test.ethfinex.com/trustless/v1'
   return EFX(web3, config)
 }

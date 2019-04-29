@@ -20,7 +20,7 @@ describe('~ efx-api-node', async () => {
 
     //nock.recorder.rec()
 
-    mockGetConf()
+    //mockGetConf()
 
     const efx = await instance(null, {defaultExpiry: 222})
 
@@ -64,6 +64,8 @@ describe('~ efx-api-node', async () => {
     // those. FIXME: need contracts deployed during test
     //require('./blockchain-api')
   })
+
+  return
 
   describe('HTTP API', () => {
     try {

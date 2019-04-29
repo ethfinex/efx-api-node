@@ -2,13 +2,15 @@
 
 const { assert } = require('chai')
 
-const CURRENCIES = require('../src/currencies')
 const instance = require('./instance')
 const ecRecover = require('./helpers/ecRecover')
+const mockGetConf = require('./fixtures/nock/get_conf')
 
 let efx
 
 before(async () => {
+  mockGetConf()
+
   efx = await instance()
 })
 
@@ -38,18 +40,18 @@ it('create and sign a buy order', async () => {
 
   const sellAmount = amount * price
   const makerAmount = efx.web3.utils.toBN(
-    Math.trunc(10 ** CURRENCIES.USD.decimals * sellAmount)
+    Math.trunc(10 ** efx.config['0x'].tokenRegistry.USD.decimals * sellAmount)
   ).toString(10)
 
-  assert.equal(signed.makerTokenAddress, CURRENCIES.USD.lockerAddress)
+  assert.equal(signed.makerTokenAddress, efx.config['0x'].tokenRegistry.USD.wrapperAddress)
   assert.equal(signed.makerTokenAmount, makerAmount)
 
   const buyAmount = amount
   const takerAmount = efx.web3.utils.toBN(
-    Math.trunc(10 ** CURRENCIES.ETH.decimals * buyAmount)
+    Math.trunc(10 ** efx.config['0x'].tokenRegistry.ETH.decimals * buyAmount)
   ).toString(10)
 
-  assert.equal(signed.takerTokenAddress, CURRENCIES.ETH.lockerAddress)
+  assert.equal(signed.takerTokenAddress, efx.config['0x'].tokenRegistry.ETH.wrapperAddress)
   assert.equal(signed.takerTokenAmount, takerAmount)
 })
 
@@ -66,18 +68,18 @@ it('create and sign a sell order', async () => {
 
   const sellAmount = Math.abs(amount)
   const makerAmount = efx.web3.utils.toBN(
-    Math.trunc(10 ** CURRENCIES.ETH.decimals * sellAmount)
+    Math.trunc(10 ** efx.config['0x'].tokenRegistry.ETH.decimals * sellAmount)
   ).toString(10)
 
-  assert.equal(signed.makerTokenAddress, CURRENCIES.ETH.lockerAddress)
+  assert.equal(signed.makerTokenAddress, efx.config['0x'].tokenRegistry.ETH.wrapperAddress)
   assert.equal(signed.makerTokenAmount, makerAmount)
 
   const buyAmount = Math.abs(amount * price)
   const takerAmount = efx.web3.utils.toBN(
-    Math.trunc(10 ** CURRENCIES.USD.decimals * buyAmount)
+    Math.trunc(10 **efx.config['0x'].tokenRegistry.USD.decimals * buyAmount)
   ).toString(10)
 
-  assert.equal(signed.takerTokenAddress, CURRENCIES.USD.lockerAddress)
+  assert.equal(signed.takerTokenAddress, efx.config['0x'].tokenRegistry.USD.wrapperAddress)
   assert.equal(signed.takerTokenAmount, takerAmount)
 
   // TODO:
