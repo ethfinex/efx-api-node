@@ -1,8 +1,11 @@
 const { post } = require('request-promise')
-const parse = require('../lib/parse/response/orders')
 
-module.exports = (efx) => {
+module.exports = async (efx) => {
   const url = efx.config.api + '/r/get/conf'
 
-  return post(url, {json:{}})
-}
+  const exchangeConf = await post(url, { json: {} })
+
+  efx.config = Object.assign({}, efx.config, exchangeConf)
+
+  return exchangeConf
+};
