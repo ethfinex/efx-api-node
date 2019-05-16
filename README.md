@@ -209,7 +209,7 @@ const orderId = await efx.submitOrder(symbol, amount, price)
 ```
 
 Orders are generated and submitted, returning either an `orderId` or error. A
-full list of possible errors and their associated explanation is available [here](https://ethfinex.docs.apiary.io/#introduction/error-codes/troubleshooting).
+full list of possible errors and their associated explanation is available [here](https://docs.ethfinex.com/?version=latest#troubleshooting).
 
 When submitting this order we use the 3 first parameters:
 
@@ -421,14 +421,14 @@ const order = await efx.getOrder(id)
 ## Troubleshooting
 
 A list of error codes returned by the API and reasons are available [here](./src/lib/error/reasons.js#L1).
-Some more detailed explanations can also be found in the [API Documentation](https://ethfinex.docs.apiary.io/).
+Some more detailed explanations can also be found in the [API Documentation](https://docs.ethfinex.com).
 
 If you have suggestions to improve this guide or any of the available
 documentation, please raise an issue on Github, or email [feedback@ethfinex.com](mailto:feedback@ethfinex.com).
 
 ## Links
 
- - [API documentation](https://ethfinex.docs.apiary.io/)
+ - [API documentation](https://docs.ethfinex.com)
  - [Ethfinex trustless developer guide](https://blog.ethfinex.com/ethfinex-trustless-developer-guide/)
 
 ## Developing
