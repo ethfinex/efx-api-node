@@ -14,7 +14,7 @@ module.exports = async (efx, order) => {
     efx.get('account')
   )
 
-  order.signature = signature
+  const signedOrder = {...order, signature}
 
   /**
   const isValid = signatureUtils.isValidSignatureAsync(orderHash, signedOrder, efx.get('account').toLowerCase())
@@ -22,5 +22,5 @@ module.exports = async (efx, order) => {
   console.log( "is_valid ->", isValid)
   **/
 
-  return order
+  return signedOrder
 }
