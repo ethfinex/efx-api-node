@@ -197,6 +197,15 @@ before this expires, you must request a signed permission from Ethfinex.
 
 This is always returned if you have no orders open involving those tokens.
 
+You can fetch the expiration time with the following:
+
+```js
+
+const depositLock = await efx.contract.depositLock(token)
+```
+
+`depositLock` is expressed in UNIX Epoch time.
+
 ### Submitting an order
 
 
@@ -405,6 +414,27 @@ const amount = -1
 const price = 100
 
 const orderId = await efx.submitOrder(symbol, amount, price)
+
+```
+
+### Calculating the order hash and submitting an order
+
+```js
+
+    import { orderHashUtils } from '@0x/order-utils'
+
+    const symbol = 'ETHUSD'
+    const amount = -1
+    const price = 100
+    const expire = 3600
+
+    const order = efx.contract.createOrder(symbol, amount, price, expire)
+
+    const orderHash = orderHashUtils.getOrderHashHex(order)
+
+    const signedOrder = await efx.sign.order(order)
+
+    response = await efx.submitOrder(symbol, amount, price, 1, new Date().getTime(), order, expire)
 
 ```
 
