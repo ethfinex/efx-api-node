@@ -46,6 +46,9 @@ module.exports = {
   ERR_CORE_ETHFX_0X_LOCK_INVALID: `
     The tokens required must be locked until after the order expiration time.
   `,
+  ERR_CORE_ETHFX_NEEDS_APPROVAL: `
+    The tokens required must be locked until after the order expiration time.
+  `,
   ERR_CORE_ETHFX_0X_BALANCE_EMPTY: `
     You do not have any balance of the locked tokens required.
   `,
