@@ -29,10 +29,21 @@ module.exports = async (efx, token, amount, duration) => {
     )
   }
 
-  return efx.eth.send(
-    efx.contract.abi.locker,
-    currency.wrapperAddress,
-    action,
-    args
-  )
+  try {
+    return efx.eth.send(
+      efx.contract.abi.locker,
+      currency.wrapperAddress,
+      action,
+      args
+    )
+  } catch(e){
+    if(!efx.contract.isApproved(token)){
+      return {
+        error: 'ERR_CORE_ETHFX_NEEDS_APPROVAL',
+        reason: reasons.ERR_CORE_ETHFX_NEEDS_APPROVAL.trim()
+      }
+    } else {
+      throw(e)
+    }
+  }
 }

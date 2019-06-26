@@ -15,6 +15,7 @@ A Node.JS client for Ethfinex API
         - [Using a remote node](#using-a-remote-node)
         - [Using Infura](#using-infura)
         - [Configuration](#configuration)
+        - [Gas Price](#gas-price)
 - [Placing an Order](#placing-an-order)
     - [Approving tokens](#approving-tokens)
     - [Locking tokens](#locking-tokens)
@@ -156,6 +157,16 @@ The complete compiled configuration is accessible through `efx.config`, for inst
 const efx = await EFX()
 
 const config = efx.config
+```
+
+#### Gas Price
+
+You can setup a custom gas price by setting up the 'gasPrice' property
+```javascript
+const efx = await EFX()
+
+efx.set('gasPrice', web3.utils.toWei('2', 'gwei'))
+
 ```
 
 ### Placing an Order
