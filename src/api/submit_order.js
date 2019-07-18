@@ -1,15 +1,14 @@
 const {post} = require('request-promise')
 const parse = require('../lib/parse/response/submit_order')
 
-module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, validFor, partner_id, fee_rate) => {
+module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, validFor, partner_id, fee_rate = 0.0025) => {
   if (!(symbol && amount && price)) {
     throw new Error('order, symbol, amount and price are required')
   }
 
   //TODO: check if symbol is a valid symbol
-
   if(!signedOrder){
-    const order = efx.contract.createOrder(symbol, amount, price, validFor)
+    const order = efx.contract.createOrder(symbol, amount, price, validFor, fee_rate)
 
     signedOrder = await efx.sign.order(order)
   }

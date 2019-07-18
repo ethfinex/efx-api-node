@@ -1,6 +1,6 @@
 {
   "name": "efx-api-node",
-  "version": "1.2.9",
+  "version": "2.0.3",
   "main": "src/efx.js",
   "contributors": [
     "Henrique Matias <hems.inlet@gmail.com>",
@@ -35,8 +35,8 @@
   "homepage": "https://github.com/ethfinex/efx-api-node",
   "license": "MIT",
   "dependencies": {
-    "0x.js": "^0.38.4",
     "@0x/order-utils": "^7.0.2",
+    "@0x/subproviders": "^4.0.4",
     "aware": "^0.3.1",
     "bignumber.js": "^7.2.1",
     "bluebird": "^3.5.1",
@@ -45,6 +45,7 @@
     "lodash": "^4.17.10",
     "request": "^2.87.0",
     "request-promise": "^4.2.2",
+    "truffle-hdwallet-provider": "^1.0.5",
     "web3": "1.0.0-beta.33"
   },
   "devDependencies": {

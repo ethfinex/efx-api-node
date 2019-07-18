@@ -13,7 +13,9 @@ A Node.JS client for Ethfinex API
     - [Instancing](#instancing)
         - [Using MetaMask or a local node](#using-metamask-or-a-local-node)
         - [Using a remote node](#using-a-remote-node)
+        - [Using Infura](#using-infura)
         - [Configuration](#configuration)
+        - [Gas Price](#gas-price)
 - [Placing an Order](#placing-an-order)
     - [Approving tokens](#approving-tokens)
     - [Locking tokens](#locking-tokens)
@@ -72,10 +74,10 @@ to be prepared separately.
 #### Using MetaMask or a local node
 
 ```javascript
+
+// In case of MetaMask make sure you call ethereum.enable() before using it
 const EFX = require('efx-api-node')
 const efx = await EFX()
-
-const config = efx.config
 ```
 
 #### Using a remote node
@@ -84,9 +86,26 @@ const config = efx.config
 const EFX = require('efx-api-node')
 const web3 = new EFX.Web3("https://your-web3-provider")
 const efx = await EFX(web3)
-
-const config = efx.config
 ```
+
+#### Using Infura
+
+
+````javascript
+const HDWalletProvider = require("truffle-hdwallet-provider");
+const Web3 = require("Web3")
+
+const privateKey = '8F085...' // Account's private key
+const infuraKey = '9e28b...'  // Your Infura API KEY
+const infuraURL = 'https://mainnet.infura.io/v3/' + infuraKey
+
+const provider = new HDWalletProvider(privateKey, infuraURL)
+const web3 = new Web3(provider)
+
+efx = await EFX(web3)
+````
+
+View the full example: [/examples/node_sell_eth_infura.js](/examples/node_sell_eth_infura.js)
 
 #### Configuration
 
@@ -140,6 +159,16 @@ const efx = await EFX()
 const config = efx.config
 ```
 
+#### Gas Price
+
+You can setup a custom gas price by setting up the 'gasPrice' property
+```javascript
+const efx = await EFX()
+
+efx.set('gasPrice', web3.utils.toWei('2', 'gwei'))
+
+```
+
 ### Placing an Order
 
 Before placing an order, you are required to lock tokens into the Ethfinex wrapper
@@ -191,7 +220,7 @@ const orderId = await efx.submitOrder(symbol, amount, price)
 ```
 
 Orders are generated and submitted, returning either an `orderId` or error. A
-full list of possible errors and their associated explanation is available [here](https://ethfinex.docs.apiary.io/#introduction/error-codes/troubleshooting).
+full list of possible errors and their associated explanation is available [here](https://docs.ethfinex.com/?version=latest#troubleshooting).
 
 When submitting this order we use the 3 first parameters:
 
@@ -403,14 +432,14 @@ const order = await efx.getOrder(id)
 ## Troubleshooting
 
 A list of error codes returned by the API and reasons are available [here](./src/lib/error/reasons.js#L1).
-Some more detailed explanations can also be found in the [API Documentation](https://ethfinex.docs.apiary.io/).
+Some more detailed explanations can also be found in the [API Documentation](https://docs.ethfinex.com).
 
 If you have suggestions to improve this guide or any of the available
 documentation, please raise an issue on Github, or email [feedback@ethfinex.com](mailto:feedback@ethfinex.com).
 
 ## Links
 
- - [API documentation](https://ethfinex.docs.apiary.io/)
+ - [API documentation](https://docs.ethfinex.com)
  - [Ethfinex trustless developer guide](https://blog.ethfinex.com/ethfinex-trustless-developer-guide/)
 
 ## Developing

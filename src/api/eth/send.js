@@ -14,9 +14,15 @@ module.exports = async (efx, abi, address, action, args, value = 0) => {
     value: value
   })
 
-  return method.send({
+  let options = {
     from: efx.get('account'),
     value: value,
     gas: estimatedGas
-  })
+  }
+
+  if(efx.get('gasPrice')){
+    options.gasPrice = efx.get('gasPrice')
+  }
+
+  return method.send(options)
 }
