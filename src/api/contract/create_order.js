@@ -77,9 +77,9 @@ module.exports = (efx, symbol, amount, price, validFor, fee_rate = 0.0025) => {
 
     takerAssetAmount: buyAmount,
 
-    makerFee: web3.utils.toBN('0'),
+    makerFee: new BigNumber(0),
 
-    takerFee: web3.utils.toBN('0'),
+    takerFee: new BigNumber(0),
 
     expirationTimeSeconds: new BigNumber(expiration),
 
