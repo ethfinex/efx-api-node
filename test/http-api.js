@@ -337,3 +337,59 @@ it('efx.submitSignedOrder(order)', async () => {
   // - validate the actual response
   assert.ok(response)
 })
+
+it('efx.feeRate(ETHUSD, 0.1, 10000) gets feeBps for correct threshold', async () => {
+
+  // TODO: move tests with mocks to individual files, probably inside of
+  // test/http/ folder
+  const httpResponse = { 
+    address: '0x65CEEE596B2aba52Acc09f7B6C81955C1DB86404',
+    timestamp: 1568959208939,
+    fees: { 
+      small: { threshold: 0, feeBps: 25 },
+      medium: { threshold: 500, feeBps: 21 },
+      large: { threshold: 2000, feeBps: 20 } 
+    },
+    signature: '0x52f18b47494e465aa4ed0f0f123fae4d40d3ac0862b61862e6cc8e5a119dbfe1061a4ee381092a10350185071f4829dbfd6c5f2e26df76dee0593cbe3cbd87321b' 
+  }
+
+  nock('https://api.deversifi.com')
+    .get('/api/v1/feeRate/' + efx.get('account'))
+    .reply(200, httpResponse)
+
+  const symbol = 'ETHUSD'
+  const amount = -0.1
+  const price = 10000
+
+  const response = await efx.getFeeRate(symbol, amount, price)
+
+  assert.equal(response.feeRate.threshold, 500)
+  assert.equal(response.feeRate.feeBps, 21)
+})
+
+it('efx.feeRate(MKRETH, -5, 2.5) gets feeBps for correct threshold', async () => {
+
+  const httpResponse = { 
+    address: '0x65CEEE596B2aba52Acc09f7B6C81955C1DB86404',
+    timestamp: 1568959208939,
+    fees: { 
+      small: { threshold: 0, feeBps: 25 },
+      medium: { threshold: 500, feeBps: 21 },
+      large: { threshold: 2000, feeBps: 20 } 
+    },
+    signature: '0x52f18b47494e465aa4ed0f0f123fae4d40d3ac0862b61862e6cc8e5a119dbfe1061a4ee381092a10350185071f4829dbfd6c5f2e26df76dee0593cbe3cbd87321b' 
+  }
+
+  nock('https://api.deversifi.com')
+    .get('/api/v1/feeRate/' + '0x65CEEE596B2aba52Acc09f7B6C81955C1DB86404')
+    .reply(200, httpResponse)
+
+  const symbol = 'MKRETH'
+  const amount = -5
+  const price = 2.5
+
+  const response = await efx.getFeeRate(symbol, amount, price)
+
+  assert.equal(response.feeRate.threshold, 2000)
+  assert.equal(response.feeRate.feeBps, 20)
+})

@@ -1,6 +1,6 @@
 /* eslint-env mocha */
 
-const instance = require('./instance')
+const instance = require('./helpers/instance')
 const { assert } = require('chai')
 const nock = require('nock')
 const mockGetConf = require('./fixtures/nock/get_conf')
@@ -20,9 +20,9 @@ describe('~ efx-api-node', async () => {
 
     //nock.recorder.rec()
 
-    //mockGetConf()
+    mockGetConf()
 
-    const efx = await instance(null, {defaultExpiry: 222})
+    const efx = await instance()
 
     //nock.restore()
 
@@ -43,19 +43,18 @@ describe('~ efx-api-node', async () => {
 
   })
 
-  // TODO: update mocked contracts, compile and deploy to ganache on every
-  // test, this way we don't need a ropsten node running to test the blockchain
-  // calls
+  // TODO: deploy contracts to local granache or testnet in order to test
+  // some contract methods
   describe('Deploy contracts to test:rpc', () => {
     // require('./deploy')
   })
 
   describe('Account', () => {
-    require('./account')
+    // require('./account')
   })
 
   describe('Signing', () => {
-    //require('./signing')
+    // require('./signing')
   })
 
   describe('Blockchain API', () => {
@@ -65,8 +64,6 @@ describe('~ efx-api-node', async () => {
     //require('./blockchain-api')
   })
 
-  return
-
   describe('HTTP API', () => {
     try {
       require('./http-api')
@@ -75,6 +72,8 @@ describe('~ efx-api-node', async () => {
       console.log("e ->", e)
     }
   })
+  
+  return
 
   describe('ETH calls', () => {
     require('./eth.js')
