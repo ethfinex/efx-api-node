@@ -313,7 +313,7 @@ you can simply get open orders and order history from the API as follows:
 const openOrders = await efx.getOrders()
 
 // Get all historical orders
-const historicalOrders = await efx.getOrderHist()
+const historicalOrders = await efx.getOrdersHist()
 ```
 
 If an unlocked account is not available to sign with, for example when using a
@@ -335,7 +335,7 @@ const signature = ethUtils.ecsign(hash, privKey)
 const openOrders = await efx.getOrders(null, null, nonce, signature)
 
 // Get all historical orders
-const historicalOrders = await efx.getOrderHist(null, null, nonce, signature)
+const historicalOrders = await efx.getOrdersHist(null, null, nonce, signature)
 ```
 
 ### Unlocking tokens

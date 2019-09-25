@@ -34,12 +34,12 @@ it('create and sign a buy order', async () => {
 
   const signed = await efx.sign.order(order)
 
-  // TODO: update tests to correct values
-    
-  // const sellAmount = amount * price
-  // const makerAmount = efx.web3.utils.toBN(
-    // Math.trunc(10 ** efx.config['0x'].tokenRegistry.USD.decimals * sellAmount)
-  // ).toString(10)
+  //assert.notEqual(signed, order)
+
+  const sellAmount = amount * price
+  const makerAmount = efx.web3.utils.toBN(
+    Math.trunc(10 ** efx.config['0x'].tokenRegistry.USD.decimals * sellAmount)
+  ).toString(10)
 
   // assert.equal(signed.makerTokenAddress, efx.config['0x'].tokenRegistry.USD.wrapperAddress)
   // assert.equal(signed.makerTokenAmount, makerAmount)

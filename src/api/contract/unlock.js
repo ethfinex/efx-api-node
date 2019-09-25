@@ -18,7 +18,7 @@ module.exports = async (efx, token, amount, nonce, signature) => {
 
   // no need to call releaseTokens
   if( Date.now() / 1000 > depositLock ) {
-    args = args.concat([0, '0x', '0x', 0])
+    args = args.concat([0, '0x0000000000000000000000000000000000000000000000000000000000000000', '0x0000000000000000000000000000000000000000000000000000000000000000', 0])
   }
 
   // we need to call releaseTokens to fetch a signed permission to unlock
