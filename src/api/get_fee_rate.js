@@ -1,6 +1,7 @@
 const { get } = require('request-promise')
 const _ = require('lodash')
-const getPrice = require('../lib/bfx/getPrice')
+
+const calculateVolume = require('../lib/bfx/calculateVolume')
 
 // TODO: move address to either /r/get/conf or to ENV variables
 const DEVERSIFI_API = 'https://api.deversifi.com/api/v1/feeRate/'
@@ -11,18 +12,7 @@ const DEVERSIFI_API = 'https://api.deversifi.com/api/v1/feeRate/'
  */
 module.exports = async (efx, symbol, amount, price) => {
 
-  // TODO: calculate order's USD Worth when quoteSymbol
-  // isn't stable coin
-
-  const baseSymbol = symbol.substr(0, symbol.length - 3)
-  const quoteSymbol = symbol.substr(-3)
-
-  quoteSymbolPrice = await getPrice(quoteSymbol, '1h')
-
-  // long or short the volume will be the same
-  amount = Math.abs(amount)
-
-  const volume = amount * price * quoteSymbolPrice
+  const volume = await calculateVolume(symbol, amount, price)
 
   // fetch freeRate from the api
 

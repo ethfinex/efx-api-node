@@ -14,7 +14,11 @@ module.exports = async (efx, order) => {
     efx.get('account')
   )
 
-  order.signature = signature
+  // create a copy of the object and add signature field
+  order = {
+    ...order,
+    signature
+  }
 
   /**
   const isValid = signatureUtils.isValidSignatureAsync(orderHash, signedOrder, efx.get('account').toLowerCase())
