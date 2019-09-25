@@ -392,5 +392,7 @@ it('efx.feeRate(MKRETH, -5, 2.5) gets feeBps for correct threshold', async () =>
 
   assert.equal(response.feeRate.threshold, 2000)
   assert.equal(response.feeRate.feeBps, 20)
-  assert.equal(response.feeRate.fees)
+  assert.deepEqual(response.feeRates.fees, httpResponse.fees)
+
+  
 })
