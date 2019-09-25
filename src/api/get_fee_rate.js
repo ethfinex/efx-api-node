@@ -23,7 +23,7 @@ module.exports = async (efx, symbol, amount, price) => {
   let feeRates = await get(url, { json: true})
 
   // filter all fees with threshold below volume
-  let feeRate = _.filter(feeRates.fees, (item) => item.threshold < volume)
+  let feeRate = _.filter(feeRates.fees, (item) => item.threshold <= volume)
 
   // pick the cheapest one
   feeRate = _.sortBy(feeRate, 'feeBps')[0]
