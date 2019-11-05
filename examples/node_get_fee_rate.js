@@ -22,13 +22,13 @@ work = async () => {
 
   console.log("")
 
-  // submit an order to SELL 0.01 ETH for 120 USD
-  console.log("efx.submitOrder('ETHUSD', -0.1, 120)")
+  // submit an order to SELL 0.01 ETH for 300 USD
+  console.log("getFeeRate('ETHUSD', 200, 200)")
 
-  const response = await efx.submitOrder('ETHUSD', -0.1, 120)
+  const response = await efx.getFeeRate('ETHUSD', 200, 200)
 
-  if(response.length){
-    console.log(` - Submitted Order: #${response[0]}`)
+  if(response){
+    console.log(` - Fee Rates: #${JSON.stringify(response, null, 2)}`)
   } else {
     console.log("Error:")
     console.log(response)
