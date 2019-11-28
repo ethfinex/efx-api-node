@@ -63,10 +63,14 @@ module.exports = () => {
   efx.getOrders = compose(require('../api/get_orders'))
   efx.getOrdersHist = compose(require('../api/get_orders_hist'))
   efx.releaseTokens = compose(require('../api/release_tokens'))
-  efx.submitOrder = compose(require('../api/submit_order'))
+  // efx.submitOrder = compose(require('../api/submit_order'))
   efx.submitOrderV2 = compose(require('../api/submit_order'))
   efx.submitBuyOrder = compose(require('../api/submit_buy_order'))
   efx.submitSellOrder = compose(require('../api/submit_sell_order'))
+
+  // efx main functions under stark folder
+  efx.deposit = compose(require('../api/stark/deposit'));
+  efx.submitOrder = compose(require('../api/stark/submit_order'));
 
   return efx
 }
