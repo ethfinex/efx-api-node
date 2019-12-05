@@ -26,16 +26,16 @@ module.exports = async (efx, tokenId, amount) => {
   const depositStatus = await efx.contract.deposit(vaultId, amount, userAddress);
   await depositStatus.then(receipt => {
     // create stark message and signature using stark crypto library
-    //replace get_order_msg with deposit and transfer message when its available
-    const starkMessage = sw.get_order_msg(
-      vault_id,//tempVault
-      vault_id,//userTokenVaultId
-      "0",
-      "0",
-      token_id,
-      token_id,
-      order_id_b,
-      99999999
+    // replace get_order_msg with deposit and transfer message when its available
+
+    const starkMessage = sw.get_transfer_msg(
+      amount, // amount (uint63 decimal str)
+      order_id, // order_id (uint31)
+      sender_vault_id, // temp vault id or sender_vault_id (uint31)
+      token, // token (hex str with 0x prefix < prime)
+      receiver_vault_id, // user vault or receiver_vault_id (uint31)
+      receiver_public_key, // receiver_public_key (hex str with 0x prefix < prime)
+      expiration_timestamp // expiration_timestamp (uint22)
     );
   
     //sign using stark crypto library
