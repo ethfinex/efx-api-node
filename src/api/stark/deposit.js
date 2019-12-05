@@ -1,6 +1,6 @@
 const {post} = require('request-promise');
 const parse = require('../lib/parse/response/deposit_amount.js');
-const sw = require("starkware_crypto");
+const sw = require("starkware_crypt0");
 
 module.exports = async (efx, tokenId, amount) => {
   const userAddress = efx.get('account');
