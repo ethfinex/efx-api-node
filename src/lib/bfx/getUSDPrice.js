@@ -1,7 +1,6 @@
 const { post } = require('request-promise')
 const stableCoins = require('./stableCoins')
 
-// TODO: move address to api.deversifi address
 const BFX_API = 'https://api.deversifi.com/bfx/v2'
 
 module.exports = async token => {
