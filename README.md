@@ -1,8 +1,10 @@
 <img src="https://avatars3.githubusercontent.com/u/33315316?s=200&v=4" align="right" />
 
-# Ethfinex Trading API for Node.JS
+# DeversiFi Trading API Client Library for Node.JS
 
-A Node.JS client for Ethfinex API
+A Node.JS client for the DeversiFi API
+
+Note, DeversiFi evolved from Ethfinex Trustless, and this client library is due to be replaced at the end of February 2020 with an updated version.
 
 - [Installation](#installation)
     - [NPM](#npm)
@@ -58,7 +60,7 @@ Alternatively on the browser you can use the standalone build
 ### Authentication
 
 Authentication to make all the following requests is done by signing using an
-Ethereum private key. Signing is handled by the Ethfinex Trustless client
+Ethereum private key. Signing is handled by the DeversiFi client
 library if the account is available and unlocked. However if signing using
 a hardware wallet, or using a raw private key, the message and signature need
 to be prepared separately.
@@ -123,7 +125,7 @@ For instance:
 ```
 
 The configuration is also merged with the configuration provided by the exchange
-on the HTTP endpoint `/trustless/v1/r/get/conf` which at the moment looks similar
+on the HTTP endpoint `/v1/trading/r/get/conf` which at the moment looks similar
 to this:
 
 ```json
@@ -143,7 +145,7 @@ to this:
           "settleSpread": 0.002
       }
     },
-    "ethfinexAddress":"0x9faf5515f177f3a8a845d48c19032b33cc54c09c",
+    "deversifiAddress":"0x9faf5515f177f3a8a845d48c19032b33cc54c09c",
     "exchangeAddress":"0x67799a5e640bc64ca24d3e6813842754e546d7b1",
     "exchangeSymbols":[
       "tETHUSD"
@@ -171,8 +173,8 @@ efx.set('gasPrice', web3.utils.toWei('2', 'gwei'))
 
 ### Placing an Order
 
-Before placing an order, you are required to lock tokens into the Ethfinex wrapper
-contracts. This allows for guaranteed execution and ensures Trustless orders
+Before placing an order, you are required to lock tokens into the DeversiFi wrapper
+contracts. This allows for guaranteed execution and ensures DeversiFi orders
 can be added directly onto the centralised order book, and matched against
 trades from centralised users.
 
@@ -204,7 +206,7 @@ const response = await efx.contract.lock(token, amount, forTime)
 
 The time limit specified when locking is a maximum - tokens can always be
 unlocked after this time limit (in hours) expires. In order to unlock tokens
-before this expires, you must request a signed permission from Ethfinex.
+before this expires, you must request a signed permission from DeversiFi.
 
 This is always returned if you have no orders open involving those tokens.
 
@@ -220,7 +222,7 @@ const orderId = await efx.submitOrder(symbol, amount, price)
 ```
 
 Orders are generated and submitted, returning either an `orderId` or error. A
-full list of possible errors and their associated explanation is available [here](https://docs.ethfinex.com/?version=latest#troubleshooting).
+full list of possible errors and their associated explanation is available [here](https://docs.deversifi.com/?version=latest#troubleshooting).
 
 When submitting this order we use the 3 first parameters:
 
@@ -232,7 +234,7 @@ fewer than 8.
  - `price` is specified in the second currency in the symbol (i.e. ZRXETH). Prices
 should be specified to 5 s.f. maximum.
 
-**Warning:** Trustless orders will always be settled at the **exact price you specify**, and can never be adjusted by Ethfinex, **even if it is at a worse price than the market**.
+**Warning:** DeversiFi orders will always be settled at the **exact price you specify**, and can never be adjusted by DeversiFi, **even if it is at a worse price than the market**.
 
 For example, when placing a sell order, if the `price` specified is below the highest bid available on the order book, the order will be executed instantly at market. However, the amount you receive will reflect only the `price` that you entered, and not the market price at the time of execution.
 
@@ -249,11 +251,11 @@ You can additionally provide
 
 ### Tether market shift
 
-The XXX/**USDT** markets on Trustless build on the liquidity of XXX/**USD** markets on the
-centralised exchanges of Bitfinex and Ethfinex. However since there is often not a
+The XXX/**USDT** markets on DeversiFi build on the liquidity of XXX/**USD** markets on
+centralised exchanges. However since there is often not a
 direct 1:1 rate between USD and USDT, a shift must be applied to the order books.
 
-The configuration for Trustless returns a `settleSpread` parameter:
+The configuration for DeversiFi returns a `settleSpread` parameter:
 
 ```json
       "USD":{
@@ -269,8 +271,8 @@ This `settleSpread` is indicative of the current USDT/USD exchange rate. When or
 on USDT markets, the settlement price in the signed order must be shifted by the `settleSpread`
 parameter before the order is accepted.
 
-For example, if placing a buy order on the ETH/USD(T) market at a price of 100 USD relative to the centralised exchange the order will be settled on Trustless at a price of 102 USDT.
-Equally a sell order at 100 USD would receive 102 USDT when settled on Trustless.
+For example, if placing a buy order on the ETH/USD(T) market at a price of 100 USD relative to the centralised exchange the order will be settled on DeversiFi at a price of 102 USDT.
+Equally a sell order at 100 USD would receive 102 USDT when settled on DeversiFi.
 
 ```javascript
 efx.submitOrder(symbol, amount, price) // => settlementPrice = price * (1 + settleSpread)
@@ -313,7 +315,7 @@ you can simply get open orders and order history from the API as follows:
 const openOrders = await efx.getOrders()
 
 // Get all historical orders
-const historicalOrders = await efx.getOrderHist()
+const historicalOrders = await efx.getOrdersHist()
 ```
 
 If an unlocked account is not available to sign with, for example when using a
@@ -335,18 +337,18 @@ const signature = ethUtils.ecsign(hash, privKey)
 const openOrders = await efx.getOrders(null, null, nonce, signature)
 
 // Get all historical orders
-const historicalOrders = await efx.getOrderHist(null, null, nonce, signature)
+const historicalOrders = await efx.getOrdersHist(null, null, nonce, signature)
 ```
 
 ### Unlocking tokens
 
 If tokens are not used in active orders they can always be unlocked. If
 unlocking after the time specified when locking has expired, no permission is
-required. When unlocking before this, Ethfinex must sign a release permission,
+required. When unlocking before this, DeversiFi must sign a release permission,
 after verifying that you have no orders currently active which require that token.
 
 If you need permission the library will [automatically call the expected endpoint](./src/api/contract/unlock.js#L24)
-on Ethfinex API to ask for such permission.
+on DeversiFi API to ask for such permission.
 
 ```javascript
 const token = 'ZRX'
@@ -355,12 +357,12 @@ const response = await efx.contract.unlock(token, amount)
 ```
 
 When a particular token's lock time has not yet expired, permission is required
-from Ethfinex to unlock early. This permission can be requested directly from
-Ethfinex using an API call.
+from DeversiFi to unlock early. This permission can be requested directly from
+DeversiFi using an API call.
 
 The request must be authenticated using a nonce and signature, and the response
-contains a signed permission from Ethfinex. This permission will always be
-granted if Ethfinex is online and your address has no open orders involving
+contains a signed permission from DeversiFi. This permission will always be
+granted if DeversiFi is online and your address has no open orders involving
 those tokens. In case you're signing the requests yourself you could use the
 following code:
 
@@ -432,15 +434,15 @@ const order = await efx.getOrder(id)
 ## Troubleshooting
 
 A list of error codes returned by the API and reasons are available [here](./src/lib/error/reasons.js#L1).
-Some more detailed explanations can also be found in the [API Documentation](https://docs.ethfinex.com).
+Some more detailed explanations can also be found in the [API Documentation](https://docs.deversifi.com).
 
 If you have suggestions to improve this guide or any of the available
-documentation, please raise an issue on Github, or email [feedback@ethfinex.com](mailto:feedback@ethfinex.com).
+documentation, please raise an issue on Github, or email [info@deversifi.com](mailto:info@deversifi.com).
 
 ## Links
 
- - [API documentation](https://docs.ethfinex.com)
- - [Ethfinex trustless developer guide](https://blog.ethfinex.com/ethfinex-trustless-developer-guide/)
+ - [API documentation](https://docs.deversifi.com)
+ - [DeversiFi developer guide](https://blog.deversifi.com/ethfinex-trustless-developer-guide/)
 
 ## Developing
 

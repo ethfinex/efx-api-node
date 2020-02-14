@@ -3,9 +3,8 @@
 const { assert } = require('chai')
 const nock = require('nock')
 const mockGetConf = require('./fixtures/nock/get_conf')
-
-const instance = require('./instance')
-const {ZeroEx} = require('0x.js')
+const mockFeeRate = require('./fixtures/nock/feeRate')
+const instance = require('./helpers/instance')
 const utils = require('ethereumjs-util')
 
 // TODO: use arrayToOrder to convert response from HTTP API
@@ -83,7 +82,6 @@ it('efx.cancelOrder(orderId, signedOrder) // cancels a previously signed order',
 })
 
 it('efx.getOrder(orderId)', async () => {
-  efx.account.unlock('password')
   const orderId = 1
 
   const apiResponse = [[1234]]
@@ -115,7 +113,6 @@ it('efx.getOrder(orderId)', async () => {
 })
 
 it('efx.getOrders()', async () => {
-  efx.account.unlock('password')
 
   const apiResponse = [[1234], [1235]]
 
@@ -143,7 +140,6 @@ it('efx.getOrders()', async () => {
 })
 
 it('efx.getOrderHist(null, null, nonce, signature)', async () => {
-  efx.account.unlock('password')
 
   const nonce = ((Date.now() / 1000) + 60 * 60 * 24) + ''
   const signature = await efx.sign(nonce.toString(16))
@@ -263,6 +259,9 @@ it("efx.releaseTokens('USD')", async () => {
 })
 
 it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
+
+  mockFeeRate()
+  
   nock('https://test.ethfinex.com')
     .post('/trustless/v1/w/on', async (body) => {
       assert.equal(body.type, 'EXCHANGE LIMIT')
@@ -275,7 +274,11 @@ it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
 
       // TODO: actually hash the signature the same way and make
       // and test it instead of simply check if it exists
-      assert.ok(meta.ecSignature)
+      assert.ok(body.meta.signature)
+
+      assert.ok(body.dynamicFeeRate.feeRate)
+      assert.ok(body.dynamicFeeRate.feeRates)
+      assert.ok(body.dynamicFeeRate.feeRates.signature)
 
       return true
     })
@@ -294,11 +297,12 @@ it('efx.submitOrder(ETHUSD, 1, 100)', async () => {
 })
 
 it('efx.submitSignedOrder(order)', async () => {
-  await efx.account.unlock('password')
 
   // TODO: move tests with mocks to individual files, probably inside of
   // test/http/ folder
   const httpResponse = [[1234]]
+
+  mockFeeRate()
 
   nock('https://test.ethfinex.com')
     .post('/trustless/v1/w/on', async (body) => {
@@ -312,7 +316,7 @@ it('efx.submitSignedOrder(order)', async () => {
 
       // TODO: actually hash the signature the same way and make
       // and test it instead of simply check if it exists
-      assert.ok(meta.ecSignature)
+      assert.ok(body.meta.signature)
 
       return true
     })
@@ -332,4 +336,63 @@ it('efx.submitSignedOrder(order)', async () => {
   // - record real response using nock.recorder.rec()
   // - validate the actual response
   assert.ok(response)
+})
+
+it('efx.feeRate(ETHUSD, 0.1, 10000) gets feeBps for correct threshold', async () => {
+
+  // TODO: move tests with mocks to individual files, probably inside of
+  // test/http/ folder
+  const httpResponse = { 
+    address: '0x65CEEE596B2aba52Acc09f7B6C81955C1DB86404',
+    timestamp: 1568959208939,
+    fees: { 
+      small: { threshold: 0, feeBps: 25 },
+      medium: { threshold: 500, feeBps: 21 },
+      large: { threshold: 2000, feeBps: 20 } 
+    },
+    signature: '0x52f18b47494e465aa4ed0f0f123fae4d40d3ac0862b61862e6cc8e5a119dbfe1061a4ee381092a10350185071f4829dbfd6c5f2e26df76dee0593cbe3cbd87321b' 
+  }
+
+  nock('https://api.deversifi.com')
+    .get('/api/v1/feeRate/' + efx.get('account'))
+    .reply(200, httpResponse)
+
+  const symbol = 'ETHUSD'
+  const amount = -0.1
+  const price = 10000
+
+  const response = await efx.getFeeRate(symbol, amount, price)
+
+  assert.equal(response.feeRate.threshold, 500)
+  assert.equal(response.feeRate.feeBps, 21)
+})
+
+it('efx.feeRate(MKRETH, -5, 2.5) gets feeBps for correct threshold', async () => {
+
+  const httpResponse = { 
+    address: '0x65CEEE596B2aba52Acc09f7B6C81955C1DB86404',
+    timestamp: 1568959208939,
+    fees: { 
+      small: { threshold: 0, feeBps: 25 },
+      medium: { threshold: 500, feeBps: 21 },
+      large: { threshold: 2000, feeBps: 20 } 
+    },
+    signature: '0x52f18b47494e465aa4ed0f0f123fae4d40d3ac0862b61862e6cc8e5a119dbfe1061a4ee381092a10350185071f4829dbfd6c5f2e26df76dee0593cbe3cbd87321b' 
+  }
+
+  nock('https://api.deversifi.com')
+    .get('/api/v1/feeRate/' + '0x65CEEE596B2aba52Acc09f7B6C81955C1DB86404')
+    .reply(200, httpResponse)
+
+  const symbol = 'MKRETH'
+  const amount = -5
+  const price = 2.5
+
+  const response = await efx.getFeeRate(symbol, amount, price)
+
+  assert.equal(response.feeRate.threshold, 2000)
+  assert.equal(response.feeRate.feeBps, 20)
+  assert.deepEqual(response.feeRates.fees, httpResponse.fees)
+
+  
 })

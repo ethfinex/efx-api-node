@@ -1,9 +1,17 @@
 const {post} = require('request-promise')
 const parse = require('../lib/parse/response/submit_order')
 
-module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, validFor, partner_id, fee_rate = 0.0025) => {
+module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, validFor, partner_id, fee_rate, dynamicFeeRate) => {
   if (!(symbol && amount && price)) {
     throw new Error('order, symbol, amount and price are required')
+  }
+
+  if(!fee_rate) {
+    if(!dynamicFeeRate){
+      dynamicFeeRate = await efx.getFeeRate(symbol, amount, price)
+    }
+
+    fee_rate = dynamicFeeRate.feeRate.feeBps / 10000
   }
 
   //TODO: check if symbol is a valid symbol
@@ -31,7 +39,8 @@ module.exports = async (efx, symbol, amount, price, gid, cid, signedOrder, valid
     meta,
     protocol,
     partner_id,
-    fee_rate
+    fee_rate,
+    dynamicFeeRate
   }
 
   const url = efx.config.api + '/w/on'

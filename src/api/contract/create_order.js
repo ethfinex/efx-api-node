@@ -12,11 +12,11 @@ module.exports = (efx, symbol, amount, price, validFor, fee_rate = 0.0025) => {
   }
 
   // symbols are always 3 letters
-  const symbolOne = symbol.substr(0, symbol.length - 3)
-  const symbolTwo = symbol.substr(-3)
+  const baseSymbol = symbol.substr(0, symbol.length - 3)
+  const quoteSymbol = symbol.substr(-3)
 
-  const buySymbol = amount > 0 ? symbolOne : symbolTwo
-  const sellSymbol = amount > 0 ? symbolTwo : symbolOne
+  const buySymbol = amount > 0 ? baseSymbol : quoteSymbol
+  const sellSymbol = amount > 0 ? quoteSymbol : baseSymbol
 
   const sellCurrency = efx.config['0x'].tokenRegistry[sellSymbol]
   const buyCurrency = efx.config['0x'].tokenRegistry[buySymbol]
@@ -77,9 +77,9 @@ module.exports = (efx, symbol, amount, price, validFor, fee_rate = 0.0025) => {
 
     takerAssetAmount: buyAmount,
 
-    makerFee: web3.utils.toBN('0'),
+    makerFee: new BigNumber(0),
 
-    takerFee: web3.utils.toBN('0'),
+    takerFee: new BigNumber(0),
 
     expirationTimeSeconds: new BigNumber(expiration),
 

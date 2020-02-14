@@ -26,6 +26,7 @@ module.exports = () => {
          },
       },
      "ethfinexAddress":"0x61b9898c9b60a159fc91ae8026563cd226b7a0c1", // gets fee paid in
+     "feeApiUrl": "https://staging-api.deversifi.com/v1/pub/feeRate/",
      "exchangeAddress":"0xdcdb42c9a256690bd153a7b409751adfc8dd5851", // actual exchange contract address
       "exchangeSymbols":[
          "tETHUSD",

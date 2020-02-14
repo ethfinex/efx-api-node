@@ -1,7 +1,7 @@
 /* eslint-env mocha */
 
 const { assert } = require('chai')
-const instance = require('./instance')
+const instance = require('./helpers/instance')
 const mockGetConf = require('./fixtures/nock/get_conf')
 
 let efx

@@ -1,5 +1,5 @@
 /* eslint-env mocha */
-const instance = require('./instance')
+const instance = require('./helpers/instance')
 const { assert } = require('chai')
 const mockGetConf = require('./fixtures/nock/get_conf')
 
@@ -41,11 +41,4 @@ it("await efx.account.tokenBalance('USD') // return USD balance", async () => {
   const response = await efx.account.tokenBalance(token)
 
   assert.notOk(isNaN(response))
-})
-
-// NOTE:
-//  - Unlocking is necessary in order to sign on node.js
-//  - MetaMask will throw a pop up at you
-it('efx.account.unlock(passwd) // unlock account', async () => {
-  return efx.account.unlock('password')
 })
