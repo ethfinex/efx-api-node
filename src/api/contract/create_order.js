@@ -1,5 +1,6 @@
 const {assetDataUtils, generatePseudoRandomSalt} = require('@0x/order-utils')
-const BigNumber = require('bignumber.js');
+const BigNumber = require('bignumber.js')
+const _ = require('lodash')
 
 module.exports = (efx, symbol, amount, price, validFor, fee_rate = 0.0025) => {
   const { web3, config } = efx
@@ -12,8 +13,13 @@ module.exports = (efx, symbol, amount, price, validFor, fee_rate = 0.0025) => {
   }
 
   // symbols are always 3 letters
-  const baseSymbol = symbol.substr(0, symbol.length - 3)
-  const quoteSymbol = symbol.substr(-3)
+  let baseSymbol, quoteSymbol
+  if (_.includes(symbol, ':')) {
+    [baseSymbol, quoteSymbol] = _.split(symbol, ':', 2)
+  } else {
+    baseSymbol = symbol.substr(0, symbol.length - 3)
+    quoteSymbol = symbol.substr(-3)
+  }
 
   const buySymbol = amount > 0 ? baseSymbol : quoteSymbol
   const sellSymbol = amount > 0 ? quoteSymbol : baseSymbol
