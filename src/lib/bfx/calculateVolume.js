@@ -1,4 +1,5 @@
 const getUSDPrice = require('./getUSDPrice')
+const _ = require('lodash')
 
 module.exports = async (symbol, amount, price) => {
   let baseSymbol, quoteSymbol
