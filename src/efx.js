@@ -21,7 +21,7 @@ module.exports = async (web3, userConfig = {}) => {
   efx.config = Object.assign({}, defaultConfig, userConfig)
 
   // ethfinex exchange config
-  const exchangeConf = await efx.getConfig()
+  const exchangeConf = {}
 
   //user config has priority
   efx.config = Object.assign({}, defaultConfig, exchangeConf, userConfig )
