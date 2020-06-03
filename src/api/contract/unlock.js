@@ -23,14 +23,9 @@ module.exports = async (efx, token, amount, nonce, signature) => {
 
   // we need to call releaseTokens to fetch a signed permission to unlock
   if( Date.now() / 1000 < depositLock ) {
-    const response = await efx.releaseTokens(token, nonce, signature)
-
-    if(response.error) return response
-
-    const sig = response.releaseSignature
 
     // push values into arguments array
-    args = args.concat([sig.v, sig.r, sig.s, response.unlockUntil])
+    args = args.concat([signature.v, signature.r, signature.s, nonce])
   }
 
   return efx.eth.send(
